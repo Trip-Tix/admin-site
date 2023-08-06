@@ -3,6 +3,7 @@ import { Input as ChakraInput}  from "@chakra-ui/react" ;
 import Image from "next/image";
 import Login from "../components/login";
 import SideImage from "../public/images/LoginPageImage.svg";
+import TransportOptionBar from "../components/transport_option_bar";
 
 export default function Home() {
   return(
