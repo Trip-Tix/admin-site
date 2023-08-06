@@ -1,5 +1,6 @@
 import { Flex, Box, Text, Image as ChakraImage } from "@chakra-ui/react";
 import NavItem from "./nav_item";
+import NavBarData from "../public/commonData/AdminNavBarData"; 
 
 interface NavbarProps {
   color: string;
@@ -24,11 +25,9 @@ export default function Navbar({ color }: NavbarProps) {
       </Box>
       <Flex>
         {/* Navbar Options */}
-        <NavItem>Dashboard</NavItem>
-        <NavItem>Manage Transports</NavItem>
-        <NavItem>Manage Users</NavItem>
-        <NavItem>Settings</NavItem>
-        <NavItem>Profile</NavItem>
+        {NavBarData.map((item, index) => (
+          <NavItem key={index}>{item}</NavItem>
+        ))}
       </Flex>
     </Flex>
   );

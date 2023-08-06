@@ -2,27 +2,26 @@ import { Flex, Button, Heading, Center } from "@chakra-ui/react";
 import { Input as ChakraInput}  from "@chakra-ui/react" ;
 import Image from "next/image";
 import Login from "../components/login";
-import Navbar from "../components/navbar";
+import SideImage from "../public/images/LoginPageImage.svg";
 
 export default function Home() {
   return(
-    <Flex direction={"column"} justifyContent={"space-evenly"}>
-      <Navbar color="#333" />
-      <Flex direction={"row"} justifyContent={"space-evenly"}>
-        <Flex grow={"1"} direction={"column"} basis={"100%"}>
+    <Flex direction="column" minHeight="100vh">
+      <Flex direction="row" flexGrow={1}>
+        <Flex direction="column">
           <Center>
             <Image 
-              src="/images/HomePageImage.jpeg" 
+              src={SideImage} 
               alt="Picture of triptix"
               width={1000} 
               height={1000}
             />
           </Center>
         </Flex>
-        <Flex grow={"1"} direction={"column"} background={"white"} p={12} basis={"100%"}>
+        <Flex direction="column" background="white" p={12} flexGrow={1}>
           <Login/>
         </Flex>
       </Flex>
     </Flex>
-  )
+  );
 }
