@@ -1,14 +1,12 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 import { transport_optionbar_items, transport_optionbar_logos } from "../public/commonData/TransportOptionBarData"; 
+import { backgroundColor, selectedColor, hoverColor } from "../public/commonData/commonColor"
 
 interface TransportOptionBarProps {
-  backgroundColor: string;
-  selectedColor: string;
-  hoverColor: string;
   selectedOption: string;
 }
 
-export default function TransportOptionBar({ backgroundColor, selectedColor, hoverColor, selectedOption }: TransportOptionBarProps) {
+export default function TransportOptionBar({selectedOption }: TransportOptionBarProps) {
   return (
     <Flex direction="row" justifyContent="center" alignItems="center" backgroundColor={backgroundColor}>
       {transport_optionbar_items.map((item, index) => (
@@ -29,3 +27,5 @@ export default function TransportOptionBar({ backgroundColor, selectedColor, hov
     </Flex>
   );
 }
+
+export type { TransportOptionBarProps };

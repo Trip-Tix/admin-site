@@ -1,4 +1,4 @@
-let navbar_items = [
+const navbar_items = [
     "Dashboard",
     "Manage Transports",
     "Manage Users",

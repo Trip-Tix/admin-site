@@ -2,11 +2,12 @@ import { Flex, Box, Text, Image as ChakraImage } from "@chakra-ui/react";
 import NavItem from "./nav_item";
 import NavBarData from "../public/commonData/AdminNavBarData"; 
 
-interface NavbarProps {
-  color: string;
+export interface NavbarProps {
+  selected_option : string;
 }
+const color = "#1A202C";
 
-export default function Navbar({ color }: NavbarProps) {
+export default function Navbar({ selected_option }: NavbarProps) {
   return (
     <Flex
       as="nav"
