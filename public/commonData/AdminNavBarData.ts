@@ -5,6 +5,14 @@ const navbar_items = [
     "Settings",
     "Profile"
   ];
+
+const navbar_items_url = [
+    "/admin/dashboard",
+    "/admin/manage-transports",
+    "/admin/manage-users",
+    "/admin/settings",
+    "/admin/profile"
+  ];
   
-export default navbar_items;
+export { navbar_items, navbar_items_url };
   

@@ -1,6 +1,6 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 import { transport_optionbar_items, transport_optionbar_logos } from "../public/commonData/TransportOptionBarData"; 
-import { backgroundColor, selectedColor, hoverColor } from "../public/commonData/commonColor"
+import { backgroundColor, selectedColor, hoverColor } from "../public/commonData/CommonColor"
 
 interface TransportOptionBarProps {
   selectedOption: string;
@@ -27,5 +27,3 @@ export default function TransportOptionBar({selectedOption }: TransportOptionBar
     </Flex>
   );
 }
-
-export type { TransportOptionBarProps };

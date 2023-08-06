@@ -1,8 +1,9 @@
 import { Flex, Box, Text, Image as ChakraImage } from "@chakra-ui/react";
 import NavItem from "./nav_item";
-import NavBarData from "../public/commonData/AdminNavBarData"; 
+import {navbar_items, navbar_items_url} from "../public/commonData/AdminNavBarData"; 
+import Link from "next/link";
 
-export interface NavbarProps {
+interface NavbarProps {
   selected_option : string;
 }
 const color = "#1A202C";
@@ -26,8 +27,12 @@ export default function Navbar({ selected_option }: NavbarProps) {
       </Box>
       <Flex>
         {/* Navbar Options */}
-        {NavBarData.map((item, index) => (
-          <NavItem key={index}>{item}</NavItem>
+        {navbar_items.map((item, index) => (
+          <Link href={navbar_items_url[index]} key={index}>
+              <NavItem key={index}>
+                {item}
+              </NavItem>
+          </Link>
         ))}
       </Flex>
     </Flex>
