@@ -13,7 +13,7 @@ const navbar_items_url = [
   "/admin/manage-users",
   "/admin/settings",
   "/admin/profile",
-  "/admin/logout",
+  "/",
 ];
 
 export { navbar_items, navbar_items_url };
