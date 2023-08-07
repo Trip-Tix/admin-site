@@ -3,7 +3,8 @@ const navbar_items = [
     "Manage Transports",
     "Manage Users",
     "Settings",
-    "Profile"
+    "Profile",
+    "Logout"
   ];
 
 const navbar_items_url = [
@@ -11,7 +12,8 @@ const navbar_items_url = [
     "/admin/manage-transports",
     "/admin/manage-users",
     "/admin/settings",
-    "/admin/profile"
+    "/admin/profile",
+    "/admin/logout"
   ];
   
 export { navbar_items, navbar_items_url };
