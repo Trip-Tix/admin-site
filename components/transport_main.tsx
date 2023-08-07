@@ -24,7 +24,11 @@ export default function TransportMain() {
   return (
     <>
       <Flex justifyContent={"space-around"} margin={"10"}>
-        <TransportFilterBox transports={transports} setTransports={setTransports} originalTransports={originalTransports}/>
+        <TransportFilterBox
+          transports={transports}
+          setTransports={setTransports}
+          originalTransports={originalTransports}
+        />
         <TransportTable transports={transports} />
       </Flex>
     </>

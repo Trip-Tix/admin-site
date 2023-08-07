@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
-import { Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text } from '@chakra-ui/react';
+import React, { useState } from "react";
+import {
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Text,
+} from "@chakra-ui/react";
 
 interface ChakraSliderProps {
   min: number;
@@ -7,7 +13,11 @@ interface ChakraSliderProps {
   setSelectedMaxPrice: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const ChakraSlider: React.FC<ChakraSliderProps> = ({ min, max, setSelectedMaxPrice }) => {
+const ChakraSlider: React.FC<ChakraSliderProps> = ({
+  min,
+  max,
+  setSelectedMaxPrice,
+}) => {
   const [value, setValue] = useState(0);
 
   return (
@@ -16,7 +26,9 @@ const ChakraSlider: React.FC<ChakraSliderProps> = ({ min, max, setSelectedMaxPri
         min={min}
         max={max}
         step={0.01}
-        onChange={(value) => {setValue(value), setSelectedMaxPrice(value)}}
+        onChange={(value) => {
+          setValue(value), setSelectedMaxPrice(value);
+        }}
         aria-label="Price Range Slider"
       >
         <SliderTrack>
@@ -24,7 +36,9 @@ const ChakraSlider: React.FC<ChakraSliderProps> = ({ min, max, setSelectedMaxPri
         </SliderTrack>
         <SliderThumb />
       </Slider>
-      <Text mt={2}>Price Range: ${min} - ${value === 0? max : value}</Text>
+      <Text mt={2}>
+        Price Range: ${min} - ${value === 0 ? max : value}
+      </Text>
     </div>
   );
 };

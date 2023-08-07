@@ -1,4 +1,13 @@
-import { Flex, Box, Image, Text, Input, Select, Button, Checkbox } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Image,
+  Text,
+  Input,
+  Select,
+  Button,
+  Checkbox,
+} from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { GetStaticProps } from "next";
 import Navbar from "@components/navbar";
@@ -63,9 +72,13 @@ export default function AddBusServicePage({ coaches }: AddBusServicePageProps) {
       <Flex justify="center" align="center" minHeight="100vh">
         <Box width="80%" display="flex">
           {/* Left side (Image) */}
-          <Box flex="1" bg="#f0f0f0" backgroundImage={`url('/images/bus_add_page_pic.jpg')`} backgroundSize="cover">
-          </Box>
-    
+          <Box
+            flex="1"
+            bg="#f0f0f0"
+            backgroundImage={`url('/images/bus_add_page_pic.jpg')`}
+            backgroundSize="cover"
+          ></Box>
+
           {/* Right side (Form) */}
           <Box flex="1" p={8} boxShadow="md" rounded="md" bg="white">
             <Text fontSize="xl" fontWeight="bold">
@@ -75,7 +88,12 @@ export default function AddBusServicePage({ coaches }: AddBusServicePageProps) {
               <Input
                 placeholder="Service Name"
                 value={serviceInfo.serviceName}
-                onChange={(e) => setServiceInfo({ ...serviceInfo, serviceName: e.target.value })}
+                onChange={(e) =>
+                  setServiceInfo({
+                    ...serviceInfo,
+                    serviceName: e.target.value,
+                  })
+                }
                 my={4}
               />
             </Box>
@@ -83,20 +101,27 @@ export default function AddBusServicePage({ coaches }: AddBusServicePageProps) {
               type="number"
               placeholder="Number of Buses"
               value={serviceInfo.numberOfBuses}
-              onChange={(e) => setServiceInfo({ ...serviceInfo, numberOfBuses: Number(e.target.value) })}
+              onChange={(e) =>
+                setServiceInfo({
+                  ...serviceInfo,
+                  numberOfBuses: Number(e.target.value),
+                })
+              }
               my={4}
             />
             <Box my={5} mt={10}>
               <Text my={2}>Types of Coaches:</Text>
               {coaches.map((coach) => (
-                  <Checkbox
+                <Checkbox
                   key={coach.coach_id}
                   value={coach.coach_id}
-                  isChecked={serviceInfo.selectedCoaches.includes(coach.coach_id)}
+                  isChecked={serviceInfo.selectedCoaches.includes(
+                    coach.coach_id,
+                  )}
                   onChange={() => handleCheckboxChange(coach.coach_id)}
-                  >
+                >
                   {coach.coach_name}
-                  </Checkbox>
+                </Checkbox>
               ))}
             </Box>
             <br></br>
@@ -108,8 +133,6 @@ export default function AddBusServicePage({ coaches }: AddBusServicePageProps) {
       </Flex>
     </Layout>
   );
-  
-  
 }
 
 // Fetch coach information from API
@@ -130,4 +153,4 @@ export const getStaticProps: GetStaticProps = async () => {
       props: { coaches: [] },
     };
   }
-}
+};

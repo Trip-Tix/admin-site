@@ -1,5 +1,5 @@
-import { Box, Container, Heading } from '@chakra-ui/react';
-import Head from 'next/head';
+import { Box, Container, Heading } from "@chakra-ui/react";
+import Head from "next/head";
 
 interface LayoutProps {
   title: string;
@@ -11,11 +11,9 @@ const Layout: React.FC<LayoutProps> = ({ title, children }) => {
     <Box>
       <Head>
         <title>{title}</title>
-        <link rel="icon" href="/favicon/favicon.ico"/>
+        <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
-      <main>
-          {children}
-      </main>
+      <main>{children}</main>
     </Box>
   );
 };
