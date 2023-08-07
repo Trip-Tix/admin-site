@@ -2,26 +2,26 @@ import { useState } from "react";
 import { Heading, Button, Input, Link, VStack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-export default function Login() {
+export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleLogin = () => {
-    // Your login logic here (axios call, etc.)
+  const handleSignUp = () => {
+    // Your signup logic here (axios call, etc.)
 
-    // Redirect to /admin/dashboard after successful login
+    // Redirect to /admin/dashboard after successful signup
     router.push("/admin/dashboard");
   };
 
-  const handleSignUp = () => {
-    // Redirect to /user/signup when user clicks the Sign Up link
-    router.push("/user/signup");
+  const handleLogin = () => {
+    // Redirect to /user/login when user clicks the Log In link
+    router.push("/user/login");
   };
 
   return (
     <VStack spacing={6} align="center" p={6}>
-      <Heading textAlign="center">Log In</Heading>
+      <Heading textAlign="center">Sign Up</Heading>
       <Input
         placeholder="Email"
         type="email"
@@ -34,13 +34,13 @@ export default function Login() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button colorScheme="blue" onClick={handleLogin}>
-        Log In
+      <Button colorScheme="blue" onClick={handleSignUp}>
+        Sign Up
       </Button>
       <Text>
-        Dont have an account?{" "}
-        <Link color="blue.500" onClick={handleSignUp}>
-          Sign Up
+        Already have an account?
+        <Link color="blue.500" onClick={handleLogin}>
+          Log In
         </Link>
       </Text>
     </VStack>

@@ -1,16 +1,28 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
-import { transport_optionbar_items, transport_optionbar_logos } from "../public/commonData/TransportOptionBarData"; 
+import {
+  transport_optionbar_items,
+  transport_optionbar_logos,
+} from "../public/commonData/TransportOptionBarData";
+import {
+  backgroundColor,
+  selectedColor,
+  hoverColor,
+} from "../public/commonData/CommonColor";
 
 interface TransportOptionBarProps {
-  backgroundColor: string;
-  selectedColor: string;
-  hoverColor: string;
   selectedOption: string;
 }
 
-export default function TransportOptionBar({ backgroundColor, selectedColor, hoverColor, selectedOption }: TransportOptionBarProps) {
+export default function TransportOptionBar({
+  selectedOption,
+}: TransportOptionBarProps) {
   return (
-    <Flex direction="row" justifyContent="center" alignItems="center" backgroundColor={backgroundColor}>
+    <Flex
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      backgroundColor={backgroundColor}
+    >
       {transport_optionbar_items.map((item, index) => (
         <Flex
           key={item}
@@ -19,10 +31,21 @@ export default function TransportOptionBar({ backgroundColor, selectedColor, hov
           paddingY={3}
           paddingX={10}
           cursor="pointer"
-          backgroundColor={item === selectedOption ? selectedColor : backgroundColor}
-          _hover={{ backgroundColor: item !== selectedOption ? hoverColor : selectedColor }}
+          backgroundColor={
+            item === selectedOption ? selectedColor : backgroundColor
+          }
+          _hover={{
+            backgroundColor:
+              item !== selectedOption ? hoverColor : selectedColor,
+          }}
         >
-          <Image src={transport_optionbar_logos[index]} alt={`${item} Logo`} width={5} height={5} mr={2} />
+          <Image
+            src={transport_optionbar_logos[index]}
+            alt={`${item} Logo`}
+            width={5}
+            height={5}
+            mr={2}
+          />
           <Text>{item}</Text>
         </Flex>
       ))}
