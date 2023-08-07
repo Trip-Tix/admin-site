@@ -87,6 +87,7 @@ const AddBusServicePage: React.FC<AddBusServicePageProps> = ({ coaches }) => {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const response = await fetch(get_coach_info_url);
+    console.log(response)
     const coachesData = await response.json();
     console.log("coachesData:", coachesData); // Check the raw data from the API
 
