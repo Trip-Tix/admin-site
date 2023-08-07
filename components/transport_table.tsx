@@ -67,7 +67,7 @@ export default function TransportTable({ transports }: TransportTableProps) {
           <Text fontSize="2xl" fontWeight="bold">
             Transport
           </Text>
-          <Button colorScheme="blue" variant="solid">
+          <Button colorScheme="blue" variant="solid" onClick={()=>router.push("/admin/transport/busService/addBusService")}>
             Add Transport
           </Button>
         </Flex>

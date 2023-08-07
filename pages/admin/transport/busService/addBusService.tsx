@@ -1,20 +1,17 @@
+import Layout from "@components/layout";
 import Navbar from "@components/navbar";
 import TransportOptionBar from "@components/transport_option_bar";
 import { transport_optionbar_items } from "@public/commonData/TransportOptionBarData";
-import {
-  navbar_items,
-  navbar_items_url,
-} from "@public/commonData/AdminNavBarData";
-import TransportMain from "@components/transport_main";
+import { navbar_items } from "@public/commonData/AdminNavBarData";
 import DashboardFooter from "@components/dashboard_footer";
-import Layout from "@components/layout";
+import BusServiceAdd from "@components/bus_service_add";
 
-export default function ShowTransportBus() {
+export default function AddBusService() {
   return (
-    <Layout title="Transport Bus">
+    <Layout title="Add Bus Service">
       <Navbar selected_option={navbar_items[0]} />
       <TransportOptionBar selectedOption={transport_optionbar_items[2]} />
-      <TransportMain />
+      <BusServiceAdd />
       <DashboardFooter />
     </Layout>
   );
