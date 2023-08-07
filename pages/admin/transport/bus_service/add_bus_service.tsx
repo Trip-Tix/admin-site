@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { GetStaticProps } from "next";
 import Navbar from "@components/navbar";
 import { navbar_items } from "@public/commonData/AdminNavBarData";
+import { get_coach_info_url, add_bus_info_url } from "@public/commonData/Api";
 
 interface Coach {
   coach_id: string;
@@ -35,7 +36,7 @@ export default function AddBusServicePage({ coaches }: AddBusServicePageProps) {
 
   const handleAddButtonClick = () => {
     // Make API request to add bus service
-    fetch("https://triptix-backend.onrender.com/api/admin/addBusInfo", {
+    fetch(add_bus_info_url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +112,7 @@ export default function AddBusServicePage({ coaches }: AddBusServicePageProps) {
 // Fetch coach information from API
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const response = await fetch("https://triptix-backend.onrender.com/api/admin/getCoachInfo");
+    const response = await fetch(get_coach_info_url);
     const coachesData = await response.json();
     console.log("coachesData:", coachesData); // Check the raw data from the API
 
