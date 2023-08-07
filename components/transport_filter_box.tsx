@@ -59,11 +59,14 @@ export default function TransportFilterBox({
   const [selectedServiceClass, setSelectedServiceClass] = useState<string[]>(
     [],
   );
-  const [selectedDepartureTime, setSelectedDepartureTime] = useState<string[]>([]);
-
-
-  const serviceClasses = Array.from(new Set(transports.map((transport) => transport.coach_name)));
-  const arrivalTimes = Array.from(new Set(transports.map((transport) => transport.arrival_time)));
+  const [selectedArrivalTime, setSelectedArrivalTime] = useState<string[]>([]);
+  
+  const serviceClasses = Array.from(
+    new Set(transports.map((transport) => transport.coach_name)),
+  );
+  const arrivalTimes = Array.from(
+    new Set(transports.map((transport) => transport.arrival_time)),
+  );
   const { minPrice, maxPrice } = originalTransports.reduce(
     (acc, transport) => {
       if (transport.bus_fare < acc.minPrice) {
@@ -92,13 +95,13 @@ export default function TransportFilterBox({
   };
 
   const addTimeTag = (time: string) => {
-    if (!selectedDepartureTime.includes(time)) {
-      setSelectedDepartureTime([...selectedDepartureTime, time]);
+    if (!selectedArrivalTime.includes(time)) {
+      setSelectedArrivalTime([...selectedArrivalTime, time]);
     }
   };
 
   const removeTimeTag = (time: string) => {
-    setSelectedDepartureTime(selectedDepartureTime.filter((item) => item !== time));
+    setSelectedArrivalTime(selectedArrivalTime.filter((item) => item !== time));
   };
 
   const applyFilters = () => {
@@ -108,7 +111,8 @@ export default function TransportFilterBox({
         selectedServiceClass.length === 0 ||
         selectedServiceClass.includes(transport.coach_name);
       const timeMatch =
-        selectedDepartureTime.length === 0 || selectedDepartureTime.includes(transport.arrival_time);
+        selectedArrivalTime.length === 0 ||
+        selectedArrivalTime.includes(transport.arrival_time);
       const priceMatch = transport.bus_fare <= selectedMaxPrice;
       return serviceClassMatch && timeMatch && priceMatch;
     });
@@ -118,7 +122,7 @@ export default function TransportFilterBox({
 
   const resetFilters = () => {
     setSelectedServiceClass([]);
-    setSelectedDepartureTime([]);
+    setSelectedArrivalTime([]);
     setTransports(originalTransports);
   };
 
@@ -155,7 +159,7 @@ export default function TransportFilterBox({
               />
             </Tag>
           ))}
-          {selectedDepartureTime.map((time) => (
+          {selectedArrivalTime.map((time) => (
             <Tag
               key={time}
               size="md"
