@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Text, Input, Button, Checkbox } from "@chakra-ui/react";
+import { Box, Text, Input, Button, Checkbox, Flex } from "@chakra-ui/react";
 
 interface Coach {
   coach_id: string;
@@ -34,14 +34,15 @@ const BusServiceCard: React.FC<BusServiceCardProps> = ({ coaches, onSubmit }) =>
   };
 
   return (
-    <Box width="80%" display="flex">
+    <Flex width="80%">
       {/* Left side (Image) */}
       <Box
         flex="1"
         bg="#f0f0f0"
         backgroundImage={`url('/images/bus_add_page_pic.jpg')`}
         backgroundSize="cover"
-        borderRadius="md"
+        borderTopLeftRadius="md" // Rounded top-left corner
+        borderBottomLeftRadius="md" // Rounded bottom-left corner
       ></Box>
 
       {/* Right side (Form) */}
@@ -49,10 +50,11 @@ const BusServiceCard: React.FC<BusServiceCardProps> = ({ coaches, onSubmit }) =>
         flex="1"
         p={8}
         boxShadow="md"
-        rounded="md"
         bg="#f2f2f2"
+        borderTopRightRadius="md" // Rounded top-right corner
+        borderBottomRightRadius="md" // Rounded bottom-right corner
       >
-        <Text fontSize="xl" fontWeight="bold" color="black"> {/* Changed text color to black */}
+        <Text fontSize="xl" fontWeight="bold">
           Add New Bus Service
         </Text>
         <Box my={5} mt={10}>
@@ -61,7 +63,6 @@ const BusServiceCard: React.FC<BusServiceCardProps> = ({ coaches, onSubmit }) =>
             value={serviceInfo.serviceName}
             onChange={(e) => setServiceInfo({ ...serviceInfo, serviceName: e.target.value })}
             my={4}
-            color="black" // Changed text color of input
           />
         </Box>
         <Input
@@ -72,30 +73,29 @@ const BusServiceCard: React.FC<BusServiceCardProps> = ({ coaches, onSubmit }) =>
             setServiceInfo({ ...serviceInfo, numberOfBuses: Number(e.target.value) })
           }
           my={4}
-          color="black" // Changed text color of input
         />
         <Box my={5} mt={10}>
-          <Text my={2} color="black"> {/* Changed text color to black */}
-            Types of Coaches:
-          </Text>
-          {coaches.map((coach) => (
-            <Checkbox
-              key={coach.coach_id}
-              value={coach.coach_id}
-              isChecked={serviceInfo.selectedCoaches.includes(coach.coach_id)}
-              onChange={() => handleCheckboxChange(coach.coach_id)}
-              colorScheme="blue" // Changed checkbox color to blue
-            >
-              {coach.coach_name}
-            </Checkbox>
-          ))}
+          <Text my={2}>Types of Coaches:</Text>
+          <Flex flexWrap="wrap" gap={4}>
+            {coaches.map((coach) => (
+              <Checkbox
+                key={coach.coach_id}
+                value={coach.coach_id}
+                isChecked={serviceInfo.selectedCoaches.includes(coach.coach_id)}
+                onChange={() => handleCheckboxChange(coach.coach_id)}
+                colorScheme="blue" // Changed checkbox color to blue
+              >
+                {coach.coach_name}
+              </Checkbox>
+            ))}
+          </Flex>
         </Box>
         <br />
         <Button colorScheme="blue" mt={20} onClick={handleAddButtonClick}>
-          Add
+          Add Bus Service
         </Button>
       </Box>
-    </Box>
+    </Flex>
   );
 };
 
