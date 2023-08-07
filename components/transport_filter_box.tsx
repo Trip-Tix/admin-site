@@ -23,6 +23,7 @@ import { Box,
 import { ReactNode } from 'react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useState, useEffect } from 'react';
+import PriceFilter from '@components/price_filter'
 
 interface TransportTableProps {
     transports: {
@@ -50,13 +51,22 @@ export default function TransportFilterBox({ transports, setTransports, original
     const [selectedServiceClass, setSelectedServiceClass] = useState<string[]>([]);
     const [selectedTime, setSelectedTime] = useState<string[]>([]);
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
-    const [selectedPrice, setSelectedPrice] = useState<string[]>([]);
 
     const serviceClasses = transports.map((transport) => transport.service_class);
     const times = transports.map((transport) => transport.time);
     const facilities = transports.flatMap((transport) => transport.facilities);
-    const prices = transports.map((transport) => transport.price);
+    const { minPrice , maxPrice} = originalTransports.reduce((acc, transport) => {
+        if (transport.price < acc.minPrice) {
+          acc.minPrice = transport.price;
+        }
+        if (transport.price > acc.maxPrice) {
+          acc.maxPrice = transport.price;
+        }
+        return acc;
+    }, { minPrice: Infinity, maxPrice: -Infinity });
     
+    const [selectedMaxPrice, setSelectedMaxPrice] = useState<number>(maxPrice);
+
     const addServiceClassTag = (serviceClass: string) => {
         if (!selectedServiceClass.includes(serviceClass)) {
             setSelectedServiceClass([...selectedServiceClass, serviceClass]);
@@ -90,12 +100,13 @@ export default function TransportFilterBox({ transports, setTransports, original
     };
 
     const applyFilters = () => {
+        console.log(selectedMaxPrice);
         const filteredTransports = transports.filter(transport => {
             const serviceClassMatch = selectedServiceClass.length === 0 || selectedServiceClass.includes(transport.service_class);
             const timeMatch = selectedTime.length === 0 || selectedTime.includes(transport.time);
             const facilitiesMatch = selectedFacilities.length === 0 || selectedFacilities.some(facility => transport.facilities.includes(facility));
-
-            return serviceClassMatch && timeMatch && facilitiesMatch;
+            const priceMatch = transport.price <= selectedMaxPrice;
+            return serviceClassMatch && timeMatch && facilitiesMatch && priceMatch;
         });
 
         setTransports(filteredTransports);
@@ -105,7 +116,6 @@ export default function TransportFilterBox({ transports, setTransports, original
         setSelectedServiceClass([]);
         setSelectedTime([]);
         setSelectedFacilities([]);
-        setSelectedPrice([]);
         setTransports(originalTransports);
     };
     
@@ -218,13 +228,7 @@ export default function TransportFilterBox({ transports, setTransports, original
                     </select>
                 </Box>
                 <Box>
-                    <Text fontSize="md" fontWeight="bold">Price</Text>
-                    <select>
-                        <option value="all">All</option>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
+                    <PriceFilter min={minPrice} max={maxPrice} setSelectedMaxPrice={setSelectedMaxPrice} />
                 </Box>
                 <Button
                     colorScheme="blue"
