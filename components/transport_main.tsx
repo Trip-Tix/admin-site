@@ -6,12 +6,14 @@ import { get_bus_info_url } from "@public/commonData/Api";
 
 export default function TransportMain() {
   const [transports, setTransports] = useState([]);
+  const [originalTransports, setOriginalTransports] = useState([]);
 
   useEffect(() => {
     fetch(get_bus_info_url)
       .then((response) => response.json())
       .then((data) => {
         setTransports(data);
+        setOriginalTransports(data);
         console.log(data); // Log the fetched data
       })
       .catch((error) => {
@@ -22,7 +24,7 @@ export default function TransportMain() {
   return (
     <>
       <Flex justifyContent={"space-around"} margin={"10"}>
-        <TransportFilterBox />
+        <TransportFilterBox transports={transports} setTransports={setTransports} originalTransports={originalTransports}/>
         <TransportTable transports={transports} />
       </Flex>
     </>
