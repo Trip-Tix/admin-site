@@ -15,8 +15,13 @@ import { get_coach_info_url } from "@public/commonData/LocalAPI";
 
 interface BusService {
   serviceName: string;
-  serviceClasses: string[];
+  serviceClasses: ServiceClass[];
   amount: number;
+}
+
+interface ServiceClass {
+  classNumber: number;
+  className: string;
 }
 
 const AddBusServiceForm: React.FC = () => {
@@ -49,16 +54,24 @@ const AddBusServiceForm: React.FC = () => {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { value, checked } = event.target;
+
+    const foundCoach = serviceClasses.find((coach) => coach.coach_name === value);
+
     if (checked) {
+      const newServiceClass: ServiceClass = {
+        classNumber: foundCoach.coach_id,
+        className: value, // Replace this with the appropriate class name
+      };
+
       setBusService((prevService) => ({
         ...prevService,
-        serviceClasses: [...prevService.serviceClasses, value],
+        serviceClasses: [...prevService.serviceClasses, newServiceClass],
       }));
     } else {
       setBusService((prevService) => ({
         ...prevService,
         serviceClasses: prevService.serviceClasses.filter(
-          (classValue) => classValue !== value,
+          (classValue) => classValue.classNumber !== parseInt(value),
         ),
       }));
     }
@@ -75,10 +88,10 @@ const AddBusServiceForm: React.FC = () => {
     // For this example, let's just log the service data
     console.log("Adding bus service:", busService);
     if (busService.serviceClasses.length === 0) {
-      // alert("Please select at least one service class");
-      busService.serviceClasses = ["100", "101", "102"];
+      alert("Please select at least one service class");
+      return;
     }
-    sessionStorage.setItem("selectedBusService", JSON.stringify(busService)); 
+    sessionStorage.setItem("selectedBusService", JSON.stringify(busService));
   };
 
   return (
