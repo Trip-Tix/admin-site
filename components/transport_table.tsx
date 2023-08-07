@@ -29,13 +29,15 @@ import { get_bus_info_url } from "@public/commonData/Api";
 
 interface TransportTableProps {
   transports: {
-    id: number;
-    service_name: string;
-    service_class: string;
-    time: string;
-    facilities: string[];
-    price: number;
-    amount: number;
+    bus_schedule_id: number;
+    bus_name: string;
+    coach_name: string;
+    source: string;
+    destination: string;
+    departure_time: string;
+    arrival_time: string;
+    bus_fare: number;
+    schedule_date: string;
   }[];
 }
 
@@ -55,7 +57,7 @@ export default function TransportTable({ transports }: TransportTableProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredTransports = transports.filter((transport) =>
-    transport.service_name.toLowerCase().includes(searchQuery.toLowerCase())
+    transport.bus_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -93,10 +95,11 @@ export default function TransportTable({ transports }: TransportTableProps) {
             <Tr>
               <Th textAlign={"center"}>Service Name</Th>
               <Th textAlign={"center"}>Service Class</Th>
-              <Th textAlign={"center"}>Time</Th>
-              <Th textAlign={"center"}>Facilities</Th>
+              <Th textAlign={"center"}>Departure Time</Th>
+              <Th textAlign={"center"}>Arrival Time</Th>
               <Th textAlign={"center"}>Price</Th>
-              <Th textAlign={"center"}>Amount</Th>
+              <Th textAlign={"center"}>Departure Place</Th>
+              <Th textAlign={"center"}>destination Place</Th>
               <Th colSpan={2} textAlign={"center"}>
                 Actions
               </Th>
@@ -104,13 +107,14 @@ export default function TransportTable({ transports }: TransportTableProps) {
           </Thead>
           <Tbody>
             {filteredTransports.map((transport) => (
-              <Tr key={transport.id}>
-                <Td>{transport.service_name}</Td>
-                <Td>{transport.service_class}</Td>
-                <Td>{transport.time}</Td>
-                <Td>{transport.facilities.join(", ")}</Td>
-                <Td>{transport.price}</Td>
-                <Td>{transport.amount}</Td>
+              <Tr key={transport.bus_schedule_id}>
+                <Td>{transport.bus_name}</Td>
+                <Td>{transport.coach_name}</Td>
+                <Td>{transport.departure_time}</Td>
+                <Td>{transport.arrival_time}</Td>
+                <Td>{transport.bus_fare}</Td>
+                <Td>{transport.source}</Td>
+                <Td>{transport.destination}</Td>
                 <Td>
                   <Button
                     leftIcon={<EditIcon />}

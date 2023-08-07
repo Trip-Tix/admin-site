@@ -27,23 +27,27 @@ import PriceFilter from "@components/price_filter";
 
 interface TransportTableProps {
   transports: {
-    id: number;
-    service_name: string;
-    service_class: string;
-    time: string;
-    facilities: string[];
-    price: number;
-    amount: number;
+    bus_schedule_id: number;
+    bus_name: string;
+    coach_name: string;
+    source: string;
+    destination: string;
+    departure_time: string;
+    arrival_time: string;
+    bus_fare: number;
+    schedule_date: string;
   }[];
   setTransports: React.Dispatch<React.SetStateAction<any[]>>;
   originalTransports: {
-    id: number;
-    service_name: string;
-    service_class: string;
-    time: string;
-    facilities: string[];
-    price: number;
-    amount: number;
+    bus_schedule_id: number;
+    bus_name: string;
+    coach_name: string;
+    source: string;
+    destination: string;
+    departure_time: string;
+    arrival_time: string;
+    bus_fare: number;
+    schedule_date: string;
   }[];
 }
 
@@ -55,19 +59,18 @@ export default function TransportFilterBox({
   const [selectedServiceClass, setSelectedServiceClass] = useState<string[]>(
     [],
   );
-  const [selectedTime, setSelectedTime] = useState<string[]>([]);
-  const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
+  const [selectedDepartureTime, setSelectedDepartureTime] = useState<string[]>([]);
 
-  const serviceClasses = transports.map((transport) => transport.service_class);
-  const times = transports.map((transport) => transport.time);
-  const facilities = transports.flatMap((transport) => transport.facilities);
+
+  const serviceClasses = Array.from(new Set(transports.map((transport) => transport.coach_name)));
+  const arrivalTimes = Array.from(new Set(transports.map((transport) => transport.arrival_time)));
   const { minPrice, maxPrice } = originalTransports.reduce(
     (acc, transport) => {
-      if (transport.price < acc.minPrice) {
-        acc.minPrice = transport.price;
+      if (transport.bus_fare < acc.minPrice) {
+        acc.minPrice = transport.bus_fare;
       }
-      if (transport.price > acc.maxPrice) {
-        acc.maxPrice = transport.price;
+      if (transport.bus_fare > acc.maxPrice) {
+        acc.maxPrice = transport.bus_fare;
       }
       return acc;
     },
@@ -89,25 +92,13 @@ export default function TransportFilterBox({
   };
 
   const addTimeTag = (time: string) => {
-    if (!selectedTime.includes(time)) {
-      setSelectedTime([...selectedTime, time]);
+    if (!selectedDepartureTime.includes(time)) {
+      setSelectedDepartureTime([...selectedDepartureTime, time]);
     }
   };
 
   const removeTimeTag = (time: string) => {
-    setSelectedTime(selectedTime.filter((item) => item !== time));
-  };
-
-  const addFacilityTag = (facility: string) => {
-    if (!selectedFacilities.includes(facility)) {
-      setSelectedFacilities([...selectedFacilities, facility]);
-    }
-  };
-
-  const removeFacilityTag = (facility: string) => {
-    setSelectedFacilities(
-      selectedFacilities.filter((item) => item !== facility),
-    );
+    setSelectedDepartureTime(selectedDepartureTime.filter((item) => item !== time));
   };
 
   const applyFilters = () => {
@@ -115,16 +106,11 @@ export default function TransportFilterBox({
     const filteredTransports = transports.filter((transport) => {
       const serviceClassMatch =
         selectedServiceClass.length === 0 ||
-        selectedServiceClass.includes(transport.service_class);
+        selectedServiceClass.includes(transport.coach_name);
       const timeMatch =
-        selectedTime.length === 0 || selectedTime.includes(transport.time);
-      const facilitiesMatch =
-        selectedFacilities.length === 0 ||
-        selectedFacilities.some((facility) =>
-          transport.facilities.includes(facility),
-        );
-      const priceMatch = transport.price <= selectedMaxPrice;
-      return serviceClassMatch && timeMatch && facilitiesMatch && priceMatch;
+        selectedDepartureTime.length === 0 || selectedDepartureTime.includes(transport.arrival_time);
+      const priceMatch = transport.bus_fare <= selectedMaxPrice;
+      return serviceClassMatch && timeMatch && priceMatch;
     });
 
     setTransports(filteredTransports);
@@ -132,8 +118,7 @@ export default function TransportFilterBox({
 
   const resetFilters = () => {
     setSelectedServiceClass([]);
-    setSelectedTime([]);
-    setSelectedFacilities([]);
+    setSelectedDepartureTime([]);
     setTransports(originalTransports);
   };
 
@@ -170,19 +155,7 @@ export default function TransportFilterBox({
               />
             </Tag>
           ))}
-          {selectedFacilities.map((facility) => (
-            <Tag
-              key={facility}
-              size="md"
-              variant="subtle"
-              colorScheme="blue"
-              borderRadius="md"
-            >
-              <TagLabel>{facility}</TagLabel>
-              <TagCloseButton onClick={() => removeFacilityTag(facility)} />
-            </Tag>
-          ))}
-          {selectedTime.map((time) => (
+          {selectedDepartureTime.map((time) => (
             <Tag
               key={time}
               size="md"
@@ -212,13 +185,13 @@ export default function TransportFilterBox({
         </Box>
         <Box>
           <Text fontSize="md" fontWeight="bold">
-            Time
+            Arrival Time
           </Text>
           <select onChange={(e) => addTimeTag(e.target.value)} value="">
             <option value="" disabled>
               Select Time
             </option>
-            {times.map((time, index) => (
+            {arrivalTimes.map((time, index) => (
               <option key={index} value={time}>
                 {time}
               </option>
@@ -229,19 +202,6 @@ export default function TransportFilterBox({
           <Text fontSize="md" fontWeight="bold">
             Facilities
           </Text>
-          <select
-            onChange={(e) => addFacilityTag(e.target.value)}
-            value="" // Set an empty value so that the dropdown resets after selection
-          >
-            <option value="" disabled>
-              Select Facility
-            </option>
-            {facilities.map((facility, index) => (
-              <option key={index} value={facility}>
-                {facility}
-              </option>
-            ))}
-          </select>
         </Box>
         <Box>
           <PriceFilter
