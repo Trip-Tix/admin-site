@@ -2,6 +2,7 @@
 import { get_coach_info_url } from "@public/commonData/ForeignAPI";
 
 export default async function handler(req, res) {
+    console.log("Hello from getCoachInfo.ts");
     const response = await fetch(get_coach_info_url, {
       method: req.method,
       headers: {

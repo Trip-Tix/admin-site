@@ -29,16 +29,15 @@ const AddBusServiceForm: React.FC = () => {
   const [serviceClasses, setServiceClasses] = useState([]);
 
   useEffect(() => {
-    async function fetchCoachInfo() {
-      try {
-        const response = await fetch(get_coach_info_url);
-        const data = await response.json();
+    fetch(get_coach_info_url)
+      .then((response) => response.json())
+      .then((data) => {
         setServiceClasses(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-    fetchCoachInfo();
+        console.log(data); // Log the fetched data
+      })
+      .catch((error) => {
+        console.error("Error in fetching service data:", error);
+      });
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +74,11 @@ const AddBusServiceForm: React.FC = () => {
     // Here you can perform database/API calls to add the bus service
     // For this example, let's just log the service data
     console.log("Adding bus service:", busService);
+    if (busService.serviceClasses.length === 0) {
+      // alert("Please select at least one service class");
+      busService.serviceClasses = ["100", "101", "102"];
+    }
+    sessionStorage.setItem("selectedBusService", JSON.stringify(busService)); 
   };
 
   return (
@@ -105,7 +109,7 @@ const AddBusServiceForm: React.FC = () => {
                 <Checkbox
                   key={cls.coach_id}
                   value={cls.coach_name}
-                  isChecked={busService.serviceClasses.includes(cls.coach_name)}
+                  isChecked={busService.serviceClasses.includes(cls.coach_id)}
                   onChange={handleServiceClassChange}
                 >
                   {cls.coach_name}
