@@ -33,6 +33,7 @@ interface TransportTableProps {
     time: string;
     facilities: string[];
     price: number;
+    amount: number;
   }[];
 }
 
@@ -93,6 +94,7 @@ export default function TransportTable({ transports }: TransportTableProps) {
               <Th textAlign={"center"}>Time</Th>
               <Th textAlign={"center"}>Facilities</Th>
               <Th textAlign={"center"}>Price</Th>
+              <Th textAlign={"center"}>Amount</Th>
               <Th colSpan={2} textAlign={"center"}>
                 Actions
               </Th>
@@ -106,6 +108,7 @@ export default function TransportTable({ transports }: TransportTableProps) {
                 <Td>{transport.time}</Td>
                 <Td>{transport.facilities.join(", ")}</Td>
                 <Td>{transport.price}</Td>
+                <Td>{transport.amount}</Td>
                 <Td>
                   <Button
                     leftIcon={<EditIcon />}

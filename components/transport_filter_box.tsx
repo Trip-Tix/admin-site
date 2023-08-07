@@ -32,6 +32,7 @@ interface TransportTableProps {
       time: string;
       facilities: string[];
       price: number;
+      amount: number;
     }[];
     setTransports: React.Dispatch<React.SetStateAction<any[]>>;
     originalTransports: {
@@ -41,6 +42,7 @@ interface TransportTableProps {
       time: string;
       facilities: string[];
       price: number;
+      amount: number;
     }[];
 }
 
