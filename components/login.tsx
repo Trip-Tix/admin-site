@@ -1,15 +1,23 @@
 import { useState } from "react";
 import { Heading, Button, Input, Link, VStack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+
+
+
   const handleLogin = () => {
     // Your login logic here (axios call, etc.)
-
+    // const response = axios.post("https://triptix-account-service.onrender.com/api/admin/login", {
+    //   username: email,
+    //   password: password,
+    // });
+    // console.log(response);
     // Redirect to /admin/dashboard after successful login
     router.push("/admin/dashboard");
   };
@@ -23,7 +31,7 @@ export default function Login() {
     <VStack spacing={6} align="center" p={6}>
       <Heading textAlign="center">Log In</Heading>
       <Input
-        placeholder="Email"
+        placeholder="Username"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}

@@ -203,11 +203,6 @@ export default function TransportFilterBox({
           </select>
         </Box>
         <Box>
-          <Text fontSize="md" fontWeight="bold">
-            Facilities
-          </Text>
-        </Box>
-        <Box>
           <PriceFilter
             min={minPrice}
             max={maxPrice}
