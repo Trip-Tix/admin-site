@@ -23,6 +23,8 @@ import { useRouter } from "next/router";
 import { useDisclosure } from "@chakra-ui/react";
 import { EditIcon, SearchIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
 
+const AddBusServiceRoute: string = "/admin/transport/busService/add_bus_service";
+
 import { get_bus_info_url } from "@public/commonData/Api";
 
 interface TransportTableProps {
@@ -67,7 +69,7 @@ export default function TransportTable({ transports }: TransportTableProps) {
           <Text fontSize="2xl" fontWeight="bold">
             Transport
           </Text>
-          <Button colorScheme="blue" variant="solid" onClick={()=>router.push("/admin/transport/busService/addBusService")}>
+          <Button colorScheme="blue" variant="solid" onClick={()=>router.push(AddBusServiceRoute)}>
             Add Transport
           </Button>
         </Flex>
