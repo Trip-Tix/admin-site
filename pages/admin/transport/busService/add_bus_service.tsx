@@ -6,7 +6,9 @@ import Layout from "@components/layout";
 import BusServiceCard from "@components/bus_service_add_card";
 import Navbar from "@components/navbar";
 import { navbar_items } from "@public/commonData/AdminNavBarData";
-
+import TransportOptionBar from "@components/transport_option_bar";
+import { transport_optionbar_items } from "@public/commonData/TransportOptionBarData";
+import DashboardFooter from "@components/dashboard_footer";
 interface Coach {
   coach_id: string;
   coach_name: string;
@@ -57,8 +59,9 @@ const AddBusServicePage: React.FC<AddBusServicePageProps> = ({ coaches }) => {
   return (
     <Layout title="Add Bus Service">
       <Navbar selected_option={navbar_items[0]} />
+      <TransportOptionBar selectedOption={transport_optionbar_items[2]} />
 
-      <Flex justify="center" align="center" minHeight="100vh">
+      <Flex justify="center" align="center" minHeight="80vh">
         <BusServiceCard coaches={coaches} onSubmit={handleAddBusService} />
       </Flex>
 
@@ -74,6 +77,8 @@ const AddBusServicePage: React.FC<AddBusServicePageProps> = ({ coaches }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+    <DashboardFooter />
+
     </Layout>
   );
 };
