@@ -2,7 +2,7 @@ const account_url = 'localhost:3000';
 const admin_login = account_url + '/api/admin/login';
 const admin_signup = account_url + '/api/admin/signup';
 
-const triptix_backend = 'https://triptix-backend.onrender.com'
+const triptix_backend = 'https://triptix-bus-service.onrender.com'
 const main_url = 'localhost:3000';
 const add_coach_info = main_url + '/api/coach/addCoachInfo';
 const add_bus_layout_info =  '/api/admin/addBusLayoutInfo';
