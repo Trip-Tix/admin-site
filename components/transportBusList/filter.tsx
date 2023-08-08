@@ -23,7 +23,7 @@ import {
 import { ReactNode } from "react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
-import PriceFilter from "@components/price_filter";
+import PriceFilter from "@components/transportBusList/price_filter";
 
 interface TransportTableProps {
   transports: {
@@ -60,7 +60,7 @@ export default function TransportFilterBox({
     [],
   );
   const [selectedArrivalTime, setSelectedArrivalTime] = useState<string[]>([]);
-  
+
   const serviceClasses = Array.from(
     new Set(transports.map((transport) => transport.coach_name)),
   );

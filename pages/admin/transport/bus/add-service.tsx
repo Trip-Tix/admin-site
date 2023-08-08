@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@chakra-ui/react";
+import {
+  Flex,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from "@chakra-ui/react";
 import { GetStaticProps } from "next";
 import { get_coach_info_url, add_bus_info_url } from "@public/commonData/Api";
 import Layout from "@components/layout";
@@ -8,7 +17,7 @@ import Navbar from "@components/navbar";
 import { navbar_items } from "@public/commonData/AdminNavBarData";
 import TransportOptionBar from "@components/transport_option_bar";
 import { transport_optionbar_items } from "@public/commonData/TransportOptionBarData";
-import DashboardFooter from "@components/dashboard_footer";
+import Footer from "@components/admin/footer";
 interface Coach {
   coach_id: string;
   coach_name: string;
@@ -69,16 +78,15 @@ const AddBusServicePage: React.FC<AddBusServicePageProps> = ({ coaches }) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Success</ModalHeader>
-          <ModalBody>
-            Bus service added successfully!
-          </ModalBody>
+          <ModalBody>Bus service added successfully!</ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" onClick={handleCloseSuccessPopup}>Close</Button>
+            <Button colorScheme="blue" onClick={handleCloseSuccessPopup}>
+              Close
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    <DashboardFooter />
-
+      <Footer />
     </Layout>
   );
 };
@@ -87,7 +95,7 @@ const AddBusServicePage: React.FC<AddBusServicePageProps> = ({ coaches }) => {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const response = await fetch(get_coach_info_url);
-    console.log(response)
+    console.log(response);
     const coachesData = await response.json();
     console.log("coachesData:", coachesData); // Check the raw data from the API
 

@@ -22,8 +22,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDisclosure } from "@chakra-ui/react";
 import { EditIcon, SearchIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
-
-const AddBusServiceRoute: string = "/admin/transport/busService/add_bus_service";
+import { manage_transports_bus_add_service_url } from "@public/commonData/PageLinks";
 
 import { get_bus_info_url } from "@public/commonData/Api";
 
@@ -57,7 +56,7 @@ export default function TransportTable({ transports }: TransportTableProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredTransports = transports.filter((transport) =>
-    transport.bus_name.toLowerCase().includes(searchQuery.toLowerCase())
+    transport.bus_name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -71,7 +70,11 @@ export default function TransportTable({ transports }: TransportTableProps) {
           <Text fontSize="2xl" fontWeight="bold">
             Transport
           </Text>
-          <Button colorScheme="blue" variant="solid" onClick={()=>router.push(AddBusServiceRoute)}>
+          <Button
+            colorScheme="blue"
+            variant="solid"
+            onClick={() => router.push(manage_transports_bus_add_service_url)}
+          >
             Add Transport
           </Button>
         </Flex>

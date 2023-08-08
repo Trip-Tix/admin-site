@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
+import { manage_transports_bus_list_url } from "@public/commonData/PageLinks";
 
 export default function Home() {
   const router = useRouter();
 
-  // Redirect to "/user/login"
   if (typeof window !== "undefined") {
-    router.push("/admin/transport/showtransportBus");
+    router.push(manage_transports_bus_list_url);
   }
 
   return <h1>Redirecting</h1>;

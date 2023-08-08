@@ -3,7 +3,7 @@ import Navbar from "@components/navbar";
 import TransportOptionBar from "@components/transport_option_bar";
 import { transport_optionbar_items } from "@public/commonData/TransportOptionBarData";
 import { navbar_items } from "@public/commonData/AdminNavBarData";
-import DashboardFooter from "@components/dashboard_footer";
+import Footer from "@components/admin/footer";
 import BusLayoutAdd from "@components/bus_layout_add";
 
 export default function AddBusService() {
@@ -12,7 +12,7 @@ export default function AddBusService() {
       <Navbar selected_option={navbar_items[0]} />
       <TransportOptionBar selectedOption={transport_optionbar_items[2]} />
       <BusLayoutAdd />
-      <DashboardFooter />
+      <Footer />
     </Layout>
   );
 }

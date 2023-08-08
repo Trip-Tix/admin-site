@@ -55,7 +55,9 @@ const AddBusServiceForm: React.FC = () => {
   ) => {
     const { value, checked } = event.target;
 
-    const foundCoach = serviceClasses.find((coach) => coach.coach_name === value);
+    const foundCoach = serviceClasses.find(
+      (coach) => coach.coach_name === value,
+    );
 
     if (checked) {
       const newServiceClass: ServiceClass = {

@@ -4,23 +4,28 @@ Page where admininstrators can manage their services and see analytics
 
 # Development Section
 
-#### Task
+##### Naming Convention for Files
 
-- [ ] Add a cookie provider
-- [ ] Add User Login Api
-- [ ] Add User Logout Api
-- [ ] Add Sign Up Api
-- [ ] Different Admin Role Implementation
-- [ ] Add Admin Token Authentication for Role Implementation
-- [ ] Admin Dashboard control should be role based
-- [ ] No code should be bigger than 100 lines
-- [ ] Layout Addition Component
-- [ ] Schedule Addition Component
-- [ ] Service Edit Component
-- [ ] Service Deletion Component
-- [ ] Manage User Path Start
+* For Pages use Kebab Case
+* For Components use Snake Case
+* For Public use Pascal Case
+* For Api use Kebab Case (Similar to pages)
 
-#### Comments
+##### Folder Convention
 
-- Input from Chakra UI and tailwind css conflict. So when you are importing Input in your tsx file, do remember to import Input as ChakraInput for Chakra UI
-- A very common issue with typescript comes with linting. Remember to use the latest typescript version (workspace version) for linting. Process : Cltr + Shift + P > Typescript Version > Latest One
+* Pages folder should be informative and less redundant. (Ex. in admin/transport/bus/ don't use show-bus-list, use show-list)
+* Component should reside in a folder named by the page it was used on. Folder name should have Camel Case
+* For Components that are shared along varius page should reside in shared
+
+##### Component Nesting
+
+* To avoid speggeti code do not use more than 3 indentation when returning a component
+* Do not add extra div. Add <></> component for wrapping up component for returning
+* Avoid using Context as much as possible
+* Each Page should reside inside a Layout Componet. Layout component carries information of metadata, page protection, titles, favicon
+* When using shared data, Generate the data at the point where the components diverge from a single parent
+
+##### String Variable Usage
+
+* **NEVER** hard code any string in the code, always export the string from a public folder
+* Export page urls from public/commonData/PageLinks.

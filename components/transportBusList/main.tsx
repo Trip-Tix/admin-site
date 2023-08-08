@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import TransportFilterBox from "./transport_filter_box";
-import TransportTable from "./transport_table";
+import TransportFilterBox from "./filter";
+import TransportTable from "./table";
 import { useState, useEffect } from "react";
 import { get_schedule_wise_bus_details_url } from "@public/commonData/LocalAPI";
 
@@ -12,7 +12,7 @@ export default function TransportMain() {
     fetch(get_schedule_wise_bus_details_url)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        console.log(data);
         setTransports(data);
         setOriginalTransports(data); // Log the fetched data
       })

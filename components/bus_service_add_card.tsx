@@ -11,7 +11,10 @@ interface BusServiceCardProps {
   onSubmit: (serviceInfo: any) => void;
 }
 
-const BusServiceCard: React.FC<BusServiceCardProps> = ({ coaches, onSubmit }) => {
+const BusServiceCard: React.FC<BusServiceCardProps> = ({
+  coaches,
+  onSubmit,
+}) => {
   const [serviceInfo, setServiceInfo] = useState({
     serviceName: "",
     numberOfBuses: 0,
@@ -61,7 +64,9 @@ const BusServiceCard: React.FC<BusServiceCardProps> = ({ coaches, onSubmit }) =>
           <Input
             placeholder="Service Name"
             value={serviceInfo.serviceName}
-            onChange={(e) => setServiceInfo({ ...serviceInfo, serviceName: e.target.value })}
+            onChange={(e) =>
+              setServiceInfo({ ...serviceInfo, serviceName: e.target.value })
+            }
             my={4}
           />
         </Box>
@@ -70,7 +75,10 @@ const BusServiceCard: React.FC<BusServiceCardProps> = ({ coaches, onSubmit }) =>
           placeholder="Number of Buses"
           value={serviceInfo.numberOfBuses}
           onChange={(e) =>
-            setServiceInfo({ ...serviceInfo, numberOfBuses: Number(e.target.value) })
+            setServiceInfo({
+              ...serviceInfo,
+              numberOfBuses: Number(e.target.value),
+            })
           }
           my={4}
         />

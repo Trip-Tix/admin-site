@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from "next";
 
 const json_data: string = `[
   {
@@ -152,5 +152,5 @@ const json_data: string = `[
 // generate a api that returns the json data above
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    res.status(200).json(JSON.parse(json_data));
+  res.status(200).json(JSON.parse(json_data));
 }

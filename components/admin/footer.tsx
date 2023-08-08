@@ -1,9 +1,6 @@
-// generate a footer component in chakra ui
-
 import { Box, Text, Link, Stack, useColorModeValue } from "@chakra-ui/react";
-import { ReactNode } from "react";
 
-export default function DashboardFooter() {
+export default function Footer() {
   return (
     <Box
       bg={useColorModeValue("gray.50", "gray.900")}

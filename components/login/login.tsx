@@ -8,9 +8,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-
-
-
   const handleLogin = () => {
     // Your login logic here (axios call, etc.)
     // const response = axios.post("https://triptix-account-service.onrender.com/api/admin/login", {
