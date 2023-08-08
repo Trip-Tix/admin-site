@@ -12,7 +12,6 @@ export default function TransportMain() {
     fetch(get_schedule_wise_bus_details_url)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setTransports(data);
         setOriginalTransports(data); // Log the fetched data
       })

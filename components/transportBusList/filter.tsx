@@ -105,7 +105,6 @@ export default function TransportFilterBox({
   };
 
   const applyFilters = () => {
-    console.log(selectedMaxPrice);
     const filteredTransports = transports.filter((transport) => {
       const serviceClassMatch =
         selectedServiceClass.length === 0 ||

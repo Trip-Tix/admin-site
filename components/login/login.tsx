@@ -14,7 +14,6 @@ export default function Login() {
     //   username: email,
     //   password: password,
     // });
-    // console.log(response);
     // Redirect to /admin/dashboard after successful login
     router.push("/admin/dashboard");
   };

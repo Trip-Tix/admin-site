@@ -47,7 +47,6 @@ const AddBusServicePage: React.FC<AddBusServicePageProps> = ({ coaches }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Bus service added successfully:", data);
         setIsSuccessPopupOpen(true);
         // Reset form fields
         serviceInfo.serviceName = "";
@@ -95,9 +94,7 @@ const AddBusServicePage: React.FC<AddBusServicePageProps> = ({ coaches }) => {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const response = await fetch(get_coach_info_url);
-    console.log(response);
     const coachesData = await response.json();
-    console.log("coachesData:", coachesData); // Check the raw data from the API
 
     const coaches: Coach[] = coachesData; // Use the parsed JSON directly, no need for JSON.parse
 

@@ -38,7 +38,6 @@ const AddBusServiceForm: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         setServiceClasses(data);
-        console.log(data); // Log the fetched data
       })
       .catch((error) => {
         console.error("Error in fetching service data:", error);
@@ -88,7 +87,6 @@ const AddBusServiceForm: React.FC = () => {
   const handleAddService = () => {
     // Here you can perform database/API calls to add the bus service
     // For this example, let's just log the service data
-    console.log("Adding bus service:", busService);
     if (busService.serviceClasses.length === 0) {
       alert("Please select at least one service class");
       return;
