@@ -91,7 +91,6 @@ const AddBusServiceForm: React.FC = () => {
       alert("Please select at least one service class");
       return;
     }
-    sessionStorage.setItem("selectedBusService", JSON.stringify(busService));
   };
 
   return (
