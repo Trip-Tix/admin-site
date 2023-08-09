@@ -108,3 +108,11 @@
 // };
 
 // export default AddBusServicePage;
+
+export default function AddBusService() {
+  return (
+    <div>
+      <h1>Add Bus Service</h1>
+    </div>
+  );
+}
