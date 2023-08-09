@@ -1,3 +1,7 @@
+import { Input, InputGroup, InputLeftElement, Center } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
+
+
 interface BusSchedule {
     bus_schedule_id: string;
     bus_name: string;
@@ -16,6 +20,13 @@ interface BusSchedule {
 
   export default function SearchBox({ setSearchQuery }: TableProps) {
     return (
-        <h1>SearchBox</h1>
+      <Center>
+      <InputGroup m={"4"}>
+      <InputLeftElement pointerEvents='none'>
+        <SearchIcon color='gray.300' />
+      </InputLeftElement>
+      <Input type='tel' placeholder='Search for Bus Name' onChange={(e) => setSearchQuery(e.target.value)} />
+    </InputGroup>
+    </Center>
     );
     }
