@@ -17,8 +17,8 @@ import {
   Icon,
   Select,
 } from "@chakra-ui/react";
-
 import { TriangleDownIcon, CloseIcon } from "@chakra-ui/icons";
+import { motion } from "framer-motion";
 import {
   foreground,
   lightForeground,
@@ -148,10 +148,16 @@ export default function Filter({
   useEffect(() => {
     let newFilteredTransports = originalTransports;
     let filterableCoaches = selectedCoach.length == 0 ? coaches : selectedCoach;
-    let filterableSources = selectedSource.length == 0 ? sources : selectedSource;
-    let filterableDestinations = selectedDestination.length == 0 ? destinations : selectedDestination;
-    let filterableArrivalTimes = selectedArrivalTime.length == 0 ? arrivalTimes : selectedArrivalTime;
-    let filterableDepartureTimes = selectedDepartureTime.length == 0 ? departureTimes : selectedDepartureTime;
+    let filterableSources =
+      selectedSource.length == 0 ? sources : selectedSource;
+    let filterableDestinations =
+      selectedDestination.length == 0 ? destinations : selectedDestination;
+    let filterableArrivalTimes =
+      selectedArrivalTime.length == 0 ? arrivalTimes : selectedArrivalTime;
+    let filterableDepartureTimes =
+      selectedDepartureTime.length == 0
+        ? departureTimes
+        : selectedDepartureTime;
 
     newFilteredTransports = newFilteredTransports.filter((t) =>
       filterableCoaches.includes(t.coach_name),
@@ -171,7 +177,7 @@ export default function Filter({
     newFilteredTransports = newFilteredTransports.filter(
       (t) => t.bus_fare <= sliderValue,
     );
-    
+
     setFilteredTransports(newFilteredTransports);
   }, [
     selectedCoach,
@@ -201,281 +207,302 @@ export default function Filter({
 
   return (
     <Flex direction={"column"} width={"90vw"}>
-      {!filterVisible ? (
-        <Flex>
-          <Flex
-            direction={"row"}
-            border="1px"
-            borderColor={darkerBackground}
-            alignItems={"center"}
-            rounded={"10"}
-            color={lightForeground}
-          >
-            <Icon
-              as={TriangleDownIcon}
-              height={"10"}
-              width={"10"}
-              onClick={() => {
-                if (!loading) setFilterVisible(true);
-              }}
-              cursor={"pointer"}
-              marginRight={"4"}
-              padding={"1"}
-            />
-            <Text paddingRight={"2"}>Filter</Text>
-          </Flex>
-        </Flex>
-      ) : null}
-
-      {filterVisible ? (
-        <Box dropShadow={"md"} rounded={"10px"} bgColor={darkerBackground}>
-          <Flex direction={"column"} padding={"4"}>
-            <Flex direction={"row-reverse"} alignItems={"center"}>
+      <motion.div
+        initial={{ opacity: 0, height: 0, overflow: "hidden" }}
+        animate={{
+          opacity: 1,
+          height: !filterVisible ? "auto" : 0,
+          overflow: "hidden",
+        }}
+        exit={{ opacity: 0, height: 0, overflow: "hidden" }} // Exit animation properties
+        transition={{ duration: 0.3 }}
+      >
+        
+          <Flex>
+            <Flex
+              direction={"row"}
+              border="1px"
+              borderColor={darkerBackground}
+              alignItems={"center"}
+              rounded={"10"}
+              color={lightForeground}
+            >
               <Icon
-                as={CloseIcon}
-                marginLeft={"1"}
-                marginRight={"2"}
-                height={"3"}
-                width={"3"}
+                as={TriangleDownIcon}
+                height={"10"}
+                width={"10"}
                 onClick={() => {
-                  reset();
-                  setFilterVisible(false);
+                  if (!loading) setFilterVisible(true);
                 }}
                 cursor={"pointer"}
+                marginRight={"4"}
+                padding={"1"}
               />
+              <Text paddingRight={"2"}>Filter</Text>
             </Flex>
-            <Wrap>
-              {selectedCoach.map((coach) => (
-                <WrapItem key={coach}>
-                  <Center bg="red.200" rounded={"10"} shadow={"md"}>
-                    <Flex direction={"row"} alignItems={"center"}>
-                      <Text padding={"2"}> {coach} </Text>
-                      <Center>
-                        <Icon
-                          as={CloseIcon}
-                          cursor={"pointer"}
-                          marginLeft={"1"}
-                          marginRight={"2"}
-                          height={"3"}
-                          width={"3"}
-                          onClick={() => removeCoach(coach)}
-                        />
-                      </Center>
-                    </Flex>
-                  </Center>
-                </WrapItem>
-              ))}
-              {selectedSource.map((source) => (
-                <WrapItem key={source}>
-                  <Center bg="red.200" rounded={"10"} shadow={"md"}>
-                    <Flex direction={"row"} alignItems={"center"}>
-                      <Text padding={"2"}> Source: {source} </Text>
-                      <Center>
-                        <Icon
-                          as={CloseIcon}
-                          cursor={"pointer"}
-                          marginLeft={"1"}
-                          marginRight={"2"}
-                          height={"3"}
-                          width={"3"}
-                          onClick={() => removeSource(source)}
-                        />
-                      </Center>
-                    </Flex>
-                  </Center>
-                </WrapItem>
-              ))}
-              {selectedDestination.map((destination) => (
-                <WrapItem key={destination}>
-                  <Center bg="red.200" rounded={"10"} shadow={"md"}>
-                    <Flex direction={"row"} alignItems={"center"}>
-                      <Text padding={"2"}> Destination: {destination} </Text>
-                      <Center>
-                        <Icon
-                          as={CloseIcon}
-                          cursor={"pointer"}
-                          marginLeft={"1"}
-                          marginRight={"2"}
-                          height={"3"}
-                          width={"3"}
-                          onClick={() => removeDestination(destination)}
-                        />
-                      </Center>
-                    </Flex>
-                  </Center>
-                </WrapItem>
-              ))}
-              {selectedArrivalTime.map((arrivalTime) => (
-                <WrapItem key={arrivalTime}>
-                  <Center bg="red.200" rounded={"10"} shadow={"md"}>
-                    <Flex direction={"row"} alignItems={"center"}>
-                      <Text padding={"2"}> Arrival: {arrivalTime} </Text>
-                      <Center>
-                        <Icon
-                          as={CloseIcon}
-                          cursor={"pointer"}
-                          marginLeft={"1"}
-                          marginRight={"2"}
-                          height={"3"}
-                          width={"3"}
-                          onClick={() => removeArrivalTime(arrivalTime)}
-                        />
-                      </Center>
-                    </Flex>
-                  </Center>
-                </WrapItem>
-              ))}
-              {selectedDepartureTime.map((departureTime) => (
-                <WrapItem key={departureTime}>
-                  <Center bg="red.200" rounded={"10"} shadow={"md"}>
-                    <Flex direction={"row"} alignItems={"center"}>
-                      <Text padding={"2"}> Departure: {departureTime} </Text>
-                      <Center>
-                        <Icon
-                          as={CloseIcon}
-                          cursor={"pointer"}
-                          marginLeft={"1"}
-                          marginRight={"2"}
-                          height={"3"}
-                          width={"3"}
-                          onClick={() => removeDepartureTime(departureTime)}
-                        />
-                      </Center>
-                    </Flex>
-                  </Center>
-                </WrapItem>
-              ))}
-            </Wrap>
-            <Heading padding={"4"}>Filter</Heading>
-            <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-              <Box w="100%" h="10">
-                <Center height={"100%"} width={"100%"}>
-                  <Select
-                    onChange={(event) => addCoach(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Select Coach
-                    </option>
-                    {coaches.map((coach) => (
-                      <option value={coach} key={coach}>
-                        {coach}
-                      </option>
-                    ))}
-                  </Select>
-                </Center>
-              </Box>
-              <Box w="100%" h="10">
-                <Center height={"100%"} width={"100%"}>
-                  <Select
-                    onChange={(event) => addSource(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Select Source
-                    </option>
-                    {sources.map((source) => (
-                      <option value={source} key={source}>
-                        {source}
-                      </option>
-                    ))}
-                  </Select>
-                </Center>
-              </Box>
-              <Box w="100%" h="10">
-                <Center height={"100%"} width={"100%"}>
-                  <Select
-                    onChange={(event) => addDestination(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Select Destination
-                    </option>
-                    {destinations.map((destination) => (
-                      <option value={destination} key={destination}>
-                        {destination}
-                      </option>
-                    ))}
-                  </Select>
-                </Center>
-              </Box>
-              <Box w="100%" h="10">
-                <Center height={"100%"} width={"100%"}>
-                  <Select
-                    onChange={(event) => addArrivalTime(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Select Arrival Time
-                    </option>
-                    {arrivalTimes.map((arrivalTime) => (
-                      <option value={arrivalTime} key={arrivalTime}>
-                        {arrivalTime}
-                      </option>
-                    ))}
-                  </Select>
-                </Center>
-              </Box>
-              <Box w="100%" h="10">
-                <Center height={"100%"} width={"100%"}>
-                  <Select
-                    onChange={(event) => addDepartureTime(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Select Departure Time
-                    </option>
-                    {departureTimes.map((departureTime) => (
-                      <option value={departureTime} key={departureTime}>
-                        {departureTime}
-                      </option>
-                    ))}
-                  </Select>
-                </Center>
-              </Box>
-            </Grid>
-            <Center>
-              <Heading marginTop={"4"} fontSize={"sm"}>
-                Money
-              </Heading>
-            </Center>
-            <Center>
-              <Box pt={6} pb={2} w={"50%"}>
-                <Slider
-                  id="slider"
-                  defaultValue={maxFare}
-                  min={0}
-                  max={maxFare}
-                  colorScheme={"red"}
-                  onChange={(v) => setSliderValue(v)}
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}
-                >
-                  <SliderMark value={0} mt="1" ml="-2.5" fontSize="sm">
-                    0$
-                  </SliderMark>
-                  <SliderMark value={maxFare} mt="1" ml="-2.5" fontSize="sm">
-                    {maxFare}$
-                  </SliderMark>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <Tooltip
-                    hasArrow
-                    bg={accent}
-                    color="white"
-                    placement="top"
-                    isOpen={showTooltip}
-                    label={`${sliderValue}$`}
-                  >
-                    <SliderThumb />
-                  </Tooltip>
-                </Slider>
-              </Box>
-            </Center>
           </Flex>
-        </Box>
-      ) : null}
+        
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, height: 0, overflow: "hidden" }}
+        animate={{
+          opacity: 1,
+          height: filterVisible ? "auto" : 0,
+          overflow: "hidden",
+        }}
+        exit={{ opacity: 0, height: 0, overflow: "hidden" }} // Exit animation properties
+        transition={{ duration: 0.3 }}
+      >
+        
+          <Box dropShadow={"md"} rounded={"10px"} bgColor={darkerBackground}>
+            <Flex direction={"column"} padding={"4"}>
+              <Flex direction={"row-reverse"} alignItems={"center"}>
+                <Icon
+                  as={CloseIcon}
+                  marginLeft={"1"}
+                  marginRight={"2"}
+                  height={"3"}
+                  width={"3"}
+                  onClick={() => {
+                    reset();
+                    setFilterVisible(false);
+                  }}
+                  cursor={"pointer"}
+                />
+              </Flex>
+              <Wrap>
+                {selectedCoach.map((coach) => (
+                  <WrapItem key={coach}>
+                    <Center bg="red.200" rounded={"10"} shadow={"md"}>
+                      <Flex direction={"row"} alignItems={"center"}>
+                        <Text padding={"2"}> {coach} </Text>
+                        <Center>
+                          <Icon
+                            as={CloseIcon}
+                            cursor={"pointer"}
+                            marginLeft={"1"}
+                            marginRight={"2"}
+                            height={"3"}
+                            width={"3"}
+                            onClick={() => removeCoach(coach)}
+                          />
+                        </Center>
+                      </Flex>
+                    </Center>
+                  </WrapItem>
+                ))}
+                {selectedSource.map((source) => (
+                  <WrapItem key={source}>
+                    <Center bg="red.200" rounded={"10"} shadow={"md"}>
+                      <Flex direction={"row"} alignItems={"center"}>
+                        <Text padding={"2"}> Source: {source} </Text>
+                        <Center>
+                          <Icon
+                            as={CloseIcon}
+                            cursor={"pointer"}
+                            marginLeft={"1"}
+                            marginRight={"2"}
+                            height={"3"}
+                            width={"3"}
+                            onClick={() => removeSource(source)}
+                          />
+                        </Center>
+                      </Flex>
+                    </Center>
+                  </WrapItem>
+                ))}
+                {selectedDestination.map((destination) => (
+                  <WrapItem key={destination}>
+                    <Center bg="red.200" rounded={"10"} shadow={"md"}>
+                      <Flex direction={"row"} alignItems={"center"}>
+                        <Text padding={"2"}> Destination: {destination} </Text>
+                        <Center>
+                          <Icon
+                            as={CloseIcon}
+                            cursor={"pointer"}
+                            marginLeft={"1"}
+                            marginRight={"2"}
+                            height={"3"}
+                            width={"3"}
+                            onClick={() => removeDestination(destination)}
+                          />
+                        </Center>
+                      </Flex>
+                    </Center>
+                  </WrapItem>
+                ))}
+                {selectedArrivalTime.map((arrivalTime) => (
+                  <WrapItem key={arrivalTime}>
+                    <Center bg="red.200" rounded={"10"} shadow={"md"}>
+                      <Flex direction={"row"} alignItems={"center"}>
+                        <Text padding={"2"}> Arrival: {arrivalTime} </Text>
+                        <Center>
+                          <Icon
+                            as={CloseIcon}
+                            cursor={"pointer"}
+                            marginLeft={"1"}
+                            marginRight={"2"}
+                            height={"3"}
+                            width={"3"}
+                            onClick={() => removeArrivalTime(arrivalTime)}
+                          />
+                        </Center>
+                      </Flex>
+                    </Center>
+                  </WrapItem>
+                ))}
+                {selectedDepartureTime.map((departureTime) => (
+                  <WrapItem key={departureTime}>
+                    <Center bg="red.200" rounded={"10"} shadow={"md"}>
+                      <Flex direction={"row"} alignItems={"center"}>
+                        <Text padding={"2"}> Departure: {departureTime} </Text>
+                        <Center>
+                          <Icon
+                            as={CloseIcon}
+                            cursor={"pointer"}
+                            marginLeft={"1"}
+                            marginRight={"2"}
+                            height={"3"}
+                            width={"3"}
+                            onClick={() => removeDepartureTime(departureTime)}
+                          />
+                        </Center>
+                      </Flex>
+                    </Center>
+                  </WrapItem>
+                ))}
+              </Wrap>
+              <Heading padding={"4"}>Filter</Heading>
+              <Grid templateColumns="repeat(4, 1fr)" gap={4}>
+                <Box w="100%" h="10">
+                  <Center height={"100%"} width={"100%"}>
+                    <Select
+                      onChange={(event) => addCoach(event.target.value)}
+                      value=""
+                    >
+                      <option value="" disabled>
+                        Select Coach
+                      </option>
+                      {coaches.map((coach) => (
+                        <option value={coach} key={coach}>
+                          {coach}
+                        </option>
+                      ))}
+                    </Select>
+                  </Center>
+                </Box>
+                <Box w="100%" h="10">
+                  <Center height={"100%"} width={"100%"}>
+                    <Select
+                      onChange={(event) => addSource(event.target.value)}
+                      value=""
+                    >
+                      <option value="" disabled>
+                        Select Source
+                      </option>
+                      {sources.map((source) => (
+                        <option value={source} key={source}>
+                          {source}
+                        </option>
+                      ))}
+                    </Select>
+                  </Center>
+                </Box>
+                <Box w="100%" h="10">
+                  <Center height={"100%"} width={"100%"}>
+                    <Select
+                      onChange={(event) => addDestination(event.target.value)}
+                      value=""
+                    >
+                      <option value="" disabled>
+                        Select Destination
+                      </option>
+                      {destinations.map((destination) => (
+                        <option value={destination} key={destination}>
+                          {destination}
+                        </option>
+                      ))}
+                    </Select>
+                  </Center>
+                </Box>
+                <Box w="100%" h="10">
+                  <Center height={"100%"} width={"100%"}>
+                    <Select
+                      onChange={(event) => addArrivalTime(event.target.value)}
+                      value=""
+                    >
+                      <option value="" disabled>
+                        Select Arrival Time
+                      </option>
+                      {arrivalTimes.map((arrivalTime) => (
+                        <option value={arrivalTime} key={arrivalTime}>
+                          {arrivalTime}
+                        </option>
+                      ))}
+                    </Select>
+                  </Center>
+                </Box>
+                <Box w="100%" h="10">
+                  <Center height={"100%"} width={"100%"}>
+                    <Select
+                      onChange={(event) => addDepartureTime(event.target.value)}
+                      value=""
+                    >
+                      <option value="" disabled>
+                        Select Departure Time
+                      </option>
+                      {departureTimes.map((departureTime) => (
+                        <option value={departureTime} key={departureTime}>
+                          {departureTime}
+                        </option>
+                      ))}
+                    </Select>
+                  </Center>
+                </Box>
+              </Grid>
+              <Center>
+                <Heading marginTop={"4"} fontSize={"sm"}>
+                  Money
+                </Heading>
+              </Center>
+              <Center>
+                <Box pt={6} pb={2} w={"50%"}>
+                  <Slider
+                    id="slider"
+                    defaultValue={maxFare}
+                    min={0}
+                    max={maxFare}
+                    colorScheme={"red"}
+                    onChange={(v) => setSliderValue(v)}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                  >
+                    <SliderMark value={0} mt="1" ml="-2.5" fontSize="sm">
+                      0$
+                    </SliderMark>
+                    <SliderMark value={maxFare} mt="1" ml="-2.5" fontSize="sm">
+                      {maxFare}$
+                    </SliderMark>
+                    <SliderTrack>
+                      <SliderFilledTrack />
+                    </SliderTrack>
+                    <Tooltip
+                      hasArrow
+                      bg={accent}
+                      color="white"
+                      placement="top"
+                      isOpen={showTooltip}
+                      label={`${sliderValue}$`}
+                    >
+                      <SliderThumb />
+                    </Tooltip>
+                  </Slider>
+                </Box>
+              </Center>
+            </Flex>
+          </Box>
+        
+      </motion.div>
     </Flex>
   );
 }

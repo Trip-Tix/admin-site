@@ -20,7 +20,7 @@ export default function Login_button({
           Log In
         </Button>
         <Text>
-          Don't have an account?
+          {"Don't have an account?"}
           <Link color="blue.500" onClick={handleSignUpButton}>
             Sign Up
           </Link>
