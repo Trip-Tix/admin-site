@@ -27,7 +27,7 @@ import PasswordInput from "@components/user/password_input";
 import SignUpButton from "@components/user/signup_button";
 import LoginButton from "@components/user/login_button";
 
-import { signup_url, login_url } from "@public/commonData/PageLinks";
+import { signup_url, login_url, dashboard_url } from "@public/commonData/PageLinks";
 import { log } from "console";
 
 interface Props {
@@ -79,7 +79,7 @@ export default function Login({ type }: Props) {
       .then((res) => res.data)
       .then((data) => {
         if (data.message.match("Admin created")) {
-          router.push("/user/login");
+          router.push(login_url);
         }
       })
       .catch((err) => {
@@ -119,7 +119,7 @@ export default function Login({ type }: Props) {
       .then((res) => res.data)
       .then((data) => {
         if (data.message.match("Login successful")) {
-          router.push("/user/dashboard");
+          router.push(dashboard_url);
         } else {
           setLoginError("Check your username and password.");
         }

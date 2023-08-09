@@ -1,18 +1,22 @@
 import exp from "constants";
 
 const account_url = "https://triptix-account-service.onrender.com";
+const main_url = "https://triptix-backend.onrender.com";
+const local_url = "http://localhost:3000"
 
 const admin_login = account_url + "/api/admin/login";
 const admin_signup = account_url + "/api/admin/signup";
 
-const main_url = "https://triptix-backend.onrender.com";
+
 
 const bus_coach_add = main_url + "/api/admin/addBusCoachInfo";
 const bus_layout_info_add = main_url + "/api/admin/addBusLayoutInfo";
 const bus_coach_info = main_url + "/api/admin/getBusCoachInfo";
 const bus_info_add = main_url + "/api/admin/getBusInfo";
 const bus_schedule_info_add = main_url + "/api/admin/addBusScheduleInfo";
-const get_bus_schedule_details = main_url + "/api/admin/getScheduleWiseBusDetails";
+
+//const get_bus_schedule_details = main_url + "/api/admin/getScheduleWiseBusDetails";
+const get_bus_schedule_details = local_url + "/api/get_bus_schedule_details";
 
 export {
   admin_login as admin_login_api,

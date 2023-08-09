@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { get_bus_schedule_details_api } from "@public/commonData/Api"
@@ -6,7 +6,7 @@ import { get_bus_schedule_details_api } from "@public/commonData/Api"
 import Filter from "@components/transportBusList/filter"
 
 export default function TransportMain() {
-  const [transports, setTransports] = useState([]);
+  const [filteredTransports, setFilteredTransports] = useState([]);
   const [originalTransports, setOriginalTransports] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -14,9 +14,10 @@ export default function TransportMain() {
     setLoading(true);
     axios
       .get(get_bus_schedule_details_api)
-      .then((res) => {
-        setTransports(res.data);
-        setOriginalTransports(res.data);
+      .then((res) => res.data)
+      .then((data) => {
+        setFilteredTransports(data);
+        setOriginalTransports(data);
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
@@ -24,8 +25,13 @@ export default function TransportMain() {
 
   return (
     <>
-      <Flex justifyContent={"space-around"} margin={"10"}>
-        <Filter expandedContent={<h1>Filer</h1>} />
+      <Flex justifyContent={"space-around"} margin={"10"} direction={"column"}>
+        <Filter setFilteredTransports={setFilteredTransports} originalTransports={originalTransports} loading={loading}/>
+        <Flex justifyContent={"space-around"} margin={"10"} direction={"column"}>
+          <Text> {loading ? "Loading..." : ""} </Text>
+          <Text> {filteredTransports.length} </Text>
+          <Text> {originalTransports.length} </Text>
+          </Flex>
       </Flex>
     </>
   );
