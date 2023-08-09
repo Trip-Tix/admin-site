@@ -11,11 +11,10 @@ interface BusSchedule {
   }
 
   interface TableProps {
-    filteredTransports: BusSchedule[];
-    setFilteredTransports: React.Dispatch<React.SetStateAction<BusSchedule[]>>;
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>
   }
 
-  export default function SearchBox({ filteredTransports, setFilteredTransports }: TableProps) {
+  export default function SearchBox({ setSearchQuery }: TableProps) {
     return (
         <h1>SearchBox</h1>
     );

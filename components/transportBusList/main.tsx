@@ -1,16 +1,17 @@
 import { Center, Flex, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { get_bus_schedule_details_api } from "@public/commonData/Api"
+import { get_bus_schedule_details_api } from "@public/commonData/Api";
 
-import Filter from "@components/transportBusList/filter"
-import Table from "@components/transportBusList/table"
-import SearchBox from "@components/transportBusList/search_box"
+import Filter from "@components/transportBusList/filter";
+import Table from "@components/transportBusList/table";
+import SearchBox from "@components/transportBusList/search_box";
 
 export default function TransportMain() {
   const [filteredTransports, setFilteredTransports] = useState([]);
   const [originalTransports, setOriginalTransports] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -23,14 +24,22 @@ export default function TransportMain() {
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
-    }, []);
+  }, []);
 
   return (
     <Center>
       <Flex justifyContent={"space-around"} margin={"10"} direction={"column"}>
-        <Filter setFilteredTransports={setFilteredTransports} originalTransports={originalTransports} loading={loading}/>
-        <SearchBox setFilteredTransports={setFilteredTransports} filteredTransports={filteredTransports}/>
-        <Table filteredTransports={filteredTransports} loading={loading}/>
+        <SearchBox setSearchQuery={setSearchQuery} />
+        <Filter
+          setFilteredTransports={setFilteredTransports}
+          originalTransports={originalTransports}
+          loading={loading}
+        />
+        <Table
+          filteredTransports={filteredTransports}
+          loading={loading}
+          searchQuery={searchQuery}
+        />
       </Flex>
     </Center>
   );
