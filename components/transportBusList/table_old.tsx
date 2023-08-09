@@ -24,8 +24,6 @@ import { useDisclosure } from "@chakra-ui/react";
 import { EditIcon, SearchIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
 import { manage_transports_bus_add_service_url } from "@public/commonData/PageLinks";
 
-import { get_bus_info_url } from "@public/commonData/Api";
-
 interface TransportTableProps {
   transports: {
     bus_schedule_id: number;

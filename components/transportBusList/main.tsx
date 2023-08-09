@@ -1,34 +1,31 @@
 import { Flex } from "@chakra-ui/react";
-import TransportFilterBox from "./filter";
-import TransportTable from "./table";
 import { useState, useEffect } from "react";
-import { get_schedule_wise_bus_details_url } from "@public/commonData/LocalAPI";
+import axios from "axios";
+import { get_bus_schedule_details_api } from "@public/commonData/Api"
+
+import Filter from "@components/transportBusList/filter"
 
 export default function TransportMain() {
   const [transports, setTransports] = useState([]);
   const [originalTransports, setOriginalTransports] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch(get_schedule_wise_bus_details_url)
-      .then((response) => response.json())
-      .then((data) => {
-        setTransports(data);
-        setOriginalTransports(data); // Log the fetched data
+    setLoading(true);
+    axios
+      .get(get_bus_schedule_details_api)
+      .then((res) => {
+        setTransports(res.data);
+        setOriginalTransports(res.data);
       })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+    }, []);
 
   return (
     <>
       <Flex justifyContent={"space-around"} margin={"10"}>
-        <TransportFilterBox
-          transports={transports}
-          setTransports={setTransports}
-          originalTransports={originalTransports}
-        />
-        <TransportTable transports={transports} />
+        <Filter expandedContent={<h1>Filer</h1>} />
       </Flex>
     </>
   );
