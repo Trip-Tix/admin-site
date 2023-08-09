@@ -1,9 +1,9 @@
 import Layout from "@components/layout";
-import Navbar from "@components/navbar";
+import Navbar from "@components/shared/navbar";
 import TransportOptionBar from "@components/transport_option_bar";
 import { transport_optionbar_items } from "@public/commonData/TransportOptionBarData";
 import { navbar_items } from "@public/commonData/AdminNavBarData";
-import Footer from "@components/admin/footer";
+import Footer from "@components/shared/footer";
 import BusLayoutAdd from "@components/bus_layout_add";
 
 export default function AddBusService() {

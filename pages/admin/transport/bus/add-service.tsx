@@ -13,11 +13,11 @@ import { GetStaticProps } from "next";
 import { get_coach_info_url, add_bus_info_url } from "@public/commonData/Api";
 import Layout from "@components/layout";
 import BusServiceCard from "@components/bus_service_add_card";
-import Navbar from "@components/navbar";
+import Navbar from "@components/shared/navbar";
 import { navbar_items } from "@public/commonData/AdminNavBarData";
 import TransportOptionBar from "@components/transport_option_bar";
 import { transport_optionbar_items } from "@public/commonData/TransportOptionBarData";
-import Footer from "@components/admin/footer";
+import Footer from "@components/shared/footer";
 interface Coach {
   coach_id: string;
   coach_name: string;

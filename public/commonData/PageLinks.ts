@@ -1,7 +1,7 @@
 const homepage = "/";
 const login = "/user/login";
 const signup = "/user/signup";
-const Logout = "/user/logout";
+const logout = "/user/logout";
 
 const dashboard = "/admin/dashboard";
 const manage_transports = "/admin/manage-transports";
@@ -16,7 +16,7 @@ export {
     homepage as homepage_url,
     login as login_url,
     signup as signup_url,
-    Logout as Logout_url,
+    logout as logout_url,
     dashboard as dashboard_url,
     manage_transports as manage_transports_url,
     manage_transports_bus_list as manage_transports_bus_list_url,

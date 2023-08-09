@@ -3,10 +3,12 @@ import Head from "next/head";
 
 interface LayoutProps {
   title: string;
+  protectedPage: boolean;
   children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ title, children }) => {
+const Layout: React.FC<LayoutProps> = ({ title, protectedPage, children }) => {
+  // if protected page = true and user not logged in, redirect to login page
   return (
     <Box>
       <Head>
