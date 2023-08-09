@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Center, Image } from "@chakra-ui/react";
-import SideImage from "@public/images/LoginPageImage.png";
+import SideImage from "@public/images/LoginPageImage.jpg";
 
 export default function Main() {
   const breakpointWidth = 768; // For example, adjust as needed
@@ -27,7 +27,7 @@ export default function Main() {
   return (
     <>
       {isViewportWide && (
-        <Center width={"50vw"} height={"100vh"}>
+        <Center width={"50vw"} height={"100vh"} background={"Black"}>
           <Image
             src={SideImage.src}
             alt="Picture of triptix"
