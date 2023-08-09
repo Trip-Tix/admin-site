@@ -4,6 +4,8 @@ import axios from "axios";
 import { get_bus_schedule_details_api } from "@public/commonData/Api"
 
 import Filter from "@components/transportBusList/filter"
+import Table from "@components/transportBusList/table"
+import SearchBox from "@components/transportBusList/search_box"
 
 export default function TransportMain() {
   const [filteredTransports, setFilteredTransports] = useState([]);
@@ -27,7 +29,8 @@ export default function TransportMain() {
     <Center>
       <Flex justifyContent={"space-around"} margin={"10"} direction={"column"}>
         <Filter setFilteredTransports={setFilteredTransports} originalTransports={originalTransports} loading={loading}/>
-        
+        <SearchBox setFilteredTransports={setFilteredTransports} filteredTransports={filteredTransports}/>
+        <Table filteredTransports={filteredTransports} loading={loading}/>
       </Flex>
     </Center>
   );
