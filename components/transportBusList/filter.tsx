@@ -216,7 +216,7 @@ export default function Filter({
               height={"10"}
               width={"10"}
               onClick={() => {
-                setFilterVisible(true);
+                if (!loading) setFilterVisible(true);
               }}
               cursor={"pointer"}
               marginRight={"4"}

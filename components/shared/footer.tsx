@@ -1,10 +1,12 @@
 import { Box, Text, Link, Stack, useColorModeValue } from "@chakra-ui/react";
+import { darkerBackground, lightForeground } from "@public/commonData/Colors";
+import { color } from "framer-motion";
 
 export default function Footer() {
   return (
     <Box
-      bg={useColorModeValue("gray.50", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
+      background={darkerBackground}
+      color={lightForeground}
     >
       <Box
         maxW="7xl"
