@@ -128,13 +128,11 @@ export default function Login({ type }: Props) {
           const token = res.data.token;
           const role = res.data.adminRole;
           // Store the token in the local storage
-          useEffect(() => {
-            localStorage.setItem("token", token);
-            localStorage.setItem("username", username);
-            localStorage.setItem("role", role);
-          }, []);
-          // Redirect to dashboard
+          localStorage.setItem("token", token);
+          localStorage.setItem("username", username);
+          localStorage.setItem("role", role);
           router.push(dashboard_url);
+          // Redirect to dashboard
         } else {
           setLoginError(res.data.message);
         }
