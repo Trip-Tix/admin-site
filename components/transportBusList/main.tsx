@@ -16,7 +16,7 @@ export default function TransportMain() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(get_bus_schedule_details_api)
+      .post(get_bus_schedule_details_api)
       .then((res) => res.data)
       .then((data) => {
         setFilteredTransports(data);
