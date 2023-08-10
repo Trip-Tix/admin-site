@@ -1,13 +1,12 @@
 import { useRouter } from "next/router";
 import { login_url } from "@public/commonData/PageLinks";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
 
   // Redirect to "/user/login"
-  if (typeof window !== "undefined") {
+  useEffect(() => {
     router.push(login_url);
-  }
-
-  return <h1>Redirecting To Login</h1>;
+  }, []);
 }

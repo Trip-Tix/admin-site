@@ -17,7 +17,7 @@ import Image from "next/image";
 import axios from "axios";
 
 import TripTixLogo from "@public/TripTixLogoBlack.svg";
-import { admin_login_api } from "@public/commonData/ForeignAPI";
+import { admin_login_api_url } from "@public/commonData/ForeignAPI";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -43,7 +43,7 @@ export default function Login() {
       return;
     }
     axios
-      .post(admin_login_api, {
+      .post(admin_login_api_url, {
         username: username,
         password: password,
       })

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import {
   Heading,
   Button,
@@ -18,8 +19,8 @@ import axios from "axios";
 
 import TripTixLogo from "@public/TripTixLogoBlack.svg";
 import {
-  admin_login_api,
-  admin_signup_api,
+  admin_login_api_url,
+  admin_signup_api_url,
 } from "@public/commonData/ForeignAPI";
 
 import UsernameInput from "@components/user/username_input";
@@ -71,20 +72,23 @@ export default function Login({ type }: Props) {
     setLoading(true);
 
     axios
-      .post(admin_signup_api, {
+      .post(admin_signup_api_url, {
         username: username,
         password: password,
         adminName: adminname,
       })
-      .then((res) => res.data)
-      .then((data) => {
-        if (data.message.match("Admin created")) {
+      .then((res) => {
+        console.log(res); // Always log res, no need to console.log(res.data) after
+        // Check status code of response, response code can be found in the documentation of the API
+        if (res.status === 200) {
           router.push(login_url);
         }
       })
       .catch((err) => {
-        if (err.response.data.message.match("Username already exists")) {
-          setUsernameError("Username already exists.");
+        console.log(err);
+        // Check status code of response, response code can be found in the documentation of the API
+        if (err.response.status === 409) {
+          setSignupError(err.response.data.message);
         } else {
           setSignupError("Error signing up. Please try again.");
         }
@@ -112,21 +116,34 @@ export default function Login({ type }: Props) {
     setLoading(true);
 
     axios
-      .post(admin_login_api, {
+      .post(admin_login_api_url, {
         username: username,
         password: password,
       })
-      .then((res) => res.data)
-      .then((data) => {
-        if (data.message.match("Login successful")) {
+      .then((res) => {
+        console.log(res);  // Always log res, no need to console.log(res.data) after
+        // Check status code of response
+        if (res.status === 200) {
+          // Get the token from the response
+          const token = res.data.token;
+          const role = res.data.adminRole;
+          // Store the token in the local storage
+          useEffect(() => {
+            localStorage.setItem("token", token);
+            localStorage.setItem("username", username);
+            localStorage.setItem("role", role);
+          }, []);
+          // Redirect to dashboard
           router.push(dashboard_url);
         } else {
-          setLoginError("Check your username and password.");
+          setLoginError(res.data.message);
         }
       })
       .catch((err) => {
-        if (err.response.data.message.match("Invalid credentials")) {
-          setLoginError("Check your username and password.");
+        // Check status code of response
+        console.log(err); // Always log error
+        if (err.response.status === 401) {
+          setLoginError(err.response.data.message);
         } else {
           setLoginError("Error logging in. Please try again.");
         }
