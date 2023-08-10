@@ -15,8 +15,8 @@ const bus_coach_info = main_url + "/api/admin/getBusCoachInfo";
 const bus_info_add = main_url + "/api/admin/getBusInfo";
 const bus_schedule_info_add = main_url + "/api/admin/addBusScheduleInfo";
 
-//const get_bus_schedule_details = main_url + "/api/admin/getScheduleWiseBusDetails";
-const get_bus_schedule_details = local_url + "/api/get_bus_schedule_details";
+const get_bus_schedule_details = main_url + "/api/admin/getScheduleWiseBusDetails";
+// const get_bus_schedule_details = local_url + "/api/get_bus_schedule_details";
 
 export {
   admin_login as admin_login_api,

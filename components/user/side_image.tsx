@@ -29,6 +29,7 @@ export default function Main() {
       {isViewportWide && (
         <Center width={"50vw"} height={"100vh"} background={"Black"}>
           <Image
+            rel="preload"
             src={SideImage.src}
             alt="Picture of triptix"
             height={"100vh"}

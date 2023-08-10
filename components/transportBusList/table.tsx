@@ -1,5 +1,6 @@
 import { Center, Heading, Spinner, VStack, Flex } from "@chakra-ui/react";
 import Item from "@components/transportBusList/item";
+import React, {useEffect} from "react";
 
 interface BusSchedule {
   bus_schedule_id: string;
@@ -20,12 +21,21 @@ interface TableProps {
 }
 
 export default function Table({ filteredTransports, loading, searchQuery }: TableProps) {
-  console.log(filteredTransports);
+  const [finalFilteredTransports, setFinalFilteredTransports] = React.useState<BusSchedule[]>([])
+  useEffect(() => {
+    if (searchQuery === "") {
+      setFinalFilteredTransports(filteredTransports)
+      return
+    }
+    setFinalFilteredTransports(filteredTransports.filter((transport) => {
+      return transport.bus_name.toLowerCase().includes(searchQuery.toLowerCase())
+    }))
+  }, [searchQuery, filteredTransports])
   return (
     <Flex w={"100%"} direction={"column"} pt={"3"}>
       {!loading &&
-        filteredTransports.length != 0 &&
-        filteredTransports.map((data) => (
+        finalFilteredTransports.length != 0 &&
+        finalFilteredTransports.map((data) => (
           <Item key={data.bus_name + data.bus_schedule_id} data={data} />
         ))}
       {loading && (

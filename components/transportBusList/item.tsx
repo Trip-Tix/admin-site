@@ -51,6 +51,7 @@ export default function Item({ data }: Props) {
         marginLeft={"4"}
         marginRight={"4"}
         padding={"2"}
+        wrap={"wrap"}
       >
         <Heading pr={"4"}>{data.bus_name}</Heading>
         <Badge variant="subtle" colorScheme="green">
@@ -127,6 +128,7 @@ export default function Item({ data }: Props) {
           color={darkerBackground}
           padding={"2"}
           roundedBottom={"5"}
+          wrap={"wrap"}
         >
           <Text m={"1"} pr={"4"}>
             <b>Bus Name:</b> {data.bus_name}
