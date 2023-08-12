@@ -21,6 +21,8 @@
 //   coach_name: string;
 // }
 
+import withAuth from "@components/auth/protectedRoute";
+
 // interface AddBusServicePageProps {
 //   coaches: Coach[];
 // }
@@ -109,10 +111,12 @@
 
 // export default AddBusServicePage;
 
-export default function AddBusService() {
+const AddBusService = () => {
   return (
     <div>
       <h1>Add Bus Service</h1>
     </div>
   );
 }
+
+export default withAuth(AddBusService);

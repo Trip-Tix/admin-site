@@ -4,8 +4,9 @@ import { navbar_item } from "@public/commonData/AdminNavBarData";
 import Layout from "@components/layout";
 import { Flex, Spacer } from "@chakra-ui/react";
 import { background } from "@public/commonData/Colors";
+import withAuth from "@components/auth/protectedRoute";
 
-export default function ShowTransportBus() {
+const ManageUser = () => {
   return (
     <Layout title="Manage Users" protectedPage={true}>
       <Flex direction={"column"} minH={"100vh"} background={background}>
@@ -17,3 +18,5 @@ export default function ShowTransportBus() {
     </Layout>
   );
 }
+
+export default withAuth(ManageUser);

@@ -5,8 +5,9 @@ import { transport_optionbar_items } from "@public/commonData/TransportOptionBar
 import { navbar_item } from "@public/commonData/AdminNavBarData";
 import Footer from "@components/shared/footer";
 import BusLayoutAdd from "@components/bus_layout_add";
+import withAuth from "@components/auth/protectedRoute";
 
-export default function AddBusService() {
+const AddBusLayout = () => {
   return (
     <Layout title="Add Bus Service" protectedPage={true}>
       {/* <Navbar selected_option={navbar_item[0][0]} />
@@ -16,3 +17,5 @@ export default function AddBusService() {
     </Layout>
   );
 }
+
+export default withAuth(AddBusLayout);
