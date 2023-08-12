@@ -33,6 +33,8 @@ interface Props {
   data: BusSchedule;
 }
 
+const loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.";
+
 export default function Item({ data }: Props) {
   const [showDetails, setShowDetails] = React.useState(false);
   const handleShowDetails = () => setShowDetails(!showDetails);
@@ -130,29 +132,8 @@ export default function Item({ data }: Props) {
           roundedBottom={"5"}
           wrap={"wrap"}
         >
-          <Text m={"1"} pr={"4"}>
-            <b>Bus Name:</b> {data.bus_name}
-          </Text>
-          <Text m={"1"} pr={"4"}>
-            <b>Coach Name:</b> {data.coach_name}
-          </Text>
-          <Text m={"1"} pr={"4"}>
-            <b>Source:</b> {data.source}
-          </Text>
-          <Text m={"1"} pr={"4"}>
-            <b>Destination:</b> {data.destination}
-          </Text>
-          <Text m={"1"} pr={"4"}>
-            <b>Departure Time:</b> {data.departure_time}
-          </Text>
-          <Text m={"1"} pr={"4"}>
-            <b>Arrival Time:</b> {data.arrival_time}
-          </Text>
-          <Text m={"1"} pr={"4"}>
-            <b>Bus Fare:</b> {data.bus_fare}
-          </Text>
-          <Text m={"1"} pr={"4"}>
-            <b>Schedule Date:</b> {data.schedule_date}
+          <Text>
+            {loremIpsum}
           </Text>
         </Flex>
       </motion.div>

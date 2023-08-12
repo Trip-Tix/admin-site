@@ -1,35 +1,5 @@
+import { Render_filter } from "./render_filter";
 import { useState, useEffect } from "react";
-import {
-  Flex,
-  Grid,
-  Box,
-  Text,
-  Wrap,
-  WrapItem,
-  Center,
-  Heading,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-  Tooltip,
-  Icon,
-  Select,
-  Tag,
-  TagLabel,
-  TagCloseButton,
-  HStack
-} from "@chakra-ui/react";
-import { TriangleDownIcon, CloseIcon } from "@chakra-ui/icons";
-import { motion } from "framer-motion";
-import {
-  foreground,
-  lightForeground,
-  background,
-  darkerBackground,
-  accent,
-} from "@public/commonData/Colors";
 
 interface BusSchedule {
   bus_schedule_id: string;
@@ -55,7 +25,6 @@ export default function Filter({
   loading,
 }: FilterProps) {
   const [sliderValue, setSliderValue] = useState(5);
-  const [showTooltip, setShowTooltip] = useState(false);
   const [filterVisible, setFilterVisible] = useState(false);
   const [selectedCoach, setSelectedCoach] = useState<string[]>([]);
   const [selectedSource, setSelectedSource] = useState<string[]>([]);
@@ -210,259 +179,34 @@ export default function Filter({
   };
 
   return (
-    <Flex direction={"column"} width={"90vw"}>
-      <motion.div
-        initial={{ opacity: 0, height: 0, overflow: "hidden" }}
-        animate={{
-          opacity: 1,
-          height: !filterVisible ? "auto" : 0,
-          overflow: "hidden",
-        }}
-        exit={{ opacity: 0, height: 0, overflow: "hidden" }} // Exit animation properties
-        transition={{ duration: 0.3 }}
-      >
-        <Flex>
-          <Flex
-            direction={"row"}
-            border="1px"
-            borderColor={darkerBackground}
-            alignItems={"center"}
-            rounded={"10"}
-            color={lightForeground}
-          >
-            <Icon
-              as={TriangleDownIcon}
-              height={"10"}
-              width={"10"}
-              onClick={() => {
-                if (!loading) setFilterVisible(true);
-              }}
-              cursor={"pointer"}
-              marginRight={"4"}
-              padding={"1"}
-            />
-            <Text paddingRight={"2"}>Filter</Text>
-          </Flex>
-        </Flex>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, height: 0, overflow: "hidden" }}
-        animate={{
-          opacity: 1,
-          height: filterVisible ? "auto" : 0,
-          overflow: "hidden",
-        }}
-        exit={{ opacity: 0, height: 0, overflow: "hidden" }} // Exit animation properties
-        transition={{ duration: 0.3 }}
-      >
-        <Box dropShadow={"md"} rounded={"10px"} bgColor={darkerBackground}>
-          <Flex direction={"column"} padding={"4"}>
-            <Flex direction={"row-reverse"} alignItems={"center"}>
-              <Icon
-                as={CloseIcon}
-                height={"3"}
-                width={"3"}
-                onClick={() => {
-                  reset();
-                  setFilterVisible(false);
-                }}
-                cursor={"pointer"}
-              />
-            </Flex>
-            <Flex direction={"row"} wrap={"wrap"} padding={"4"}>
-              {selectedCoach.map((coach) => (
-                <Tag
-                  key={coach}
-                  size={"md"}
-                  borderRadius="full"
-                  variant="solid"
-                  colorScheme="green"
-                  mr={"4"}
-                >
-                  <TagLabel>{coach}</TagLabel>
-                  <TagCloseButton onClick={() => removeCoach(coach)} />
-                </Tag>
-              ))}
-              {selectedSource.map((source) => (
-                <Tag
-                  key={source}
-                  size={"md"}
-                  borderRadius="full"
-                  variant="solid"
-                  colorScheme="green"
-                  mr={"4"}
-                >
-                  <TagLabel>{source}</TagLabel>
-                  <TagCloseButton onClick={() => removeSource(source)} />
-                </Tag>
-              ))}
-              {selectedDestination.map((destination) => (
-                <Tag
-                  key={destination}
-                  size={"md"}
-                  borderRadius="full"
-                  variant="solid"
-                  colorScheme="green"
-                  mr={"4"}
-                >
-                  <TagLabel>{destination}</TagLabel>
-                  <TagCloseButton
-                    onClick={() => removeDestination(destination)}
-                  />
-                </Tag>
-              ))}
-              {selectedArrivalTime.map((arrivalTime) => (
-                <Tag
-                  size={"md"}
-                  borderRadius="full"
-                  variant="solid"
-                  colorScheme="green"
-                  key={arrivalTime}
-                  mr={"4"}
-                >
-                  <TagLabel>{arrivalTime}</TagLabel>
-                  <TagCloseButton
-                    onClick={() => removeArrivalTime(arrivalTime)}
-                  />
-                </Tag>
-              ))}
-              {selectedDepartureTime.map((departureTime) => (
-                <Tag
-                  size={"md"}
-                  borderRadius="full"
-                  variant="solid"
-                  colorScheme="green"
-                  key={departureTime}
-                  mr={"4"}
-                >
-                  <TagLabel>{departureTime}</TagLabel>
-                  <TagCloseButton
-                    onClick={() => removeDepartureTime(departureTime)}
-                  />
-                </Tag>
-              ))}
-            </Flex>
-            <Flex>
-              <Heading margin={"4"}>Filter</Heading>
-            </Flex>
-            <HStack spacing={"4"}>
-
-                  <Select
-                    onChange={(event) => addCoach(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Coach
-                    </option>
-                    {coaches.map((coach) => (
-                      <option value={coach} key={coach}>
-                        {coach}
-                      </option>
-                    ))}
-                  </Select>
-
-                  <Select
-                    onChange={(event) => addSource(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Source
-                    </option>
-                    {sources.map((source) => (
-                      <option value={source} key={source}>
-                        {source}
-                      </option>
-                    ))}
-                  </Select>
-
-                  <Select
-                    onChange={(event) => addDestination(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Destination
-                    </option>
-                    {destinations.map((destination) => (
-                      <option value={destination} key={destination}>
-                        {destination}
-                      </option>
-                    ))}
-                  </Select>
-
-                  <Select
-                    onChange={(event) => addArrivalTime(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Arrival Time
-                    </option>
-                    {arrivalTimes.map((arrivalTime) => (
-                      <option value={arrivalTime} key={arrivalTime}>
-                        {arrivalTime}
-                      </option>
-                    ))}
-                  </Select>
-
-                  <Select
-                    onChange={(event) => addDepartureTime(event.target.value)}
-                    value=""
-                  >
-                    <option value="" disabled>
-                      Departure Time
-                    </option>
-                    {departureTimes.map((departureTime) => (
-                      <option value={departureTime} key={departureTime}>
-                        {departureTime}
-                      </option>
-                    ))}
-                  </Select>
-
-
-            </HStack>
-            <Flex direction={"column"}>
-            <Center>
-              <Heading marginTop={"4"} fontSize={"sm"}>
-                Money
-              </Heading>
-            </Center>
-            <Center>
-              <Box pt={6} pb={2} w={"50%"}>
-                <Slider
-                  id="slider"
-                  defaultValue={maxFare}
-                  min={0}
-                  max={maxFare}
-                  colorScheme={"red"}
-                  onChange={(v) => setSliderValue(v)}
-                  onMouseEnter={() => setShowTooltip(true)}
-                  onMouseLeave={() => setShowTooltip(false)}
-                >
-                  <SliderMark value={0} mt="1" ml="-2.5" fontSize="sm">
-                    0$
-                  </SliderMark>
-                  <SliderMark value={maxFare} mt="1" ml="-2.5" fontSize="sm">
-                    {maxFare}$
-                  </SliderMark>
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <Tooltip
-                    hasArrow
-                    bg={accent}
-                    color="white"
-                    placement="top"
-                    isOpen={showTooltip}
-                    label={`${sliderValue}$`}
-                  >
-                    <SliderThumb />
-                  </Tooltip>
-                </Slider>
-              </Box>
-            </Center>
-            </Flex>
-          </Flex>
-        </Box>
-      </motion.div>
-    </Flex>
+    <Render_filter
+      filterVisible={filterVisible}
+      loading={loading}
+      setFilterVisible={setFilterVisible}
+      reset={reset}
+      selectedCoach={selectedCoach}
+      removeCoach={removeCoach}
+      selectedSource={selectedSource}
+      removeSource={removeSource}
+      selectedDestination={selectedDestination}
+      removeDestination={removeDestination}
+      selectedArrivalTime={selectedArrivalTime}
+      removeArrivalTime={removeArrivalTime}
+      selectedDepartureTime={selectedDepartureTime}
+      removeDepartureTime={removeDepartureTime}
+      addCoach={addCoach}
+      coaches={coaches}
+      addSource={addSource}
+      sources={sources}
+      addDestination={addDestination}
+      destinations={destinations}
+      addArrivalTime={addArrivalTime}
+      arrivalTimes={arrivalTimes}
+      addDepartureTime={addDepartureTime}
+      departureTimes={departureTimes}
+      maxFare={maxFare}
+      setSliderValue={setSliderValue}
+      sliderValue={sliderValue}
+    />
   );
 }
