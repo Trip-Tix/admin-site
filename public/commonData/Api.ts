@@ -1,11 +1,11 @@
 import exp from "constants";
 
-const account_url = "https://triptix-account-service.onrender.com";
+// const account_url = "https://triptix-account-service.onrender.com";
 const main_url = "https://triptix-backend.onrender.com";
 const local_url = "http://localhost:3000"
 
-const admin_login = account_url + "/api/admin/login";
-const admin_signup = account_url + "/api/admin/signup";
+const admin_login = main_url + "/api/admin/login";
+const admin_signup = main_url + "/api/admin/signup";
 
 
 

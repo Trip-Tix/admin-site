@@ -1,6 +1,6 @@
 const main_url = "https://triptix-backend.onrender.com";
 // const account_url = "https://triptix-account-service.onrender.com";
-
+// const bus_url = "https://triptix-bus-service.onrender.com"
 
 const admin_login = main_url + "/api/admin/login";
 const admin_signup = main_url + "/api/admin/signup";
