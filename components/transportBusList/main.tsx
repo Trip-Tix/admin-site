@@ -15,8 +15,14 @@ export default function TransportMain() {
 
   useEffect(() => {
     setLoading(true);
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        'x-access-token': token
+      }
+    }
     axios
-      .post(get_bus_schedule_details_api)
+      .post(get_bus_schedule_details_api, null, config)
       .then((res) => res.data)
       .then((data) => {
         setFilteredTransports(data);

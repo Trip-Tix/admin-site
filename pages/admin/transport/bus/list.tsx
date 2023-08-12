@@ -7,8 +7,9 @@ import Footer from "@components/shared/footer";
 import Layout from "@components/layout";
 import { Flex, Spacer } from "@chakra-ui/react";
 import { background } from "@public/commonData/Colors";
+import withAuth from "@components/auth/protectedRoute";
 
-export default function ShowTransportBus() {
+const ShowTransportBus = () => {
   return (
     <Layout title="Transport Bus" protectedPage={true} >
       <Flex direction={"column"} minH={"100vh"} background={background}>
@@ -21,3 +22,5 @@ export default function ShowTransportBus() {
     </Layout>
   );
 }
+
+export default withAuth(ShowTransportBus);
