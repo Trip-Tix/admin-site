@@ -18,8 +18,7 @@ export default function withAuth(WrappedComponent) {
       } else if(userIsAuthenticated && (router.pathname === login_url || router.pathname === signup_url)) {
         setIsLogged(true);
         router.push(dashboard_url);
-      }
-      else {
+      } else if(userIsAuthenticated) {
         setIsLogged(true);
       }
     };
@@ -28,7 +27,7 @@ export default function withAuth(WrappedComponent) {
       checkAuth();
     },);
 
-    if (!isLogged) {
+    if (!isLogged && (router.pathname !== login_url && router.pathname !== signup_url)) {
       return null;
     }
 
