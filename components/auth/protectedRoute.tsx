@@ -10,7 +10,7 @@ export default function withAuth(WrappedComponent) {
     const checkAuth = () => {
       const username = localStorage.getItem('username');
       const token = localStorage.getItem('token');
-      const userIsAuthenticated = username && token;
+      const userIsAuthenticated = (username? true : false) && (token? true : false);
 
       if (!userIsAuthenticated && router.pathname !== login_url && router.pathname !== signup_url) {
         setIsLogged(false);
