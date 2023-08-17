@@ -1,18 +1,23 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { IconContext } from "react-icons";
+import '@fontsource/rajdhani';
 
 const theme = extendTheme({
   fonts: {
-    body: "Roboto, sans-serif",
-    heading: "Roboto, sans-serif",
+    body: "Rajdhani, sans-serif",
+    heading: "Rajdhani, sans-serif",
   },
 });
 
-
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <IconContext.Provider
+      value={{className: "global-class-name" }}
+    >
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </IconContext.Provider>
   );
 }
 

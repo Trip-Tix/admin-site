@@ -17,6 +17,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/open-sans": "^5.0.8",
+    "@fontsource/rajdhani": "^5.0.8",
     "@fontsource/raleway": "^5.0.8",
     "@types/react": "^17.0.38",
     "autoprefixer": "10.4.14",
