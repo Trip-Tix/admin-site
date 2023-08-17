@@ -18,7 +18,7 @@ export default function Main() {
           </HStack>
           <HStack spacing="4" align="stretch">
             <List />
-            <Details />
+            <Details/>
           </HStack>
         </VStack>
       </SidebarWithHeader>

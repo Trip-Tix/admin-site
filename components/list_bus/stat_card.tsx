@@ -25,6 +25,7 @@ export default function StatCard() {
       pl={6}
       pt={2}
       pb={2}
+      boxShadow="md"
     >
       <Center pr={5}>
         <Image
