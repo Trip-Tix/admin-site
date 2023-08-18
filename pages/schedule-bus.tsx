@@ -10,16 +10,7 @@ export default function Main() {
     <Layout title="List">
       <SidebarWithHeader>
         <VStack spacing="4" align="stretch">
-          <HStack spacing="4" align="stretch" justify="space-between" display={{ base: "none", md: "flex" }}>
-            <StatCard />
-            <StatCard />
-            <StatCard />
-            <StatCard />
-          </HStack>
-          <HStack spacing="4" align="stretch">
-            <List />
-            <Details/>
-          </HStack>
+            <p>Schedule</p>
         </VStack>
       </SidebarWithHeader>
     </Layout>
