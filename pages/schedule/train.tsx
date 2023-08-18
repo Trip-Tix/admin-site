@@ -4,13 +4,15 @@ import SidebarWithHeader from "@components/sidebar_with_header";
 import StatCard from "@components/list_bus/stat_card";
 import List from "@components/list_bus/list";
 import Details from "@components/list_bus/details";
+import TransportSelect from "@components/transport_select";
+import { NavigationOption, TransportType } from "@public/common/navigation_option";
 
 export default function Main() {
   return (
-    <Layout title="List">
-      <SidebarWithHeader>
+    <Layout title="Schedule Train">
+      <SidebarWithHeader navItem={NavigationOption.Schedule}>
         <VStack spacing="4" align="stretch">
-            <p>Schedule</p>
+        <TransportSelect transport={TransportType.Train} navigation={NavigationOption.Schedule} />
         </VStack>
       </SidebarWithHeader>
     </Layout>

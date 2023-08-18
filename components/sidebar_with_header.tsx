@@ -34,20 +34,34 @@ import {
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiList,
+  FiPlus,
+  FiCalendar,
 } from "react-icons/fi";
 import { BsSun, BsMoonStarsFill } from "react-icons/bs";
 import { IconType } from "react-icons";
 import TripTixLogoLight from "@public/TripTixLogo.svg";
 import TripTixLogoDark from "@public/TripTixLogoBlack.svg";
+import { NavigationOption } from "@public/common/navigation_option";
+import {
+  home_url,
+  add_url,
+  list_url,
+  schedule_url,
+} from "@public/common/pagelinks";
+import { useRouter } from "next/router";
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  link: string;
 }
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: React.ReactNode;
+  selected: boolean;
+  link: string;
 }
 
 interface MobileProps extends FlexProps {
@@ -56,17 +70,17 @@ interface MobileProps extends FlexProps {
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
+  selected: NavigationOption;
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "Home", icon: FiHome, link: home_url },
+  { name: "List", icon: FiList, link: list_url },
+  { name: "Add", icon: FiPlus, link: add_url },
+  { name: "Schedule", icon: FiCalendar, link: schedule_url },
 ];
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({ onClose, selected, ...rest }: SidebarProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Box
@@ -82,7 +96,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <HStack spacing={8} alignItems="center">
           <Image
-            src={colorMode=="light"? TripTixLogoDark: TripTixLogoLight}
+            src={colorMode == "light" ? TripTixLogoDark : TripTixLogoLight}
             alt="Triptix Logo"
             priority
             placeholder="empty"
@@ -96,7 +110,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem
+          key={link.name}
+          icon={link.icon}
+          selected={selected === link.name}
+          link={link.link}
+          m={4}
+        >
           {link.name}
         </NavItem>
       ))}
@@ -110,7 +130,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   );
 };
 
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, selected, link, ...rest }: NavItemProps) => {
+  const router = useRouter();
+  const onClick = () => {
+    router.push(link);
+  };
   return (
     <Box
       as="a"
@@ -124,20 +148,36 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
         mx="4"
         borderRadius="lg"
         role="group"
-        cursor="pointer"
-        _hover={{
-          bg: "cyan.400",
-          color: "white",
-        }}
+        cursor={selected ? "default" : "pointer"}
+        bg={
+          selected ? useColorModeValue("gray.200", "gray.700") : "transparent"
+        }
+        _hover={
+          selected
+            ? {}
+            : {
+                bg: useColorModeValue("gray.200", "gray.700"),
+                color: useColorModeValue("black", "white"),
+              }
+        }
         {...rest}
+        onClick={
+          selected
+            ? () => {}
+            : onClick
+        }
       >
         {icon && (
           <Icon
             mr="4"
             fontSize="16"
-            _groupHover={{
-              color: "white",
-            }}
+            _groupHover={
+              selected
+                ? {}
+                : {
+                    color: useColorModeValue("black", "white"),
+                  }
+            }
             as={icon}
           />
         )}
@@ -174,7 +214,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         display={{ base: "flex", md: "none" }}
       >
         <Image
-          src={colorMode=="light"? TripTixLogoDark: TripTixLogoLight}
+          src={colorMode == "light" ? TripTixLogoDark : TripTixLogoLight}
           alt="Triptix Logo"
           priority
           placeholder="empty"
@@ -202,9 +242,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar
-                  size={"sm"}
-                />
+                <Avatar size={"sm"} />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
@@ -240,9 +278,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
 interface SidebarWithHeaderProps {
   children: React.ReactNode;
+  navItem: NavigationOption;
 }
 
-const SidebarWithHeader = ({ children }: SidebarWithHeaderProps) => {
+const SidebarWithHeader = ({ children, navItem }: SidebarWithHeaderProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -250,6 +289,7 @@ const SidebarWithHeader = ({ children }: SidebarWithHeaderProps) => {
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
+        selected={navItem}
       />
       <Drawer
         isOpen={isOpen}
@@ -260,7 +300,7 @@ const SidebarWithHeader = ({ children }: SidebarWithHeaderProps) => {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent onClose={onClose} selected={navItem} />
         </DrawerContent>
       </Drawer>
       <MobileNav onOpen={onOpen} />
