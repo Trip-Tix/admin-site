@@ -9,13 +9,15 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/color-mode";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   AiOutlineRight,
   AiOutlineRise,
   AiOutlinePlusSquare,
   AiOutlineMinusSquare,
 } from "react-icons/ai";
+
+import { BusInfoContext } from "@public/common/context";
 
 interface seatProps {
   exists: boolean;
@@ -148,6 +150,12 @@ export default function Details() {
 
   const RowArray = Array.from(Array(row).keys());
   const ColumnArray = Array.from(Array(column).keys());
+  const { busId, coachId } = useContext(BusInfoContext);
+
+  useEffect(() => {
+    console.log(busId, coachId);
+  }, [busId, coachId]);
+
   return (
     <VStack
       spacing={4}

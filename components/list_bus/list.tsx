@@ -16,7 +16,8 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import { useColorModeValue, useColorMode } from "@chakra-ui/color-mode";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { BusInfoContext } from "@public/common/context";
 
 interface CoachTagProps {
   coachType: string;
@@ -61,6 +62,8 @@ export default function List() {
     { busName: "Bus O", busId: "O333", coachType: "Standard", amount: 115 },
     // Add more bus information as needed
   ];
+
+
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <>
@@ -106,6 +109,12 @@ interface TableItemProps {
 function TableItem({ name, busId, coachType, amount }: TableItemProps) {
   const { colorMode, toggleColorMode } = useColorMode();
   const [showDetails, setShowDetails] = useState(false);
+  const { setBusId, setCoachId } = useContext(BusInfoContext);
+
+  const handleClick = () => {
+    setBusId(busId);
+    setCoachId(coachType);
+  }
   return (
     <>
       <Tr
@@ -119,7 +128,7 @@ function TableItem({ name, busId, coachType, amount }: TableItemProps) {
               }
         }
         cursor={"pointer"}
-        onClick={() => setShowDetails(!showDetails)}
+        onClick={handleClick}
       >
         <Td>{name}</Td>
         <Td>{busId}</Td>
