@@ -37,7 +37,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(400).json({ error: 'Missing busId or coachId' });
     }
 
-    const rowCount = getRandomInt(10); // Set the desired row count
+    const rowCount = getRandomInt(10) + 1; // Set the desired row count
     const colCount = getRandomInt(6) + 1; // Set the desired column count
     const layout = getRandomLayout(rowCount, colCount);
 
@@ -46,7 +46,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       col: colCount,
       layout: layout,
     };
-    console.log(response);
     
     return res.status(200).json(response);
   } else {

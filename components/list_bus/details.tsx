@@ -26,6 +26,7 @@ interface seatProps {
 }
 
 function Seat({ exists }: seatProps) {
+
   return (
     <Box
       w={"20px"}
@@ -93,6 +94,7 @@ function RouteItem({ from, to, amount }: RouteItemProps) {
         console.error("Error fetching data:", error);
       }
     };
+    fetchData();
   }, [from, to, busId, coachId, showDetails]);
 
   return (
@@ -235,7 +237,8 @@ export default function Details() {
           setRow(row);
           setColumn(col);
           setLayout(layout);
-          console.log(layout)
+          setRowArray(Array.from(Array(row).keys()));
+          setColumnArray(Array.from(Array(column).keys()));
         } else {
           console.error(
             response.status,
@@ -249,11 +252,6 @@ export default function Details() {
     };
     fetchData();
   }, [busId, coachId]);
-
-  useEffect(() => {
-    setRowArray(Array.from(Array(row).keys()));
-    setColumnArray(Array.from(Array(column).keys()));
-  }, [row, column]);
 
   return (
     <VStack
