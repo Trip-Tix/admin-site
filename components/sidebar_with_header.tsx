@@ -23,6 +23,7 @@ import {
   MenuList,
   useColorMode,
   Button,
+  Link,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import {
@@ -48,6 +49,7 @@ import {
   add_url,
   list_url,
   schedule_url,
+  logout_url,
 } from "@public/common/pagelinks";
 import { useRouter } from "next/router";
 
@@ -189,6 +191,7 @@ const NavItem = ({ icon, children, selected, link, ...rest }: NavItemProps) => {
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
+  
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -267,7 +270,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem><Link href={logout_url}>Sign out</Link></MenuItem>
             </MenuList>
           </Menu>
         </Flex>

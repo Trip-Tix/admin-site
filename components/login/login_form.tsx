@@ -19,7 +19,6 @@ import {
   accent2,
   darkBackground,
 } from "@public/common/color";
-import { UserInfoContext } from "@public/common/context";
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { postLogin } from "@public/common/api";
@@ -28,8 +27,9 @@ import { home_url } from "@public/common/pagelinks";
 
 export default function Login_form() {
   const router = useRouter();
-  const { setIsLogin, username, setUsername, setUserToken } =
-    useContext(UserInfoContext);
+  const [isLogin, setIsLogin] = useState(false);
+  const [userToken, setUserToken] = useState("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -64,6 +64,9 @@ export default function Login_form() {
         setLoading(false);
         setUserToken(res.data.userToken);
         setIsLogin(true);
+        sessionStorage.setItem("user-token", res.data.userToken);
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("is-login", "true");
         router.push(home_url);
       })
       .catch((err) => {

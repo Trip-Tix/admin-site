@@ -1,5 +1,5 @@
 const login = '/login';
-const logout = '/logout';
+const logout = '/signout';
 const home = '/dashboard';
 const list = '/list';
 const list_bus = '/list/bus';
