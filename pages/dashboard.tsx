@@ -4,7 +4,7 @@ import { NavigationOption } from "@public/common/navigation_option";
 
 export default function Main() {
     return (
-        <Layout title="Dashboard">
+        <Layout title="Dashboard" isProtected={true}>
             <SidebarWithHeader navItem={NavigationOption.Home}>
                 <p>Dashboard</p>    
             </SidebarWithHeader>

@@ -20,7 +20,7 @@ import {
 
 export default function Main() {
   return (
-    <Layout title="List Flight">
+    <Layout title="List Flight" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.List}>
         <VStack spacing="4" align="stretch">
           <TransportSelect

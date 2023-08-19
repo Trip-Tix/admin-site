@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from "next";
 
 interface schedulingDetail {
   date: string;
@@ -25,23 +25,25 @@ const schedulingDetails: schedulingDetail[] = [
 ];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === "POST") {
-      const userToken = req.headers["usertoken"];
-  
-      if (!userToken) {
-        return res.status(401).json({ error: "Unauthorized" });
-      }
-  
-      const { busId, coachId, from, to } = req.body;
-  
-      if (!busId || !coachId || !from || !to) {
-        return res.status(400).json({ error: "Missing busId, coachId, from or to" });
-      }
-  
-      const response: schedulingDetail[] = [...schedulingDetails];
-  
-      return res.status(200).json(response);
-    } else {
-      return res.status(405).json({ error: "Method not allowed" });
+  if (req.method === "POST") {
+    const userToken = req.headers["usertoken"];
+
+    if (!userToken) {
+      return res.status(401).json({ error: "Unauthorized" });
     }
+
+    const { busId, coachId, from, to } = req.body;
+
+    if (!busId || !coachId || !from || !to) {
+      return res
+        .status(400)
+        .json({ error: "Missing busId, coachId, from or to" });
+    }
+
+    const response: schedulingDetail[] = [...schedulingDetails];
+
+    return res.status(200).json(response);
+  } else {
+    return res.status(405).json({ error: "Method not allowed" });
   }
+}

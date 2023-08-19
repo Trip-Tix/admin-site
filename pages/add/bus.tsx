@@ -14,7 +14,7 @@ import SubmitButton from "@components/add_bus/submit_button";
 
 export default function Main() {
   return (
-    <Layout title="Add Bus">
+    <Layout title="Add Bus" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.Add}>
         <VStack spacing="4" align="stretch">
           <TransportSelect transport={TransportType.Bus} navigation={NavigationOption.Add} />

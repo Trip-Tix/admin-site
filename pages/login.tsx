@@ -11,7 +11,7 @@ import Layout from "@components/layout";
 
 export default function Main() {
   return (
-    <Layout title="Login">
+    <Layout title="Login" isProtected={false}>
       <Stack
         minH={"100vh"}
         direction={{ base: "column", md: "row" }}

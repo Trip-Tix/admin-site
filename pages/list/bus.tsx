@@ -8,7 +8,7 @@ import { NavigationOption, TransportType } from "@public/common/navigation_optio
 
 export default function Main() {
   return (
-    <Layout title="List Bus">
+    <Layout title="List Bus" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.List}>
         <VStack spacing="4" align="stretch">
         <TransportSelect transport={TransportType.Bus} navigation={NavigationOption.List} />
