@@ -18,6 +18,8 @@ import {
 } from "react-icons/ai";
 
 import { BusInfoContext } from "@public/common/context";
+import axios from "axios";
+import { getBusLayout, getBusRoute, getRouteDetails } from "@public/common/api";
 
 interface seatProps {
   exists: boolean;
@@ -47,26 +49,51 @@ interface ScheduleDetail {
   date: string;
 }
 
+interface schedulingDetail {
+  date: string;
+  arrivalTime: string;
+  destinationTime: string;
+}
+
 function RouteItem({ from, to, amount }: RouteItemProps) {
   const [showDetails, setShowDetails] = useState(false);
-  const schedulingDetails: ScheduleDetail[] = [
-    {
-      arrivalTime: "08:00 AM",
-      destinationTime: "12:00 PM",
-      date: "2023-08-17",
-    },
-    {
-      arrivalTime: "10:30 AM",
-      destinationTime: "02:30 PM",
-      date: "2023-08-18",
-    },
-    {
-      arrivalTime: "03:15 PM",
-      destinationTime: "07:15 PM",
-      date: "2023-08-19",
-    },
-    // amount of bus
-  ];
+  const { busId, coachId } = useContext(BusInfoContext);
+  const [schedulingDetails, setSchedulingDetails] = useState<ScheduleDetail[]>(
+    [],
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userToken = "your_user_token";
+        const response = await axios.post<schedulingDetail[]>(
+          getRouteDetails,
+          {
+            busId: busId,
+            coachId: coachId,
+            from: from,
+            to: to,
+          },
+          {
+            headers: {
+              usertoken: userToken,
+            },
+          },
+        );
+        if (response.status === 200) {
+          setSchedulingDetails(response.data);
+        } else {
+          console.error(
+            response.status,
+            response.data,
+            "component/list_bus/details/RouteItem.tsx",
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  }, [from, to, busId, coachId, showDetails]);
 
   return (
     <VStack spacing={1} align={"stretch"}>
@@ -103,14 +130,49 @@ function RouteItem({ from, to, amount }: RouteItemProps) {
   );
 }
 
+type Route = {
+  start: string;
+  end: string;
+  amount: number;
+};
+
 function RouteList() {
-  const routes = [
-    ["Dhaka", "Chittagong", 20],
-    ["Dhaka", "Rajshahi", 25],
-    ["Dhaka", "Khulna", 10],
-    ["Dhaka", "Sylhet", 5],
-    ["Barishal", "Chittagong", 15],
-  ];
+  const { busId, coachId } = useContext(BusInfoContext);
+  const [routes, setRoutes] = useState<Route[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userToken = "your_user_token";
+        const response = await axios.post<Route[]>(
+          getBusRoute,
+          {
+            busId: busId,
+            coachId: coachId,
+          },
+          {
+            headers: {
+              usertoken: userToken,
+            },
+          },
+        );
+
+        if (response.status === 200) {
+          setRoutes(response.data);
+        } else {
+          console.error(
+            response.status,
+            response.data,
+            "component/list_bus/details/RouteList.tsx",
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [busId, coachId]);
+
   return (
     <Flex
       direction="column"
@@ -126,10 +188,10 @@ function RouteList() {
       <VStack spacing={1} align="stretch" pt={2}>
         {routes.map((route) => (
           <RouteItem
-            key={route[0].toString() + route[1].toString()}
-            from={route[0].toString()}
-            to={route[1].toString()}
-            amount={parseInt(route[2].toString())}
+            key={route.start + route.end}
+            from={route.start}
+            to={route.end}
+            amount={route.amount}
           />
         ))}
       </VStack>
@@ -138,29 +200,66 @@ function RouteList() {
 }
 
 export default function Details() {
-  const row = 5;
-  const column = 4;
-  const layout = [
-    [1, 0, 1, 1],
-    [1, 0, 1, 1],
-    [1, 0, 1, 1],
-    [1, 0, 1, 1],
-    [1, 1, 1, 1],
-  ];
-
-  const RowArray = Array.from(Array(row).keys());
-  const ColumnArray = Array.from(Array(column).keys());
+  const [row, setRow] = useState(0);
+  const [column, setColumn] = useState(0);
+  const [layout, setLayout] = useState([[]]);
+  const [RowArray, setRowArray] = useState(Array.from(Array(row).keys()));
+  const [ColumnArray, setColumnArray] = useState(
+    Array.from(Array(column).keys()),
+  );
   const { busId, coachId } = useContext(BusInfoContext);
 
   useEffect(() => {
-    console.log(busId, coachId);
+    const fetchData = async () => {
+      try {
+        const userToken = "your_user_token";
+
+        if (!userToken) {
+          throw new Error("Unauthorized");
+        }
+
+        const response = await axios.post(
+          getBusLayout,
+          {
+            busId: busId,
+            coachId: coachId,
+          },
+          {
+            headers: {
+              usertoken: userToken,
+            },
+          },
+        );
+        if (response.status == 200) {
+          const { row, col, layout } = response.data;
+          setRow(row);
+          setColumn(col);
+          setLayout(layout);
+          console.log(layout)
+        } else {
+          console.error(
+            response.status,
+            response.data,
+            "component/list_bus/details/Details.tsx",
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
   }, [busId, coachId]);
+
+  useEffect(() => {
+    setRowArray(Array.from(Array(row).keys()));
+    setColumnArray(Array.from(Array(column).keys()));
+  }, [row, column]);
 
   return (
     <VStack
       spacing={4}
       align="stretch"
-      width={{base:"0%", md:"30%"}}
+      width={{ base: "0%", md: "30%" }}
       visibility={{ base: "hidden", md: "visible" }}
     >
       <Heading as="h1" size="lg" color="primary.800">
@@ -178,7 +277,7 @@ export default function Details() {
         <HStack spacing={4} align="stretch" width={"100%"}>
           <Text>Bus ID</Text>
           <Divider orientation="vertical" />
-          <Text>02381873184</Text>
+          <Text>{busId}</Text>
         </HStack>
       </Flex>
       <Flex
@@ -193,7 +292,7 @@ export default function Details() {
         <HStack spacing={4} align="stretch" width={"100%"}>
           <Text>Coach Type</Text>
           <Divider orientation="vertical" />
-          <Text>AC</Text>
+          <Text>{coachId}</Text>
         </HStack>
       </Flex>
       <Flex

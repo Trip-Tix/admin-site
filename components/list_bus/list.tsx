@@ -16,8 +16,10 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import { useColorModeValue, useColorMode } from "@chakra-ui/color-mode";
-import { useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { BusInfoContext } from "@public/common/context";
+import { getAllBus } from "@public/common/api";
+import axios from "axios";
 
 interface CoachTagProps {
   coachType: string;
@@ -44,27 +46,34 @@ interface BusInfo {
 }
 
 export default function List() {
-  const busInfoList: BusInfo[] = [
-    { busName: "Bus A", busId: "A123", coachType: "Luxury", amount: 150 },
-    { busName: "Bus B", busId: "B456", coachType: "Standard", amount: 100 },
-    { busName: "Bus C", busId: "C789", coachType: "Premium", amount: 200 },
-    { busName: "Bus D", busId: "D101", coachType: "Standard", amount: 120 },
-    { busName: "Bus E", busId: "E222", coachType: "Luxury", amount: 180 },
-    { busName: "Bus F", busId: "F333", coachType: "Standard", amount: 110 },
-    { busName: "Bus G", busId: "G444", coachType: "Premium", amount: 220 },
-    { busName: "Bus H", busId: "H555", coachType: "Standard", amount: 130 },
-    { busName: "Bus I", busId: "I666", coachType: "Luxury", amount: 160 },
-    { busName: "Bus J", busId: "J777", coachType: "Standard", amount: 90 },
-    { busName: "Bus K", busId: "K888", coachType: "Premium", amount: 250 },
-    { busName: "Bus L", busId: "L999", coachType: "Luxury", amount: 170 },
-    { busName: "Bus M", busId: "M111", coachType: "Standard", amount: 95 },
-    { busName: "Bus N", busId: "N222", coachType: "Premium", amount: 210 },
-    { busName: "Bus O", busId: "O333", coachType: "Standard", amount: 115 },
-    // Add more bus information as needed
-  ];
-
-
+  const [busInfoList, setBusInfoList] = useState<BusInfo[]>([]);
   const { colorMode, toggleColorMode } = useColorMode();
+  const [busInfoLoading, setBusInfoLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBusInfo() {
+      setBusInfoLoading(true);
+      try {
+        const userToken = 'your-user-token'; // Replace with your actual user token
+        const response = await axios.post(getAllBus, null, {
+          headers: {
+            'usertoken': userToken,
+          },
+        });
+
+        if (response.status === 200) {
+          setBusInfoList(response.data);
+        } else {
+          console.error('Failed to fetch bus information', "component/list_bus/list.tsx");
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching bus information:', error, "component/list_bus/list.tsx");
+      }
+      setBusInfoLoading(false);
+    }
+    fetchBusInfo();
+  }, []);
+
   return (
     <>
       <VStack spacing={4} align="stretch" flex={1} ml={10} mr={10}>
@@ -114,7 +123,7 @@ function TableItem({ name, busId, coachType, amount }: TableItemProps) {
   const handleClick = () => {
     setBusId(busId);
     setCoachId(coachType);
-  }
+  };
   return (
     <>
       <Tr
