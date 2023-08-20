@@ -19,24 +19,16 @@ export default function NewCoaches() {
   return (
     <>
       {coachKeys.map((key) => (
-        <Flex
+        <CoachCard
           key={key}
-          justifyContent={"space-between"}
-          p={5}
-          w={"full"}
-          borderRadius={5}
-          bg={useColorModeValue("gray.100", "gray.700")}
-        >
-          <CoachCard
-            ChildrenButton={
-              <Button
-                onClick={() => setCoachKeys(coachKeys.filter((k) => k !== key))}
-              >
-                Remove
-              </Button>
-            }
-          />
-        </Flex>
+          ChildrenButton={
+            <Button
+              onClick={() => setCoachKeys(coachKeys.filter((k) => k !== key))}
+            >
+              Remove
+            </Button>
+          }
+        />
       ))}
       <HStack>
         <Text fontSize="xl">Coaches</Text>

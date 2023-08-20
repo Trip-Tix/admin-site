@@ -1,6 +1,15 @@
-import { Flex, VStack, Divider, Button, Heading, Box, HStack } from "@chakra-ui/react";
+import {
+  Flex,
+  VStack,
+  Divider,
+  Button,
+  Heading,
+  Box,
+  HStack,
+} from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { CoachInfoContext } from "@public/common/context";
+import { useColorModeValue } from "@chakra-ui/react";
 
 import SelectCoach from "@components/add_bus/select_coach";
 import SelectRow from "@components/add_bus/select_row";
@@ -11,7 +20,6 @@ import SeatLayout from "@components/add_bus/seat_layout";
 interface CoachCardProps {
   ChildrenButton: React.ReactNode;
 }
-
 
 export default function CoachCard({ ChildrenButton }: CoachCardProps) {
   const [coachName, setCoachName] = useState("");
@@ -41,23 +49,31 @@ export default function CoachCard({ ChildrenButton }: CoachCardProps) {
         setAvailableSeat,
       }}
     >
-      
-        {!coachSelected ? (
-          <SelectCoach coachSelected={coachSelected} setCoachSelected={setCoachSelected} />
-        ) : (
-          <Flex justifyContent={"space-between"} w={"full"} borderRadius={5}>
-            <VStack spacing={5} align={""}>
-              <Heading size="md">Coach: {coachName}</Heading>
-              {ChildrenButton}
-              <SelectRow />
-              <SelectColumn />
-              <SelectAmount />
-            </VStack>
-            <Divider orientation="vertical" />
-            <SeatLayout />
-          </Flex>
-        )}
-      
+      {!coachSelected ? (
+        <SelectCoach
+          coachSelected={coachSelected}
+          setCoachSelected={setCoachSelected}
+        />
+      ) : (
+        <Flex
+          direction={"row"}
+          justifyContent={"space-between"}
+          w={"full"}
+          borderRadius={5}
+          p={5}
+          bg={useColorModeValue("gray.300", "gray.700")}
+        >
+          <VStack spacing={5} align="left">
+            <Heading size="md">Coach: {coachName}</Heading>
+            {ChildrenButton}
+            <SelectRow />
+            <SelectColumn />
+            <SelectAmount />
+          </VStack>
+          <Divider orientation="vertical" />
+          <SeatLayout />
+        </Flex>
+      )}
     </CoachInfoContext.Provider>
   );
 }
