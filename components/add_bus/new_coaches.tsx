@@ -7,9 +7,14 @@ import { useColorModeValue } from "@chakra-ui/react";
 
 const coachList = ["AC", "Seat", "Bus"];
 
-export default function NewCoaches() {
+interface NewCoachesProps {
+  coachKeys: number[];
+  setCoachKeys: (keys: number[]) => void;
+}
+
+export default function NewCoaches({ coachKeys, setCoachKeys}) {
   const [numberOfCoaches, setNumberOfCoaches] = useState(0);
-  const [coachKeys, setCoachKeys] = useState<number[]>([]);
+  
 
   const addCoach = () => {
     setNumberOfCoaches(numberOfCoaches + 1);

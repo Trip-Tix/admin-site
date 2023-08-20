@@ -7,9 +7,14 @@ import {
   Box,
   HStack,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { CoachInfoContext } from "@public/common/context";
+import { BusAddContext } from "@public/common/context";
 import { useColorModeValue } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { postAddBus } from "@public/common/api";
+import { list_bus_url } from "@public/common/pagelinks";
 
 import SelectCoach from "@components/add_bus/select_coach";
 import SelectRow from "@components/add_bus/select_row";
@@ -32,17 +37,63 @@ export default function CoachCard({ ChildrenButton }: CoachCardProps) {
   ]);
   const [availableSeat, setAvailableSeat] = useState<number>(2);
   const [coachSelected, setCoachSelected] = useState(false);
+  const { submit, busName } = useContext(BusAddContext);
+  const [userToken, setUserToken] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
-    console.log({
-      coachName,
-      availableNumber,
-      row,
-      column,
-      layout,
-      availableSeat,
-    });
-    }, [ coachName, availableNumber, row, column, layout, availableSeat ]);
+    const sendData = async () => {
+      setUserToken(sessionStorage.getItem("user-token") || "");
+      try {
+        const response = await axios.post(
+          postAddBus,
+          {
+            busName,
+            coachName,
+            availableNumber,
+            row,
+            column,
+            layout,
+            availableSeat,
+          },
+          {
+            headers: {
+              usertoken: userToken,
+            },
+          },
+        );
+        if (response.status === 200) {
+          console.log("Bus added successfully");
+          router.push(list_bus_url);
+        } else {
+          console.error(
+            "Failed to add bus",
+            "component/add_bus/coach_card.tsx",
+          );
+        }
+      } catch (error) {
+        console.error(
+          "An error occurred while adding bus:",
+          error,
+          "component/add_bus/coach_card.tsx",
+        );
+      }
+    };
+    if (submit) {
+      sendData();
+    }
+  }, [submit, userToken]);
+
+  // useEffect(() => {
+  //   console.log({
+  //     coachName,
+  //     availableNumber,
+  //     row,
+  //     column,
+  //     layout,
+  //     availableSeat,
+  //   });
+  //   }, [ coachName, availableNumber, row, column, layout, availableSeat ]);
 
   return (
     <CoachInfoContext.Provider

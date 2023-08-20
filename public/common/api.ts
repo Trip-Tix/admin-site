@@ -11,6 +11,7 @@ export const getTotalOnRoutes = '/api/bus/get-total-on-routes'
 
 export const getBusNames = '/api/bus/get-bus-names'
 export const getAllCoaches = '/api/bus/get-all-coaches'
+export const postAddBus = '/api/bus/add-bus'
 
 
 export const postLogin = '/api/user/login'
