@@ -4,7 +4,7 @@ import { BusInfoContext } from "@public/common/context";
 
 import RouteList from "@components/list_bus/route_list";
 import Layout from "@components/list_bus/layout";
-import CoachType from "@components/list_bus/coach_type";
+import CoachType from "@components/coach_type";
 import BusId from "@components/list_bus/bus_id";
 
 export default function Details() {
