@@ -14,9 +14,10 @@ import axios from "axios";
 interface StatCardProps {
   cardTitle: string;
   apiLink: string;
+  cardImage: string
 }
 
-export default function StatCard({ cardTitle, apiLink }: StatCardProps) {
+export default function StatCard({ cardTitle, apiLink, cardImage }: StatCardProps) {
   const [data, setData] = React.useState<number>(0);
   const [userToken, setUserToken] = React.useState<string>("");
   
@@ -60,7 +61,7 @@ export default function StatCard({ cardTitle, apiLink }: StatCardProps) {
         <Image
           borderRadius="full"
           boxSize={"100px"}
-          src={DummyImage.src}
+          src={cardImage}
           alt="Caffe Latte"
         />
       </Center>

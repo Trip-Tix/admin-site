@@ -11,18 +11,22 @@ const data = [
   {
     title: "Available Bus",
     apiLink: getAvailableBus,
+    cardImage: "/images/bus_available.svg"
   },
   {
     title: "Total Route",
     apiLink: getTotalRoute,
+    cardImage: "/images/bus_available.svg"
   },
   {
     title: "Total On Route",
     apiLink: getTotalOnRoutes,
+    cardImage: "/images/bus_available.svg"
   },
   {
     title: "Customer Rating",
     apiLink: getCustomerRating,
+    cardImage: "/images/bus_available.svg"
   },
 ];
 
@@ -35,7 +39,7 @@ export default function Stat() {
       display={{ base: "none", md: "flex" }}
     >
         {data.map((item) => (
-            <StatCard key={item.title} cardTitle={item.title} apiLink={item.apiLink} />
+            <StatCard key={item.title} cardTitle={item.title} apiLink={item.apiLink} cardImage={item.cardImage}/>
         ))}
     </HStack>
   );
