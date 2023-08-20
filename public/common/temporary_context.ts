@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
 export interface Day {
-    day: string;
-    month: string;
-    year: string;
+    day: number;
+    month: number;
+    year: number;
 }
 
 

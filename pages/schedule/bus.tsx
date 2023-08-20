@@ -18,8 +18,16 @@ export default function Main() {
   const [isInitialForm, setIsInitialForm] = useState(true);
   const [startingLocation, setStartingLocation] = useState("");
   const [destinations, setDestinations] = useState<string[]>([]);
-  const [startingDate, setStartingDate] = useState<Day | null>(null);
-  const [endingDate, setEndingDate] = useState<Day | null>(null);
+  const [startingDate, setStartingDate] = useState<Day>({
+    day: 0,
+    month: 0,
+    year: 0,
+  });
+  const [endingDate, setEndingDate] = useState<Day>({
+    day: 0,
+    month: 0,
+    year: 0,
+  });
 
   return (
     <Layout title="Schedule Bus" isProtected={true}>
