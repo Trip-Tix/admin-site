@@ -9,6 +9,16 @@ export interface BusInfoContextType {
 
 export const BusInfoContext = createContext<BusInfoContextType | null>(null);
 
+export interface TrainInfoContextType {
+  trainId: string;
+  setTrainId: (trainId: string) => void;
+  coachId: string;
+  setCoachId: (coachId: string) => void;
+}
+
+
+export const TrainInfoContext = createContext<TrainInfoContextType | null>(null);
+
 export interface UserInfoContextType {
   username: string;
   setUsername: (username: string) => void;

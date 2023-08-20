@@ -1,5 +1,5 @@
 import { Tag } from "@chakra-ui/react";
-import { getCoachNameBus } from "@public/common/api";
+import { getCoachNameTrain } from "@public/common/api";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
@@ -24,7 +24,7 @@ export default function CoachTag({ coachId }: CoachTagProps) {
       setUserToken(sessionStorage.getItem("user-token") || "");
       try {
         const response = await axios.post(
-          getCoachNameBus,
+          getCoachNameTrain,
           {
             coachId: coachId,
           },
@@ -39,14 +39,14 @@ export default function CoachTag({ coachId }: CoachTagProps) {
         } else {
           console.error(
             "Failed to fetch coach name",
-            "component/list_bus/coach_tag.tsx",
+            "component/list_train/coach_tag.tsx",
           );
         }
       } catch (error) {
         console.error(
           "An error occurred while fetching coach name:",
           error,
-          "component/list_bus/coach_tag.tsx",
+          "component/list_train/coach_tag.tsx",
         );
       }
     };

@@ -1,7 +1,7 @@
 import React from "react";
 import { CoachInfoContext } from "@public/common/context";
 import { useContext, useEffect, useState } from "react";
-import { getAllCoaches, getCoachName } from "@public/common/api";
+import { getAllCoachesBus, getCoachNameBus } from "@public/common/api";
 import axios from "axios";
 import { VStack, Select } from "@chakra-ui/react";
 
@@ -22,7 +22,7 @@ export default function SelectCoach({
     const fetchCoachNames = async () => {
       setUserToken(sessionStorage.getItem("user-token"));
       try {
-        const response = await axios.post(getAllCoaches, null, {
+        const response = await axios.post(getAllCoachesBus, null, {
           headers: {
             usertoken: userToken,
           },

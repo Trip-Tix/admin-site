@@ -3,7 +3,7 @@ import { HStack, VStack } from "@chakra-ui/layout";
 import { useContext, useEffect, useState } from "react";
 import { BusInfoContext } from "@public/common/context";
 import axios from "axios";
-import { getRouteDetails } from "@public/common/api";
+import { getRouteDetailsBus } from "@public/common/api";
 import { Text } from "@chakra-ui/react";
 import {
   AiOutlineRight,
@@ -37,7 +37,7 @@ export default function RouteItem({ from, to, amount }: RouteItemProps) {
       try {
         const userToken = "your_user_token";
         const response = await axios.post<ScheduleDetail[]>(
-          getRouteDetails,
+          getRouteDetailsBus,
           {
             busId: busId,
             coachId: coachId,
