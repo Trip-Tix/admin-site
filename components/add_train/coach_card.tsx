@@ -17,9 +17,9 @@ import { postAddTrain } from "@public/common/api";
 import { list_train_url } from "@public/common/pagelinks";
 
 import SelectCoach from "@components/add_train/select_coach";
-// import SelectRow from "@components/add_train/select_row";
-// import SelectColumn from "@components/add_train/select_column";
-// import SelectAmount from "@components/add_train/select_amount";
+import SelectRow from "@components/add_train/select_row";
+import SelectColumn from "@components/add_train/select_column";
+import SelectAmount from "@components/add_train/select_amount";
 // import SeatLayout from "@components/add_train/seat_layout";
 
 interface CoachCardProps {
@@ -118,9 +118,9 @@ export default function CoachCard({ ChildrenButton }: CoachCardProps) {
           <VStack spacing={5} align="left">
             <Heading size="md">Coach: {coachName}</Heading>
             {ChildrenButton}
-            {/* <SelectRow />
+            <SelectRow />
             <SelectColumn />
-            <SelectAmount /> */}
+            <SelectAmount />
           </VStack>
           <Divider orientation="vertical" />
           {/* <SeatLayout /> */}
