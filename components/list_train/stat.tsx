@@ -1,31 +1,31 @@
-import StatCard from "@components/list_train/stat_card";
+import StatCard from "@components/stat_card";
 import { HStack } from "@chakra-ui/react";
 import {
-  getAvailableBus,
-  getCustomerRating,
-  getTotalRoute,
-  getTotalOnRoutes,
+  getAvailableTrain,
+  getCustomerRatingTrain,
+  getTotalRouteTrain,
+  getTotalOnRoutesTrain,
 } from "@public/common/api";
 
 const data = [
   {
     title: "Available Train",
-    apiLink: getAvailableBus,
+    apiLink: getAvailableTrain,
     cardImage: "/images/train_available.svg"
   },
   {
     title: "Total Route",
-    apiLink: getTotalRoute,
+    apiLink: getTotalRouteTrain,
     cardImage: "/images/route.svg"
   },
   {
     title: "Total On Route",
-    apiLink: getTotalOnRoutes,
+    apiLink: getTotalOnRoutesTrain,
     cardImage: "/images/route_total.svg"
   },
   {
     title: "Customer Rating",
-    apiLink: getCustomerRating,
+    apiLink: getCustomerRatingTrain,
     cardImage: "/images/rating.svg"
   },
 ];
