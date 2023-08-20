@@ -26,7 +26,7 @@ const data = [
   {
     title: "Customer Rating",
     apiLink: getCustomerRating,
-    cardImage: "/images/bus_available.svg"
+    cardImage: "/images/rating.svg"
   },
 ];
 
