@@ -1,8 +1,9 @@
 import { IconButton } from "@chakra-ui/button";
 import { AddIcon } from "@chakra-ui/icons";
-import { VStack, HStack, Text } from "@chakra-ui/react";
+import { VStack, HStack, Text, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import CoachCard from "@components/add_bus/coach_card";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const coachList = ["AC", "Seat", "Bus"];
 
@@ -18,12 +19,24 @@ export default function NewCoaches() {
   return (
     <>
       {coachKeys.map((key) => (
-        <div key={key}>
-          <p>Coach {key}</p>
-          <button onClick={() => setCoachKeys(coachKeys.filter((k) => k !== key))}>
-            Remove Coach
-          </button>
-        </div>
+        <Flex
+          key={key}
+          justifyContent={"space-between"}
+          p={5}
+          w={"full"}
+          borderRadius={5}
+          bg={useColorModeValue("gray.100", "gray.700")}
+        >
+          <CoachCard
+            ChildrenButton={
+              <Button
+                onClick={() => setCoachKeys(coachKeys.filter((k) => k !== key))}
+              >
+                Remove
+              </Button>
+            }
+          />
+        </Flex>
       ))}
       <HStack>
         <Text fontSize="xl">Coaches</Text>
