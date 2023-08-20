@@ -16,17 +16,17 @@ const data = [
   {
     title: "Total Route",
     apiLink: getTotalRoute,
-    cardImage: "/images/bus_available.svg"
+    cardImage: "/images/route.svg"
   },
   {
     title: "Total On Route",
     apiLink: getTotalOnRoutes,
-    cardImage: "/images/bus_available.svg"
+    cardImage: "/images/route_total.svg"
   },
   {
     title: "Customer Rating",
     apiLink: getCustomerRating,
-    cardImage: "/images/bus_available.svg"
+    cardImage: "/images/rating.svg"
   },
 ];
 
