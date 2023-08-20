@@ -1,8 +1,9 @@
 import List from "@components/list_bus/list";
 import Details from "@components/list_bus/details";
 import { BusInfoContext } from "@public/common/context";
+import { HStack } from "@chakra-ui/react";
 
-import { useContext, createContext, useState } from "react";
+import { useState } from "react";
 
 export default function MainData() {
   const [busId, setBusId] = useState<string>("");
@@ -10,8 +11,10 @@ export default function MainData() {
 
   return (
     <BusInfoContext.Provider value={{ busId, setBusId, coachId, setCoachId }}>
-      <List />
-      <Details />
+      <HStack spacing="4" align="stretch">
+        <List />
+        <Details />
+      </HStack>
     </BusInfoContext.Provider>
   );
 }

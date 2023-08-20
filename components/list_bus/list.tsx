@@ -2,41 +2,18 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
-  Box,
-  Flex,
-  HStack,
   VStack,
   Heading,
   TableContainer,
-  Tag,
+  Spinner,
 } from "@chakra-ui/react";
-import { useColorModeValue, useColorMode } from "@chakra-ui/color-mode";
-import { use, useContext, useEffect, useState } from "react";
-import { BusInfoContext } from "@public/common/context";
+import { useEffect, useState } from "react";
 import { getAllBus } from "@public/common/api";
 import axios from "axios";
-
-interface CoachTagProps {
-  coachType: string;
-}
-
-function CoachTag({ coachType }: CoachTagProps) {
-  const coachColorMap = {
-    Luxury: "green",
-    Standard: "blue",
-    Premium: "purple",
-  };
-  return (
-    <Tag size="md" variant="solid" colorScheme={coachColorMap[coachType]}>
-      {coachType}
-    </Tag>
-  );
-}
+import TableItem from "@components/list_bus/table_item";
 
 interface BusInfo {
   busName: string;
@@ -47,39 +24,60 @@ interface BusInfo {
 
 export default function List() {
   const [busInfoList, setBusInfoList] = useState<BusInfo[]>([]);
-  const { colorMode, toggleColorMode } = useColorMode();
   const [busInfoLoading, setBusInfoLoading] = useState(true);
+  const [userToken, setUserToken] = useState<string>("");
 
+  // api call to get the bus list
   useEffect(() => {
     async function fetchBusInfo() {
       setBusInfoLoading(true);
+      setUserToken(sessionStorage.getItem("user-token") || "");
       try {
-        const userToken = 'your-user-token'; // Replace with your actual user token
         const response = await axios.post(getAllBus, null, {
           headers: {
-            'usertoken': userToken,
+            usertoken: userToken,
           },
         });
 
         if (response.status === 200) {
           setBusInfoList(response.data);
         } else {
-          console.error('Failed to fetch bus information', "component/list_bus/list.tsx");
+          console.error(
+            "Failed to fetch bus information",
+            "component/list_bus/list.tsx",
+          );
         }
       } catch (error) {
-        console.error('An error occurred while fetching bus information:', error, "component/list_bus/list.tsx");
+        console.error(
+          "An error occurred while fetching bus information:",
+          error,
+          "component/list_bus/list.tsx",
+        );
       }
       setBusInfoLoading(false);
     }
     fetchBusInfo();
-  }, []);
+  }, [userToken]);
 
   return (
-    <>
-      <VStack spacing={4} align="stretch" flex={1} ml={10} mr={10}>
-        <Heading as="h1" size="lg" color="primary.800">
-          List of Buses
-        </Heading>
+    <VStack spacing={4} align="stretch" flex={1} ml={10} mr={10}>
+      <Heading as="h1" size="lg" color="primary.800">
+        List of Buses
+      </Heading>
+      {busInfoLoading ? (
+        <>
+          <Heading as="h2" size="md" color="primary.800">
+            Loading...
+          </Heading>
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        </>
+      ) : (
         <TableContainer>
           <Table variant="simple">
             <Thead>
@@ -103,49 +101,9 @@ export default function List() {
             </Tbody>
           </Table>
         </TableContainer>
-      </VStack>
-    </>
+      )}
+    </VStack>
   );
 }
 
-interface TableItemProps {
-  name: string;
-  busId: string;
-  coachType: string;
-  amount: number;
-}
 
-function TableItem({ name, busId, coachType, amount }: TableItemProps) {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const [showDetails, setShowDetails] = useState(false);
-  const { setBusId, setCoachId } = useContext(BusInfoContext);
-
-  const handleClick = () => {
-    setBusId(busId);
-    setCoachId(coachType);
-  };
-  return (
-    <>
-      <Tr
-        _hover={
-          colorMode == "light"
-            ? {
-                bg: "gray.200",
-              }
-            : {
-                bg: "gray.600",
-              }
-        }
-        cursor={"pointer"}
-        onClick={handleClick}
-      >
-        <Td>{name}</Td>
-        <Td>{busId}</Td>
-        <Td>
-          <CoachTag coachType={coachType} />
-        </Td>
-        <Td isNumeric>{amount}</Td>
-      </Tr>
-    </>
-  );
-}

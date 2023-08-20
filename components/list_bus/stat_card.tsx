@@ -1,20 +1,49 @@
 import {
-  Button,
   Card,
   CardBody,
-  CardFooter,
   Heading,
   Image,
   Stack,
-  Text,
   Center,
-  Spacer,
   Divider,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import DummyImage from "@public/images/stat_dummy.jpg";
+import axios from "axios";
 
-export default function StatCard() {
+interface StatCardProps {
+  cardTitle: string;
+  apiLink: string;
+}
+
+export default function StatCard({ cardTitle, apiLink }: StatCardProps) {
+  const [data, setData] = React.useState<number>(0);
+  const [userToken, setUserToken] = React.useState<string>("");
+  
+  useEffect(() => {
+    async function fetchData() {
+      setUserToken(sessionStorage.getItem("user-token") || "");
+      try{
+        const response = await axios.post(apiLink, null, {
+          headers: {
+            'usertoken': userToken,
+          },
+        });
+
+        if (response.status === 200) {
+          setData(response.data);
+        } else {
+          console.error(response.data, "component/list_bus/stat_card.tsx");
+        }
+      }
+      catch(error){
+        console.error(error, "component/list_bus/stat_card.tsx");
+      }
+    }
+    fetchData();
+  }, [userToken]);
+
+
   return (
     <Card
       direction={{ base: "column", sm: "row" }}
@@ -40,8 +69,8 @@ export default function StatCard() {
 
       <Stack>
         <CardBody>
-          <Heading size="ms">Available Bus</Heading>
-          <Heading size="md">10,000</Heading>
+          <Heading size="ms">{cardTitle}</Heading>
+          <Heading size="md">{data}</Heading>
         </CardBody>
       </Stack>
     </Card>

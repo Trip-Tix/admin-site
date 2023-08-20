@@ -3,4 +3,9 @@ export const getBusLayout = '/api/bus/get-layout'
 export const getBusRoute = '/api/bus/get-all-routes'
 export const getRouteDetails = '/api/bus/get-route-details'
 
+export const getAvailableBus = '/api/bus/get-available-bus'
+export const getCustomerRating = '/api/bus/get-customer-rating'
+export const getTotalRoute = '/api/bus/get-total-route'
+export const getTotalOnRoutes = '/api/bus/get-total-on-routes'
+
 export const postLogin = '/api/user/login'
