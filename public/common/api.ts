@@ -26,6 +26,7 @@ export const getTotalRouteTrain = '/api/train/get-total-route'
 export const getTotalOnRoutesTrain = '/api/train/get-total-on-routes'
 export const postAddTrain = '/api/train/add-train'
 export const getTrainNames = '/api/train/get-train-names'
+export const getAllCoachesTrain = '/api/train/get-all-coaches'
 
 
 export const postLogin = '/api/user/login'
