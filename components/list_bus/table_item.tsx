@@ -7,14 +7,14 @@ import CoachTag from "@components/list_bus/coach_tag";
 interface TableItemProps {
   name: string;
   busId: string;
-  coachType: string;
+  coachId: string;
   amount: number;
 }
 
 export default function TableItem({
   name,
   busId,
-  coachType,
+  coachId,
   amount,
 }: TableItemProps) {
   const { colorMode } = useColorMode();
@@ -22,7 +22,7 @@ export default function TableItem({
 
   const handleClick = () => {
     setBusId(busId);
-    setCoachId(coachType);
+    setCoachId(coachId);
   };
   return (
     <Tr
@@ -41,7 +41,7 @@ export default function TableItem({
       <Td>{name}</Td>
       <Td>{busId}</Td>
       <Td>
-        <CoachTag coachType={coachType} />
+        <CoachTag coachId={coachId} />
       </Td>
       <Td isNumeric>{amount}</Td>
     </Tr>

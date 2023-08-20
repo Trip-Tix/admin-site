@@ -18,7 +18,7 @@ import TableItem from "@components/list_bus/table_item";
 interface BusInfo {
   busName: string;
   busId: string;
-  coachType: string;
+  coachId: string;
   amount: number;
 }
 
@@ -94,7 +94,7 @@ export default function List() {
                   key={bus.busId}
                   name={bus.busName}
                   busId={bus.busId}
-                  coachType={bus.coachType}
+                  coachId={bus.coachId}
                   amount={bus.amount}
                 />
               ))}
