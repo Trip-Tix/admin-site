@@ -18,8 +18,12 @@ type Route = {
   amount: number;
 };
 
-export default function RouteList() {
-  const { busId, coachId } = useContext(BusInfoContext);
+interface RouteListProps {
+  busId: string;
+  coachId: string;
+}
+
+export default function RouteList({ busId, coachId }: RouteListProps) {
   const [routes, setRoutes] = useState<Route[]>([]);
   const [userToken, setUserToken] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
