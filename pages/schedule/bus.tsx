@@ -9,10 +9,18 @@ import {
   NavigationOption,
   TransportType,
 } from "@public/common/navigation_option";
-
-import Form from "@components/schedule_bus/form";
+import { useState } from "react";
+import { Day, SchedulingContext } from "@public/common/temporary_context";
+import InitialForm from "@components/schedule_bus/initial_form";
+import DetailsForm from "@components/schedule_bus/details_form";
 
 export default function Main() {
+  const [isInitialForm, setIsInitialForm] = useState(true);
+  const [startingLocation, setStartingLocation] = useState("");
+  const [destinations, setDestinations] = useState<string[]>([]);
+  const [startingDate, setStartingDate] = useState<Day | null>(null);
+  const [endingDate, setEndingDate] = useState<Day | null>(null);
+
   return (
     <Layout title="Schedule Bus" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.Schedule}>
@@ -21,10 +29,19 @@ export default function Main() {
             transport={TransportType.Bus}
             navigation={NavigationOption.Schedule}
           />
-          <HStack spacing="4">
-            <Form />
-          </HStack>
-          
+          <SchedulingContext.Provider value={{
+            startingLocation,
+            setStartingLocation,
+            destinations,
+            setDestinations,
+            startingDate,
+            setStartingDate,
+            endingDate,
+            setEndingDate,
+          }}>
+          <InitialForm isInitialForm={isInitialForm} setIsInitialForm={setIsInitialForm}/>
+          <DetailsForm isInitialForm={isInitialForm}/>
+          </SchedulingContext.Provider>
         </VStack>
       </SidebarWithHeader>
     </Layout>
