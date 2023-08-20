@@ -5,13 +5,17 @@ import { BusInfoContext } from "@public/common/context";
 import axios from "axios";
 import { getRouteDetails } from "@public/common/api";
 import { Text } from "@chakra-ui/react";
-import { AiOutlineRight, AiOutlineRise,AiOutlineMinusSquare, AiOutlinePlusSquare } from "react-icons/ai";
-
-
+import {
+  AiOutlineRight,
+  AiOutlineRise,
+  AiOutlineMinusSquare,
+  AiOutlinePlusSquare,
+} from "react-icons/ai";
+import { RxDot } from "react-icons/rx";
 
 interface RouteItemProps {
   from: string;
-  to: string;
+  to: string[];
   amount: number;
 }
 
@@ -64,10 +68,15 @@ export default function RouteItem({ from, to, amount }: RouteItemProps) {
 
   return (
     <VStack spacing={1} align={"stretch"}>
-      <HStack spacing={1}>
-        <Text>{to}</Text>
-        <AiOutlineRight />
+      <HStack spacing={1} wrap={"wrap"}>
         <Text>{from}</Text>
+        <AiOutlineRight />
+        {to.map((item, index) => (
+          <HStack key={index}>
+            <Text>{item}</Text>
+            <RxDot />
+          </HStack>
+        ))}
         <AiOutlineRise />
         <Text>{amount}</Text>
         <Button

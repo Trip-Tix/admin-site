@@ -1,25 +1,35 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-type routes = {
+type route = {
   start: string;
-  end: string;
+  end: string[];
   amount: number;
 };
 
-const getRandomRouteList = (): routes[] => {
-    const randomRouteList: routes[] = [];
-    const startPoints = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
-    const endPoints = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
-  
-    for (let i = 0; i < startPoints.length; i++) {
-      const start = startPoints[i];
-      const end = endPoints[Math.floor(Math.random() * endPoints.length)];
-      const amount = Math.floor(Math.random() * 100) + 10; // Random amount between 10 and 109
-      randomRouteList.push({ start, end, amount });
-    }
-  
-    return randomRouteList;
-  };
+
+const routes: route[] = [
+  {
+    start: "São Paulo",
+    end: ["Rio de Janeiro", "Curitiba", "Belo Horizonte"],
+    amount: 3,
+  },
+  {
+    start: "Rio de Janeiro",
+    end: ["São Paulo", "Curitiba", "Belo Horizonte"],
+    amount: 5,
+  },
+  {
+    start: "Curitiba",
+    end: ["São Paulo", "Rio de Janeiro", "Belo Horizonte"],
+    amount: 6,
+  },
+  {
+    start: "Belo Horizonte",
+    end: ["São Paulo", "Rio de Janeiro", "Curitiba", "Dhaka", "Chittagong"],
+    amount: 3,
+  },
+];
+
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -35,7 +45,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(400).json({ error: "Missing busId or coachId" });
     }
 
-    const randomRoutes: routes[] = getRandomRouteList();
+    const randomRoutes: route[] = routes;
 
     return res.status(200).json(randomRoutes);
   } else {

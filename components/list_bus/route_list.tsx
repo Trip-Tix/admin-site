@@ -14,7 +14,7 @@ import RouteItem from "@components/list_bus/route_item";
 
 type Route = {
   start: string;
-  end: string;
+  end: string[];
   amount: number;
 };
 
@@ -81,7 +81,7 @@ export default function RouteList({ busId, coachId }: RouteListProps) {
         <VStack spacing={1} align="stretch" pt={2}>
           {routes.map((route) => (
             <RouteItem
-              key={route.start + route.end}
+              key={route.start + route.end[0] + route.amount}
               from={route.start}
               to={route.end}
               amount={route.amount}
