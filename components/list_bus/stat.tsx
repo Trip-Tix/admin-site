@@ -1,4 +1,4 @@
-import StatCard from "@components/stat_card";
+import StatCard from "@components/list_bus/stat_card";
 import { HStack } from "@chakra-ui/react";
 import {
   getAvailableBus,
