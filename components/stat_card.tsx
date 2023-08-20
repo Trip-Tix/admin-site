@@ -34,11 +34,11 @@ export default function StatCard({ cardTitle, apiLink, cardImage }: StatCardProp
         if (response.status === 200) {
           setData(response.data);
         } else {
-          console.error(response.data, "component/list_bus/stat_card.tsx");
+          console.error(response.data, "component/stat_card.tsx");
         }
       }
       catch(error){
-        console.error(error, "component/list_bus/stat_card.tsx");
+        console.error(error, "component/stat_card.tsx");
       }
     }
     fetchData();
