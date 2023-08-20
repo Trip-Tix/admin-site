@@ -9,9 +9,9 @@ import {
 
 const data = [
   {
-    title: "Available Bus",
+    title: "Available Train",
     apiLink: getAvailableBus,
-    cardImage: "/images/bus_available.svg"
+    cardImage: "/images/train_available.svg"
   },
   {
     title: "Total Route",
