@@ -18,6 +18,7 @@ export const postAddBus = '/api/bus/add-bus'
 export const getAllTrain = '/api/train/get-all-train'
 export const getCoachNameTrain = '/api/train/get-coach-name'
 export const getRouteDetailsTrain = '/api/train/get-route-details'
+export const getTrainRoute = '/api/train/get-all-routes'
 
 export const getAvailableTrain = '/api/train/get-available-train'
 export const getCustomerRatingTrain = '/api/train/get-customer-rating'

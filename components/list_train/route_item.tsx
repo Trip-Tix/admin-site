@@ -27,15 +27,15 @@ interface ScheduleDetail {
 
 export default function RouteItem({ from, to, amount }: RouteItemProps) {
   const [showDetails, setShowDetails] = useState(false);
-  const { trainId, coachId } = useContext(TrainInfoContext); // Assuming you have a TrainInfoContext
+  const { trainId, coachId } = useContext(TrainInfoContext);
   const [schedulingDetails, setSchedulingDetails] = useState<ScheduleDetail[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userToken = "your_user_token"; // Replace with actual user token
+        const userToken = "your_user_token"; 
         const response = await axios.post<ScheduleDetail[]>(
-          getRouteDetailsTrain, // Use the appropriate API function for getting train route details
+          getRouteDetailsTrain, 
           {
             trainId: trainId,
             coachId: coachId,
