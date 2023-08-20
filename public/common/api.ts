@@ -1,7 +1,7 @@
 // for bus
 export const getAllBus = '/api/bus/get-all-bus'
 export const getBusLayout = '/api/bus/get-layout'
-export const getBusRouteBus = '/api/bus/get-all-routes'
+export const getBusRoute = '/api/bus/get-all-routes'
 export const getRouteDetailsBus = '/api/bus/get-route-details'
 export const getCoachNameBus = '/api/bus/get-coach-name'
 
