@@ -16,7 +16,7 @@ const data = [
   {
     title: "Total Route",
     apiLink: getTotalRoute,
-    cardImage: "/images/bus_available.svg"
+    cardImage: "/images/route.svg"
   },
   {
     title: "Total On Route",
