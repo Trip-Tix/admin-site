@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { postAddBus } from "@public/common/api";
 
 import Title from "@components/add_train/title";
+import NameForm from "@components/add_bus/name_form";
 
 
 export default function Main() {
