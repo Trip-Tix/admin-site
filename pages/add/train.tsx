@@ -9,6 +9,8 @@ import {
 import { useState, useEffect } from "react";
 import { postAddBus } from "@public/common/api";
 
+import Title from "@components/add_train/title";
+
 
 export default function Main() {
   const [trainName, setTrainName] = useState("");
