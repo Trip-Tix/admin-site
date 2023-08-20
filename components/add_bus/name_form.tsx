@@ -9,14 +9,15 @@ import {
 } from "@chakra-ui/react";
 import { getBusNames } from "@public/common/api";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { AiOutlineStar } from "react-icons/ai";
+import { BusAddContext } from "@public/common/context";
 
 export default function NameForm() {
   const [busNames, setBusNames] = useState<string[]>([]);
   const [userToken, setUserToken] = useState<string>("");
-  const [busName, setBusName] = useState<string>("");
+  const { busName, setBusName } = useContext(BusAddContext);
   const [filteredBusNames, setFilteredBusNames] = useState<string[]>([]);
   const [isBusNameNew, setIsBusNameNew] = useState<boolean>(false);
 
