@@ -32,6 +32,18 @@ export default function CoachCard({ ChildrenButton }: CoachCardProps) {
   ]);
   const [availableSeat, setAvailableSeat] = useState<number>(2);
   const [coachSelected, setCoachSelected] = useState(false);
+
+  useEffect(() => {
+    console.log({
+      coachName,
+      availableNumber,
+      row,
+      column,
+      layout,
+      availableSeat,
+    });
+    }, [ coachName, availableNumber, row, column, layout, availableSeat ]);
+
   return (
     <CoachInfoContext.Provider
       value={{
