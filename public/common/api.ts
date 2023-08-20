@@ -9,5 +9,7 @@ export const getCustomerRating = '/api/bus/get-customer-rating'
 export const getTotalRoute = '/api/bus/get-total-route'
 export const getTotalOnRoutes = '/api/bus/get-total-on-routes'
 
+export const getBusNames = '/api/bus/get-bus-names'
+
 
 export const postLogin = '/api/user/login'
