@@ -1,37 +1,33 @@
 import { Flex, HStack, Text, VStack } from "@chakra-ui/layout";
-import { Divider } from "@chakra-ui/react";
+import { Divider, Spinner } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
-import { use, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { getBusLayout } from "@public/common/api";
-import { Spinner } from "@chakra-ui/react";
-
+import { getTrainLayout } from "@public/common/api";
 import Seat from "@components/seat";
 
 interface LayoutProps {
-  busId: string;
+  trainId: string;
   coachId: string;
 }
 
-export default function Layout({ busId, coachId }: LayoutProps) {
+export default function Layout({ trainId, coachId }: LayoutProps) {
   const [row, setRow] = useState(0);
   const [column, setColumn] = useState(0);
-  const [layout, setLayout] = useState([[]]);
-  const [RowArray, setRowArray] = useState(Array.from(Array(row).keys()));
-  const [ColumnArray, setColumnArray] = useState(
-    Array.from(Array(column).keys()),
-  );
-  const [userToken, setUserToken] = useState<string>("");
+  const [layout, setLayout] = useState<number[][]>([]);
+  const [RowArray, setRowArray] = useState<number[]>([]);
+  const [ColumnArray, setColumnArray] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      setUserToken(sessionStorage.getItem("user-token") || "");
       try {
+        const userToken = "your_user_token";
         const response = await axios.post(
-          getBusLayout,
+          getTrainLayout,
           {
-            busId: busId,
+            trainId: trainId,
             coachId: coachId,
           },
           {
@@ -40,7 +36,7 @@ export default function Layout({ busId, coachId }: LayoutProps) {
             },
           },
         );
-        if (response.status == 200) {
+        if (response.status === 200) {
           const { row, col, layout } = response.data;
           setRow(row);
           setColumn(col);
@@ -48,11 +44,7 @@ export default function Layout({ busId, coachId }: LayoutProps) {
           setRowArray(Array.from(Array(row).keys()));
           setColumnArray(Array.from(Array(column).keys()));
         } else {
-          console.error(
-            response.status,
-            response.data,
-            "component/list_bus/details/Details.tsx",
-          );
+          console.error(response.status, response.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -60,7 +52,7 @@ export default function Layout({ busId, coachId }: LayoutProps) {
       setLoading(false);
     };
     fetchData();
-  }, [busId, coachId, userToken]);
+  }, [trainId, coachId]);
 
   return (
     <Flex
