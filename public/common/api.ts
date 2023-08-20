@@ -24,6 +24,7 @@ export const getAvailableTrain = '/api/train/get-available-train'
 export const getCustomerRatingTrain = '/api/train/get-customer-rating'
 export const getTotalRouteTrain = '/api/train/get-total-route'
 export const getTotalOnRoutesTrain = '/api/train/get-total-on-routes'
+export const postAddTrain = '/api/train/add-train'
 
 
 export const postLogin = '/api/user/login'

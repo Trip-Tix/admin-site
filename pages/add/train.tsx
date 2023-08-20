@@ -7,6 +7,7 @@ import {
   TransportType,
 } from "@public/common/navigation_option";
 import { useState, useEffect } from "react";
+import { postAddBus } from "@public/common/api";
 
 
 export default function Main() {
