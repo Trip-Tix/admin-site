@@ -20,7 +20,7 @@ import SelectCoach from "@components/add_train/select_coach";
 import SelectRow from "@components/add_train/select_row";
 import SelectColumn from "@components/add_train/select_column";
 import SelectAmount from "@components/add_train/select_amount";
-// import SeatLayout from "@components/add_train/seat_layout";
+import SeatLayout from "@components/add_train/seat_layout";
 
 interface CoachCardProps {
   ChildrenButton: React.ReactNode;
@@ -123,7 +123,7 @@ export default function CoachCard({ ChildrenButton }: CoachCardProps) {
             <SelectAmount />
           </VStack>
           <Divider orientation="vertical" />
-          {/* <SeatLayout /> */}
+          <SeatLayout />
         </Flex>
       )}
     </CoachInfoContext.Provider>
