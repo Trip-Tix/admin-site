@@ -1,7 +1,4 @@
-import {
-  HStack,
-  VStack,
-} from "@chakra-ui/react";
+import { Divider, HStack, VStack, Flex } from "@chakra-ui/react";
 import Layout from "@components/layout";
 import SidebarWithHeader from "@components/sidebar_with_header";
 import TransportSelect from "@components/transport_select";
@@ -37,18 +34,26 @@ export default function Main() {
             transport={TransportType.Bus}
             navigation={NavigationOption.Schedule}
           />
-          <SchedulingContext.Provider value={{
-            startingLocation,
-            setStartingLocation,
-            destinations,
-            setDestinations,
-            startingDate,
-            setStartingDate,
-            endingDate,
-            setEndingDate,
-          }}>
-          <InitialForm isInitialForm={isInitialForm} setIsInitialForm={setIsInitialForm}/>
-          <DetailsForm isInitialForm={isInitialForm}/>
+          <SchedulingContext.Provider
+            value={{
+              startingLocation,
+              setStartingLocation,
+              destinations,
+              setDestinations,
+              startingDate,
+              setStartingDate,
+              endingDate,
+              setEndingDate,
+            }}
+          >
+            <Flex align="center" justify="space-between" direction="column" w="full">
+              <InitialForm
+                isInitialForm={isInitialForm}
+                setIsInitialForm={setIsInitialForm}
+              />
+              <Divider />
+              <DetailsForm isInitialForm={isInitialForm} />
+            </Flex>
           </SchedulingContext.Provider>
         </VStack>
       </SidebarWithHeader>

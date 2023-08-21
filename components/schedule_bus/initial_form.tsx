@@ -6,6 +6,16 @@ import {
   FormLabel,
   Input,
   Stack,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+  VStack,
 } from "@chakra-ui/react";
 import { SchedulingContext, Day } from "@public/common/temporary_context";
 
@@ -45,49 +55,89 @@ export default function InitialForm({
   };
 
   return (
-    <Box>
-      <FormControl>
-        <FormLabel>Starting Location</FormLabel>
-        <Input
-          value={startingLocation}
-          onChange={(e) => setStartingLocation(e.target.value)}
-        />
-      </FormControl>
-
-      <FormControl>
-        <FormLabel>Destinations</FormLabel>
-        <Stack spacing={3}>
-          {destinations.map((destination, index) => (
-            <Box key={index}>
+    <TableContainer>
+      <Table>
+        <Thead>
+          <Tr>
+            <Td>Starting Location</Td>
+            <Td>Destinations</Td>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>
               <Input
-                value={destination}
-                onChange={(e) => handleDestinationChange(index, e.target.value)}
+                value={startingLocation}
+                onChange={(e) => setStartingLocation(e.target.value)}
               />
-              <Button onClick={() => removeDestination(index)}>Remove</Button>
-            </Box>
-          ))}
-        </Stack>
-        <Button onClick={addDestination}>Add Destination</Button>
-      </FormControl>
-
-      {/* Add your visualization (SVG, graphics, etc.) here */}
-      <FormControl>
-        <FormLabel>Starting Date</FormLabel>
-        <Stack direction="row" spacing={2}>
-          <Input type="number" placeholder="Day" value={startingDate.day} />
-          <Input type="number" placeholder="Month" value={startingDate.month} />
-          <Input type="number" placeholder="Year" value={startingDate.year} />
-        </Stack>
-      </FormControl>
-
-      <FormControl>
-        <FormLabel>Ending Date</FormLabel>
-        <Stack direction="row" spacing={2}>
-          <Input type="number" placeholder="Day" value={endingDate.day} />
-          <Input type="number" placeholder="Month" value={endingDate.month} />
-          <Input type="number" placeholder="Year" value={endingDate.year} />
-        </Stack>
-      </FormControl>
-    </Box>
+            </Td>
+            <Td>
+              <Stack spacing={3}>
+                {destinations.map((destination, index) => (
+                  <Box key={index}>
+                    <Input
+                      value={destination}
+                      onChange={(e) =>
+                        handleDestinationChange(index, e.target.value)
+                      }
+                    />
+                    <Button onClick={() => removeDestination(index)}>
+                      Remove
+                    </Button>
+                  </Box>
+                ))}
+              </Stack>
+              <Button onClick={addDestination}>Add Destination</Button>
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
+      <Table>
+        <Thead>
+          <Tr>
+            <Td>Starting Date</Td>
+            <Td>Ending Date</Td>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>
+              <Stack direction="row" spacing={2}>
+                <Input
+                  type="number"
+                  placeholder="Day"
+                  value={startingDate.day}
+                />
+                <Input
+                  type="number"
+                  placeholder="Month"
+                  value={startingDate.month}
+                />
+                <Input
+                  type="number"
+                  placeholder="Year"
+                  value={startingDate.year}
+                />
+              </Stack>
+            </Td>
+            <Td>
+              <Stack direction="row" spacing={2}>
+                <Input type="number" placeholder="Day" value={endingDate.day} />
+                <Input
+                  type="number"
+                  placeholder="Month"
+                  value={endingDate.month}
+                />
+                <Input
+                  type="number"
+                  placeholder="Year"
+                  value={endingDate.year}
+                />
+              </Stack>
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 }
