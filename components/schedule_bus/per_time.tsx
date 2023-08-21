@@ -66,12 +66,13 @@ export default function PerTime({
   removeTimeEntry,
   date,
 }: PerTimeProps) {
+
   const handleHourChange = (event) => {
-    updateTimeEntry(index, Number(event.target.value), time.minute);
+    updateTimeEntry(index, parseInt(event.target.value), time.minute);
   };
 
   const handleMinuteChange = (event) => {
-    updateTimeEntry(index, time.hour, Number(event.target.value));
+    updateTimeEntry(index, time.hour, parseInt(event.target.value));
   };
 
   const handleRemove = () => {
@@ -121,7 +122,7 @@ export default function PerTime({
             </Select>
           </FormControl>
 
-          <Button onClick={onOpen} w={"full"}>
+          <Button onClick={onOpen} w={"full"} >
             {selectedBus || "Select bus"}
           </Button>
           <Drawer
