@@ -7,10 +7,10 @@ import {
 } from "@chakra-ui/react";
 
 interface CoachTypeProps {
-  coachId: string;
+  coachName: string;
 }
 
-export default function CoachType({ coachId }: CoachTypeProps) {
+export default function CoachType({ coachName }: CoachTypeProps) {
   return (
     <Flex
       direction="column"
@@ -24,7 +24,7 @@ export default function CoachType({ coachId }: CoachTypeProps) {
       <HStack spacing={4} align="stretch" width={"100%"}>
         <Text>Coach Type</Text>
         <Divider orientation="vertical" />
-        <Text>{coachId}</Text>
+        <Text>{coachName}</Text>
       </HStack>
     </Flex>
   );

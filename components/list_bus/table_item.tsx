@@ -5,24 +5,26 @@ import { Tr, Td } from "@chakra-ui/react";
 import CoachTag from "@components/list_bus/coach_tag";
 
 interface TableItemProps {
-  name: string;
+  busName: string;
   busId: string;
-  coachId: string;
+  coachName: string;
   amount: number;
+  busCoachId: string;
 }
 
 export default function TableItem({
-  name,
+  busName,
   busId,
-  coachId,
+  coachName,
   amount,
+  busCoachId,
 }: TableItemProps) {
   const { colorMode } = useColorMode();
   const { setBusId, setCoachId } = useContext(BusInfoContext);
 
   const handleClick = () => {
     setBusId(busId);
-    setCoachId(coachId);
+    setCoachId(busCoachId);
   };
   return (
     <Tr
@@ -38,10 +40,10 @@ export default function TableItem({
       cursor={"pointer"}
       onClick={handleClick}
     >
-      <Td>{name}</Td>
-      <Td>{busId}</Td>
+      <Td>{busName}</Td>
+      <Td>{busCoachId}</Td>
       <Td>
-        <CoachTag coachId={coachId} />
+        <CoachTag coachName={coachName} />
       </Td>
       <Td isNumeric>{amount}</Td>
     </Tr>

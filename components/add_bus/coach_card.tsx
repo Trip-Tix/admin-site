@@ -13,7 +13,7 @@ import { BusAddContext } from "@public/common/context";
 import { useColorModeValue } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { postAddBus } from "@public/common/api";
+import { postAddBus } from "@public/common/server_api";
 import { list_bus_url } from "@public/common/pagelinks";
 
 import SelectCoach from "@components/add_bus/select_coach";
@@ -39,11 +39,16 @@ export default function CoachCard({ ChildrenButton }: CoachCardProps) {
   const [coachSelected, setCoachSelected] = useState(false);
   const { submit, busName } = useContext(BusAddContext);
   const [userToken, setUserToken] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
     const sendData = async () => {
       setUserToken(sessionStorage.getItem("user-token") || "");
+      setUsername(sessionStorage.getItem("username") || "");
+      
+      const usernameArray: string[] = [];
+      usernameArray.push(username);
       try {
         const response = await axios.post(
           postAddBus,
@@ -55,6 +60,7 @@ export default function CoachCard({ ChildrenButton }: CoachCardProps) {
             column,
             layout,
             availableSeat,
+            adminUsernameArray: usernameArray,
           },
           {
             headers: {

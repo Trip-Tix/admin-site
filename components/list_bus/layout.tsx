@@ -3,17 +3,17 @@ import { Divider } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { use, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { getBusLayout } from "@public/common/api";
+import { getBusLayout } from "@public/common/server_api";
 import { Spinner } from "@chakra-ui/react";
 
 import Seat from "@components/seat";
 
 interface LayoutProps {
   busId: string;
-  coachId: string;
+  busCoachId: string;
 }
 
-export default function Layout({ busId, coachId }: LayoutProps) {
+export default function Layout({ busId, busCoachId }: LayoutProps) {
   const [row, setRow] = useState(0);
   const [column, setColumn] = useState(0);
   const [layout, setLayout] = useState([[]]);
@@ -23,16 +23,19 @@ export default function Layout({ busId, coachId }: LayoutProps) {
   );
   const [userToken, setUserToken] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setUserToken(sessionStorage.getItem("user-token") || "");
+      setUsername(sessionStorage.getItem("username") || "");
       try {
         const response = await axios.post(
           getBusLayout,
           {
             busId: busId,
-            coachId: coachId,
+            busCoachId: busCoachId,
+            adminUsername: username,
           },
           {
             headers: {
@@ -41,10 +44,11 @@ export default function Layout({ busId, coachId }: LayoutProps) {
           },
         );
         if (response.status == 200) {
-          const { row, col, layout } = response.data;
-          setRow(row);
-          setColumn(col);
-          setLayout(layout);
+          console.log(response.data);
+          const { matrix_rows, matrix_cols, matrix } = response.data;
+          setRow(matrix_rows);
+          setColumn(matrix_cols);
+          setLayout(matrix);
           setRowArray(Array.from(Array(row).keys()));
           setColumnArray(Array.from(Array(column).keys()));
         } else {
@@ -60,7 +64,7 @@ export default function Layout({ busId, coachId }: LayoutProps) {
       setLoading(false);
     };
     fetchData();
-  }, [busId, coachId, userToken]);
+  }, [busId, busCoachId, userToken]);
 
   return (
     <Flex
