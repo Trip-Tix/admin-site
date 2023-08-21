@@ -19,6 +19,16 @@ export interface TrainInfoContextType {
 
 export const TrainInfoContext = createContext<TrainInfoContextType | null>(null);
 
+export interface FlightInfoContextType {
+  flightId: string;
+  setFlightId: (flightId: string) => void;
+  classId: string;
+  setClassId: (classId: string) => void;
+}
+
+
+export const FlightInfoContext = createContext<FlightInfoContextType | null>(null);
+
 export interface UserInfoContextType {
   username: string;
   setUsername: (username: string) => void;
