@@ -20,7 +20,7 @@ export default function Details() {
       <Heading as="h1" size="lg" color="primary.800">
         Details
       </Heading>
-      {/* <FlightId flightId={flightId} /> */}
+      <FlightId flightId={flightId} />
       <ClassType className={classId} />
       <Layout flightId={flightId} flightClassId={classId} />
       <RouteList flightId={flightId} classId={classId} />
