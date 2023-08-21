@@ -1,4 +1,4 @@
-import { Flex, HStack, Text, VStack } from "@chakra-ui/layout";
+import { Flex, HStack, Text, VStack, Box } from "@chakra-ui/layout";
 import { Divider, Spinner } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { useEffect, useState } from "react";
@@ -70,16 +70,26 @@ export default function Layout({ trainId, coachId }: LayoutProps) {
         {loading ? (
           <Spinner />
         ) : (
+          // <VStack spacing={1}>
+          //   {RowArray.map((row) => (
+          //     <HStack spacing={1} key={row}>
+          //       {ColumnArray.map((column) => (
+          //         <Seat exists={layout[row][column] === 1} key={column} />
+          //       ))}
+          //       <Text ml={"10px"}>Row {row}</Text>
+          //     </HStack>
+          //   ))}
+          // </VStack>
           <VStack spacing={1}>
-            {RowArray.map((row) => (
-              <HStack spacing={1} key={row}>
-                {ColumnArray.map((column) => (
-                  <Seat exists={layout[row][column] === 1} key={column} />
-                ))}
-                <Text ml={"10px"}>Row {row}</Text>
-              </HStack>
-            ))}
-          </VStack>
+              {layout.map((row, rowIndex) => (
+                <HStack spacing={1} key={rowIndex}>
+                  {row.map((item, columnIndex) => (
+                  <Box key={columnIndex} background={item === 0? "white" : "gray.500"} w={2} h ={2} borderRadius={2} visibility={item === 0? "hidden" : "visible"}/>
+                  ))} 
+                </HStack>
+              ))
+              }
+            </VStack>
         )}
       </HStack>
     </Flex>
