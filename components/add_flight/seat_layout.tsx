@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
-import { CoachInfoContext } from "@public/common/context";
+import { ClassInfoContext } from "@public/common/context";
 import { useColorModeValue } from "@chakra-ui/react";
 import { HStack, Box, VStack, Text } from "@chakra-ui/react";
-import Seat from "@components/add_train/seat";
+import Seat from "@components/add_flight/seat";
 
 export default function SeatLayout() {
-  const { row, column, layout, setLayout, availableSeat, setAvailableSeat } = useContext(CoachInfoContext);
+  const { row, column, layout, setLayout, availableSeat, setAvailableSeat } = useContext(ClassInfoContext);
   const [RowArray, setRowArray] = useState<number[]>([]);
   const [ColumnArray, setColumnArray] = useState<number[]>([]);
 

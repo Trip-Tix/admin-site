@@ -1,7 +1,7 @@
 import { useColorModeValue } from "@chakra-ui/react";
 import { HStack, Box, VStack, Text } from "@chakra-ui/react";
 import React, { useContext, useState, useEffect } from "react";
-import { CoachInfoContext } from "@public/common/context";
+import { ClassInfoContext } from "@public/common/context";
 
 interface SeatProps {
   row_index: number;
@@ -9,7 +9,7 @@ interface SeatProps {
 }
 
 export default function Seat({ row_index, column_index }: SeatProps) {
-  const { layout, setLayout, availableSeat, setAvailableSeat } = useContext(CoachInfoContext);
+  const { layout, setLayout, availableSeat, setAvailableSeat } = useContext(ClassInfoContext);
   const handleClick = (row_index, column_index) => {
     const newLayout = layout.map((row, rowIndex) =>
       rowIndex === row_index
