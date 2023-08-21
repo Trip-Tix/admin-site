@@ -1,17 +1,8 @@
-import {
-  Box,
-  HStack,
-  VStack,
-  Card,
-  CardBody,
-  Text,
-  Stat,
-} from "@chakra-ui/react";
+import { HStack, VStack } from "@chakra-ui/react";
 import Layout from "@components/layout";
 import SidebarWithHeader from "@components/sidebar_with_header";
-import StatCard from "@components/stat_card";
-import List from "@components/list_flight/list";
-import Details from "@components/list_flight/details";
+import Stat from "@components/list_flight/stat";
+import MainData from "@components/list_flight/main_data";
 import TransportSelect from "@components/transport_select";
 import {
   NavigationOption,
@@ -20,13 +11,15 @@ import {
 
 export default function Main() {
   return (
-    <Layout title="List Flight" isProtected={true}>
+    <Layout title="List Bus" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.List}>
         <VStack spacing="4" align="stretch">
           <TransportSelect
             transport={TransportType.Flight}
             navigation={NavigationOption.List}
           />
+          <Stat />
+          <MainData />
         </VStack>
       </SidebarWithHeader>
     </Layout>
