@@ -88,9 +88,7 @@ export default function DetailsForm({ isInitialForm }: DetailsFormProps) {
 
   return (
     <>
-      {isInitialForm ? (
-        <p>Hi</p>
-      ) : (
+      {!isInitialForm && (
         <>
           {daysInRange.map((day) => (
             <PerDate key={day.day.toString()+day.month.toString()+day.year.toString()} currentDate={day} />
