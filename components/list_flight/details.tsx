@@ -4,8 +4,8 @@ import { FlightInfoContext } from "@public/common/context";
 
 import RouteList from "@components/list_flight/route_list";
 import Layout from "@components/list_flight/layout";
-// import ClassType from "@components/class_type";
-// import FlightId from "@components/list_flight/flight_id";
+import ClassType from "@components/class_type";
+import FlightId from "@components/list_flight/flight_id";
 
 export default function Details() {
   const { flightId, classId } = useContext(FlightInfoContext);
@@ -21,7 +21,7 @@ export default function Details() {
         Details
       </Heading>
       {/* <FlightId flightId={flightId} /> */}
-      {/* <ClassType classId={classId} /> */}
+      <ClassType className={classId} />
       <Layout flightId={flightId} flightClassId={classId} />
       <RouteList flightId={flightId} classId={classId} />
     </VStack>
