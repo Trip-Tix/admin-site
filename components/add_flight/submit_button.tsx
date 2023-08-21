@@ -1,19 +1,19 @@
 import { useContext } from "react";
-import { TrainAddContext } from "@public/common/context";
+import { FlightAddContext } from "@public/common/context";
 
 import { Button, Flex } from "@chakra-ui/react";
 import { BsDatabaseAdd } from "react-icons/bs";
 
 interface SubmitButtonProps {
-  coachKeys: number[];
+  classKeys: number[];
 }
 
-export default function FollowButtonWithShadow({ coachKeys }: SubmitButtonProps) {
-  const { setCheck, trainName, coaches } = useContext(TrainAddContext);
+export default function FollowButtonWithShadow({ classKeys }: SubmitButtonProps) {
+  const { setCheck, flightName, classes } = useContext(FlightAddContext);
   return (
     <Flex justifyContent="center" alignItems="center">
-      <Button leftIcon={<BsDatabaseAdd />} colorScheme="teal" variant="solid" onClick={() => setCheck(true)} isDisabled={trainName.length == 0 || coachKeys.length == 0}>
-        Add Train
+      <Button leftIcon={<BsDatabaseAdd />} colorScheme="teal" variant="solid" onClick={() => setCheck(true)} isDisabled={flightName.length == 0 || classKeys.length == 0}>
+        Add Flight
       </Button>
     </Flex>
   );

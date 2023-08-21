@@ -4,7 +4,7 @@ export default function Title() {
   return (
     <>
       <Heading as={"h1"} size={"lg"} pb={"4"}>
-        Add New Train
+        Add New Flight
       </Heading>
     </>
   );

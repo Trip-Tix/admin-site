@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useColorModeValue } from "@chakra-ui/react";
-import { CoachInfoContext } from "@public/common/context";
+import { ClassInfoContext } from "@public/common/context";
 import {
   NumberInput,
   NumberInputField,
@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function SelectAmount() {
-  const { availableNumber, setAvailableNumber } = useContext(CoachInfoContext);
+  const { availableNumber, setAvailableNumber } = useContext(ClassInfoContext);
   const handleChange = (value: number | string) => {
     if (typeof value === "string") {
       setAvailableNumber(parseInt(value));

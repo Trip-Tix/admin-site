@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { CoachInfoContext } from "@public/common/context";
+import { ClassInfoContext } from "@public/common/context";
 import { useColorModeValue } from "@chakra-ui/react";
 import {
   NumberInput,
@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function SelectColumn() {
-  const { column, setColumn } = useContext(CoachInfoContext);
+  const { column, setColumn } = useContext(ClassInfoContext);
   const handleChange = (value: number | string) => {
     if (typeof value === "string") {
       setColumn(parseInt(value));

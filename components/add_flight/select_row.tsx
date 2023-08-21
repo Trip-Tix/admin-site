@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useColorModeValue } from "@chakra-ui/react";
-import { CoachInfoContext } from "@public/common/context";
+import { ClassInfoContext } from "@public/common/context";
 import {
   NumberInput,
   NumberInputField,
@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function SelectRow() {
-  const { row, setRow } = useContext(CoachInfoContext);
+  const { row, setRow } = useContext(ClassInfoContext);
   const handleChange = (value: number | string) => {
     if (typeof value === "string") {
       setRow(parseInt(value));
