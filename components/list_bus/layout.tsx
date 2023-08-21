@@ -1,4 +1,4 @@
-import { Flex, HStack, Text, VStack } from "@chakra-ui/layout";
+import { Flex, HStack, Text, VStack, Box } from "@chakra-ui/layout";
 import { Divider } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { use, useContext, useEffect, useState } from "react";
@@ -95,6 +95,16 @@ export default function Layout({ busId, busCoachId }: LayoutProps) {
                 ))}
               </VStack>
             )} */}
+            <VStack spacing={1}>
+              {layout.map((row, rowIndex) => (
+                <HStack spacing={1} key={rowIndex}>
+                  {row.map((item, columnIndex) => (
+                  <Box key={columnIndex} background={item === 0? "white" : "gray.500"} w={2} h ={2} borderRadius={2} visibility={item === 0? "hidden" : "visible"}/>
+                  ))} 
+                </HStack>
+              ))
+              }
+            </VStack>
           </>
         )}
       </HStack>
