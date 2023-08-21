@@ -50,6 +50,7 @@ const Layout: React.FC<LayoutProps> = ({ title, isProtected, children }) => {
       console.log({
         isLogin: isLogin_login,
         userToken: sessionStorage.getItem("user-token"),
+        userRole: sessionStorage.getItem("user-role"),
       });
     }
 

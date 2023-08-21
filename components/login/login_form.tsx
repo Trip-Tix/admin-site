@@ -21,7 +21,7 @@ import {
 } from "@public/common/color";
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
-import { postLogin } from "@public/common/api";
+import { postLogin } from "@public/common/server_api";
 import axios from "axios";
 import { home_url } from "@public/common/pagelinks";
 
@@ -55,17 +55,21 @@ export default function Login_form() {
 
     setLoading(true);
 
+    console.log(postLogin);
+
     axios
       .post(postLogin, {
         username: username,
         password: password,
       })
       .then((res) => {
+        console.log(res.data);
         setLoading(false);
         setUserToken(res.data.userToken);
         setIsLogin(true);
-        sessionStorage.setItem("user-token", res.data.userToken);
+        sessionStorage.setItem("user-token", res.data.token);
         sessionStorage.setItem("username", username);
+        sessionStorage.setItem("user-role", res.data.adminRole)
         sessionStorage.setItem("is-login", "true");
         router.push(home_url);
       })
