@@ -7,72 +7,72 @@ import {
   InputRightElement,
   InputGroup,
 } from "@chakra-ui/react";
-import { getTrainNames } from "@public/common/api";
+import { getFlightNames } from "@public/common/api";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { AiOutlineStar } from "react-icons/ai";
-import { TrainAddContext } from "@public/common/context";
+import { FlightAddContext } from "@public/common/context";
 
 export default function NameForm() {
-  const [trainNames, setTrainNames] = useState<string[]>([]);
+  const [flightNames, setFlightNames] = useState<string[]>([]);
   const [userToken, setUserToken] = useState<string>("");
-  const { trainName, setTrainName } = useContext(TrainAddContext);
-  const [filteredTrainNames, setFilteredTrainNames] = useState<string[]>([]);
-  const [isTrainNameNew, setIsTrainNameNew] = useState<boolean>(false);
+  const { flightName, setFlightName } = useContext(FlightAddContext);
+  const [filteredFlightNames, setFilteredFlightNames] = useState<string[]>([]);
+  const [isFlightNameNew, setIsFlightNameNew] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setUserToken(sessionStorage.getItem("user-token") || "");
       try {
-        const response = await axios.post(getTrainNames, null, {
+        const response = await axios.post(getFlightNames, null, {
           headers: {
             usertoken: userToken,
           },
         });
         if (response.status === 200) {
-          setTrainNames(response.data);
+          setFlightNames(response.data);
         } else {
-          console.error("Failed to fetch train names", "component/add_train/name_form.tsx");
+          console.error("Failed to fetch flight names", "component/add_flight/name_form.tsx");
         }
       } catch (error) {
-        console.error("An error occurred while fetching train names:", error, "component/add_train/name_form.tsx");
+        console.error("An error occurred while fetching flight names:", error, "component/add_flight/name_form.tsx");
       }
     };
     fetchData();
   }, [userToken]);
 
   useEffect(() => {
-    const filteredTrainNames = trainNames.filter((name) =>
-      name.toLowerCase().includes(trainName.toLowerCase()),
+    const filteredFlightNames = flightNames.filter((name) =>
+      name.toLowerCase().includes(flightName.toLowerCase()),
     );
-    setFilteredTrainNames(filteredTrainNames);
-  }, [trainName, trainNames]);
+    setFilteredFlightNames(filteredFlightNames);
+  }, [flightName, flightNames]);
 
   useEffect(() => {
-    setIsTrainNameNew(!trainNames.includes(trainName));
-  }, [trainName, trainNames]);
+    setIsFlightNameNew(!flightNames.includes(flightName));
+  }, [flightName, flightNames]);
 
   return (
     <FormControl>
-      <FormLabel>Train Name</FormLabel>
+      <FormLabel>Flight Name</FormLabel>
       <InputGroup>
-        <Input onChange={(e) => setTrainName(e.target.value)} value={trainName} />
+        <Input onChange={(e) => setFlightName(e.target.value)} value={flightName} />
         <InputRightElement>
-          {isTrainNameNew && <AiOutlineStar />}
+          {isFlightNameNew && <AiOutlineStar />}
         </InputRightElement>
       </InputGroup>
-      {filteredTrainNames.length > 0 && trainName.length > 0 && isTrainNameNew && (
+      {filteredFlightNames.length > 0 && flightName.length > 0 && isFlightNameNew && (
         <List
           spacing={3}
           mt={3}
           borderRadius={5}
           bg={useColorModeValue("gray.300", "gray.700")}
         >
-          {filteredTrainNames.map((name) => (
+          {filteredFlightNames.map((name) => (
             <ListItem
               key={name}
-              onClick={() => setTrainName(name)}
+              onClick={() => setFlightName(name)}
               tabIndex={0}
               role="button"
               _hover={{
