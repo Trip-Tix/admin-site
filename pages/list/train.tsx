@@ -11,7 +11,7 @@ import {
 
 export default function Main() {
   return (
-    <Layout title="List Bus" isProtected={true}>
+    <Layout title="List Train" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.List}>
         <VStack spacing="4" align="stretch">
           <TransportSelect
