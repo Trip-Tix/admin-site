@@ -38,6 +38,9 @@ export const getFlightLayout = '/api/flight/get-layout'
 export const getFlightRoute = '/api/flight/get-all-routes'
 export const getRouteDetailsFlight = '/api/flight/get-route-details'
 export const getClassNameFlight = '/api/flight/get-class-name'
+export const getFlightNames = '/api/bus/get-flight-names'
+export const getAllClassesFlight = '/api/bus/get-all-classes'
+export const postAddFlight = '/api/flight/add-flight'
 
 
 
