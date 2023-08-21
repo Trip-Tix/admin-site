@@ -5,8 +5,8 @@ import { useContext, useState, useEffect } from "react";
 
 const theme = extendTheme({
   fonts: {
-    body: "Rajdhani, sans-serif",
-    heading: "Rajdhani, sans-serif",
+    body: "Ubuntu, sans-serif",
+    heading: "Ubuntu, sans-serif",
   },
 });
 

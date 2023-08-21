@@ -18,6 +18,7 @@ export default function Main() {
         background={background}
         color={foreground}
       >
+        <Side_image />
         <Flex p={8} flex={1} align={"center"} justify={"center"}>
           <Stack spacing={4} w={"full"} maxW={"md"}>
             <Title />
@@ -25,7 +26,7 @@ export default function Main() {
             <Helpful_link />
           </Stack>
         </Flex>
-        <Side_image />
+        
       </Stack>
     </Layout>
   );
