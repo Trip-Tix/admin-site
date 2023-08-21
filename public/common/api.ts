@@ -33,6 +33,11 @@ export const getAvailableFlight = '/api/flight/get-available-flight'
 export const getCustomerRatingFlight = '/api/flight/get-customer-rating'
 export const getTotalRouteFlight = '/api/flight/get-total-route'
 export const getTotalOnRoutesFlight = '/api/flight/get-total-on-routes'
+export const getAllFlight = '/api/flight/get-all-flight'
+export const getFlightLayout = '/api/flight/get-layout'
+export const getFlightRoute = '/api/flight/get-all-routes'
+export const getRouteDetailsFlight = '/api/flight/get-route-details'
+export const getClassNameFlight = '/api/flight/get-class-name'
 
 
 
