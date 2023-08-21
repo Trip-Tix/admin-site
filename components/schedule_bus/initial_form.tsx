@@ -1,21 +1,15 @@
 import { useState, useContext } from "react";
 import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
+  Flex,
+  Text,
   Input,
-  Stack,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
   VStack,
+  Divider,
+  Button,
+  Box,
+  InputGroup,
+  InputRightElement,
+  Spacer,
 } from "@chakra-ui/react";
 import { SchedulingContext, Day } from "@public/common/temporary_context";
 
@@ -55,89 +49,50 @@ export default function InitialForm({
   };
 
   return (
-    <TableContainer>
-      <Table>
-        <Thead>
-          <Tr>
-            <Td>Starting Location</Td>
-            <Td>Destinations</Td>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <Tr>
-            <Td>
+    <>
+      <Flex align="center" justify="space-between" direction="row" w="full">
+        <Text fontSize="xl" fontWeight="bold" p={2}>
+          {" "}
+          Starting Location{" "}
+        </Text>
+        <Text fontSize="xl" fontWeight="bold" p={2}>
+          {" "}
+          Destinations{" "}
+        </Text>
+      </Flex>
+      <Flex
+        align="flex-start"
+        justify="space-between"
+        direction="row"
+        w="full"
+        p={2}
+        m={2}
+      >
+        <Input
+          value={startingLocation}
+          onChange={(e) => setStartingLocation(e.target.value)}
+          width={"40%"}
+        />
+
+        <Divider orientation="vertical" />
+
+        <VStack spacing={3} align={"right"} w="40%">
+          {destinations.map((destination, index) => (
+            <InputGroup key={index}>
               <Input
-                value={startingLocation}
-                onChange={(e) => setStartingLocation(e.target.value)}
+                value={destination}
+                onChange={(e) => handleDestinationChange(index, e.target.value)}
+                key={index}
+                width={"full"}
               />
-            </Td>
-            <Td>
-              <Stack spacing={3}>
-                {destinations.map((destination, index) => (
-                  <Box key={index}>
-                    <Input
-                      value={destination}
-                      onChange={(e) =>
-                        handleDestinationChange(index, e.target.value)
-                      }
-                    />
-                    <Button onClick={() => removeDestination(index)}>
-                      Remove
-                    </Button>
-                  </Box>
-                ))}
-              </Stack>
-              <Button onClick={addDestination}>Add Destination</Button>
-            </Td>
-          </Tr>
-        </Tbody>
-      </Table>
-      <Table>
-        <Thead>
-          <Tr>
-            <Td>Starting Date</Td>
-            <Td>Ending Date</Td>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <Tr>
-            <Td>
-              <Stack direction="row" spacing={2}>
-                <Input
-                  type="number"
-                  placeholder="Day"
-                  value={startingDate.day}
-                />
-                <Input
-                  type="number"
-                  placeholder="Month"
-                  value={startingDate.month}
-                />
-                <Input
-                  type="number"
-                  placeholder="Year"
-                  value={startingDate.year}
-                />
-              </Stack>
-            </Td>
-            <Td>
-              <Stack direction="row" spacing={2}>
-                <Input type="number" placeholder="Day" value={endingDate.day} />
-                <Input
-                  type="number"
-                  placeholder="Month"
-                  value={endingDate.month}
-                />
-                <Input
-                  type="number"
-                  placeholder="Year"
-                  value={endingDate.year}
-                />
-              </Stack>
-            </Td>
-          </Tr>
-        </Tbody>
-      </Table>
-    </TableContainer>
+              <InputRightElement width={"4.5rem"}>
+                <Button onClick={() => removeDestination(index)}>Remove</Button>
+              </InputRightElement>
+            </InputGroup>
+          ))}
+          <Button onClick={addDestination}>Add Destination</Button>
+        </VStack>
+      </Flex>
+    </>
   );
 }
