@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { SchedulingContext, Day } from "@public/common/temporary_context";
+import PerDate from "@components/schedule_bus/per_date"
 
 interface DetailsFormProps {
   isInitialForm: boolean;
@@ -92,9 +93,7 @@ export default function DetailsForm({ isInitialForm }: DetailsFormProps) {
       ) : (
         <>
           {daysInRange.map((day) => (
-            <p key={day.day + day.month + day.year}>
-              {day.day} {day.month} {day.year}
-            </p>
+            <PerDate key={day.day.toString()+day.month.toString()+day.year.toString()} currentDate={day} />
           ))}
         </>
       )}
