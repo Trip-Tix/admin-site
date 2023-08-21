@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { FlightInfoContext } from "@public/common/context";
 
 import RouteList from "@components/list_flight/route_list";
-// import Layout from "@components/list_flight/layout";
+import Layout from "@components/list_flight/layout";
 // import ClassType from "@components/class_type";
 // import FlightId from "@components/list_flight/flight_id";
 
@@ -22,7 +22,7 @@ export default function Details() {
       </Heading>
       {/* <FlightId flightId={flightId} /> */}
       {/* <ClassType classId={classId} /> */}
-      {/* <Layout flightId={flightId} classId={classId} /> */}
+      <Layout flightId={flightId} flightClassId={classId} />
       <RouteList flightId={flightId} classId={classId} />
     </VStack>
   );

@@ -22,7 +22,7 @@ export default function Details() {
         Details
       </Heading>
       <TrainId trainId={trainId} />
-      <CoachType coachId={coachId} />
+      <CoachType coachName={coachId} />
       <Layout trainId={trainId} coachId={coachId} />
       <RouteList trainId={trainId} coachId={coachId} />
     </VStack>
