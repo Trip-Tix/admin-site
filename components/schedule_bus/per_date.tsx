@@ -1,6 +1,6 @@
 import { Day, SchedulingContext } from "@public/common/temporary_context";
 import React, { useState } from 'react';
-import { Box, Text, Button } from '@chakra-ui/react';
+import { Box, Text, Button, Flex, HStack, VStack } from '@chakra-ui/react';
 import PerTime from "@components/schedule_bus/per_time"
 
 interface PerDateProps {
@@ -28,10 +28,11 @@ export default function PerDate({ currentDate }: PerDateProps) {
     };
   
     return (
-      <Box>
-        <Text>
+      <Flex  justify="space-between" direction="row" w="full">
+        <Text mt={4}>
           Date: {currentDate.day}/{currentDate.month}/{currentDate.year}
         </Text>
+        <VStack spacing={4}>
         {timeEntries.map((time, index) => (
           <PerTime
             key={index}
@@ -39,9 +40,11 @@ export default function PerDate({ currentDate }: PerDateProps) {
             time={time}
             updateTimeEntry={updateTimeEntry}
             removeTimeEntry={removeTimeEntry}
+            date={currentDate}
           />
         ))}
-        <Button onClick={addTimeEntry}>Add Time Entry</Button>
-      </Box>
+        </VStack>
+        <Button onClick={addTimeEntry} m={2}>Add Time Entry</Button>
+      </Flex>
     );
   }
