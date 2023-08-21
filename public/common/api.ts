@@ -28,5 +28,12 @@ export const postAddTrain = '/api/train/add-train'
 export const getTrainNames = '/api/train/get-train-names'
 export const getAllCoachesTrain = '/api/train/get-all-coaches'
 
+// for flight
+export const getAvailableFlight = '/api/flight/get-available-flight'
+export const getCustomerRatingFlight = '/api/flight/get-customer-rating'
+export const getTotalRouteFlight = '/api/flight/get-total-route'
+export const getTotalOnRoutesFlight = '/api/flight/get-total-on-routes'
+
+
 
 export const postLogin = '/api/user/login'
