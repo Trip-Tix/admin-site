@@ -52,6 +52,20 @@ export interface BusAddContextType {
 
 export const BusAddContext = createContext<BusAddContextType | null>(null);
 
+export interface TrainAddContextType {
+  trainName: string;
+  setTrainName: (trainName: string) => void;
+  coaches: CoachInfo[];
+  setCoaches: (coaches: CoachInfo[]) => void;
+  submit: boolean;
+  setSubmit: (submit: boolean) => void;
+  check: boolean;
+  setCheck: (check: boolean) => void;
+}
+
+export const TrainAddContext = createContext<TrainAddContextType | null>(null);
+
+
 export interface CoachInfoContextType {
   coachName: string;
   setCoachName: (coachName: string) => void;
