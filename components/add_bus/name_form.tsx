@@ -7,7 +7,7 @@ import {
   InputRightElement,
   InputGroup,
 } from "@chakra-ui/react";
-import { getBusNames } from "@public/common/api";
+import { getBusNames } from "@public/common/server_api";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { useColorModeValue } from "@chakra-ui/color-mode";
@@ -17,6 +17,7 @@ import { BusAddContext } from "@public/common/context";
 export default function NameForm() {
   const [busNames, setBusNames] = useState<string[]>([]);
   const [userToken, setUserToken] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const { busName, setBusName } = useContext(BusAddContext);
   const [filteredBusNames, setFilteredBusNames] = useState<string[]>([]);
   const [isBusNameNew, setIsBusNameNew] = useState<boolean>(false);
@@ -24,14 +25,23 @@ export default function NameForm() {
   useEffect(() => {
     const fetchData = async () => {
       setUserToken(sessionStorage.getItem("user-token") || "");
+      setUsername(sessionStorage.getItem("username") || "");
+      const requestBody = {
+        adminUsername: username,
+      };
       try {
-        const response = await axios.post(getBusNames, null, {
+        const response = await axios.post(getBusNames, requestBody, {
           headers: {
             usertoken: userToken,
           },
         });
         if (response.status === 200) {
-          setBusNames(response.data);
+          // Get the bus name array from the response
+          let busNames: string[] = [];
+          for (let i = 0; i < response.data.length; i++) {
+            busNames.push(response.data[i].bus_name);
+          }
+          setBusNames(busNames);
         } else {
           console.error(
             "Failed to fetch bus names",

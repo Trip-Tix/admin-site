@@ -11,29 +11,35 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getAllBus } from "@public/common/api";
+import { getAllBus } from "@public/common/server_api";
 import axios from "axios";
 import TableItem from "@components/list_bus/table_item";
 
 interface BusInfo {
-  busName: string;
-  busId: string;
-  coachId: string;
-  amount: number;
+  bus_id: string;
+  bus_name: string;
+  number_of_buses: number;
+  coach_name: string;
+  bus_coach_id: string;
 }
 
 export default function List() {
   const [busInfoList, setBusInfoList] = useState<BusInfo[]>([]);
   const [busInfoLoading, setBusInfoLoading] = useState(true);
   const [userToken, setUserToken] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
 
   // api call to get the bus list
   useEffect(() => {
     async function fetchBusInfo() {
       setBusInfoLoading(true);
       setUserToken(sessionStorage.getItem("user-token") || "");
+      setUsername(sessionStorage.getItem("username") || "");
+      const requestBody = {
+        adminUsername: username,
+      };
       try {
-        const response = await axios.post(getAllBus, null, {
+        const response = await axios.post(getAllBus, requestBody, {
           headers: {
             usertoken: userToken,
           },
@@ -85,17 +91,18 @@ export default function List() {
                 <Th>Bus Name</Th>
                 <Th>Bus ID</Th>
                 <Th>Coach Type</Th>
-                <Th isNumeric>Amount</Th>
+                <Th isNumeric>Number of Buses</Th>
               </Tr>
             </Thead>
             <Tbody>
               {busInfoList.map((bus) => (
                 <TableItem
-                  key={bus.busId}
-                  name={bus.busName}
-                  busId={bus.busId}
-                  coachId={bus.coachId}
-                  amount={bus.amount}
+                  key={bus.bus_coach_id}
+                  busName={bus.bus_name}
+                  busId={bus.bus_id}
+                  coachName={bus.coach_name}
+                  amount={bus.number_of_buses}
+                  busCoachId={bus.bus_coach_id}
                 />
               ))}
             </Tbody>

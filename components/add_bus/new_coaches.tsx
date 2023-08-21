@@ -5,8 +5,6 @@ import { useState } from "react";
 import CoachCard from "@components/add_bus/coach_card";
 import { useColorModeValue } from "@chakra-ui/react";
 
-const coachList = ["AC", "Seat", "Bus"];
-
 interface NewCoachesProps {
   coachKeys: number[];
   setCoachKeys: (keys: number[]) => void;

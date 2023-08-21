@@ -21,8 +21,8 @@ export default function Details() {
         Details
       </Heading>
       <BusId busId={busId} />
-      <CoachType coachId={coachId} />
-      <Layout busId={busId} coachId={coachId} />
+      <CoachType coachName={coachId} />
+      <Layout busId={busId} busCoachId={coachId} />
       <RouteList busId={busId} coachId={coachId} />
     </VStack>
   );

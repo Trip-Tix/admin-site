@@ -1,7 +1,7 @@
 import React from "react";
 import { CoachInfoContext } from "@public/common/context";
 import { useContext, useEffect, useState } from "react";
-import { getAllCoachesBus, getCoachNameBus } from "@public/common/api";
+import { getAllCoachesBus } from "@public/common/server_api";
 import axios from "axios";
 import { VStack, Select } from "@chakra-ui/react";
 
@@ -28,7 +28,12 @@ export default function SelectCoach({
           },
         });
         if (response.status === 200) {
-          setCoachNames(response.data);
+          // Get the coach name array from the response
+          let coachNames: string[] = [];
+          for (let i = 0; i < response.data.length; i++) {
+            coachNames.push(response.data[i].coach_name);
+          }
+          setCoachNames(coachNames);
         }
       } catch (error) {
         console.error(
