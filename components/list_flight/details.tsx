@@ -22,7 +22,7 @@ export default function Details() {
       </Heading>
       <FlightId flightId={flightId} />
       <ClassType className={classId} />
-      <Layout flightId={flightId} flightClassId={classId} />
+      <Layout flightId={flightId} classId={classId} />
       <RouteList flightId={flightId} classId={classId} />
     </VStack>
   );

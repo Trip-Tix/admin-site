@@ -37,10 +37,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { flightId, seatId } = req.body;
+    const { flightId, classId } = req.body;
 
-    if (!flightId || !seatId) {
-      return res.status(400).json({ error: "Missing flightId or seatId" });
+    if (!flightId || !classId) {
+      return res.status(400).json({ error: "Missing flightId or classId" });
     }
 
     const randomRoutes: Route[] = routes;

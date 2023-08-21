@@ -3,18 +3,18 @@ import { NextApiRequest, NextApiResponse } from "next";
 type FlightInfo = {
   flightName: string;
   flightId: string;
-  seatId: string;
-  price: number;
+  classId: string;
+  amount: number;
 };
 
 const flightInfoList: FlightInfo[] = [
-  { flightName: "Flight X", flightId: "X123", seatId: "101", price: 350 },
-  { flightName: "Flight Y", flightId: "Y456", seatId: "102", price: 250 },
-  { flightName: "Flight Z", flightId: "Z789", seatId: "103", price: 400 },
-  { flightName: "Flight A", flightId: "A101", seatId: "104", price: 320 },
-  { flightName: "Flight B", flightId: "B222", seatId: "105", price: 380 },
-  { flightName: "Flight C", flightId: "C333", seatId: "106", price: 310 },
-  { flightName: "Flight D", flightId: "D444", seatId: "107", price: 420 },
+  { flightName: "Flight X", flightId: "X123", classId: "101", amount: 350 },
+  { flightName: "Flight Y", flightId: "Y456", classId: "102", amount: 250 },
+  { flightName: "Flight Z", flightId: "Z789", classId: "103", amount: 400 },
+  { flightName: "Flight A", flightId: "A101", classId: "104", amount: 320 },
+  { flightName: "Flight B", flightId: "B222", classId: "105", amount: 380 },
+  { flightName: "Flight C", flightId: "C333", classId: "106", amount: 310 },
+  { flightName: "Flight D", flightId: "D444", classId: "107", amount: 420 },
 ];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {

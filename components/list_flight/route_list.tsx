@@ -6,8 +6,7 @@ import {
   useColorModeValue,
   Spinner,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
-import { FlightInfoContext } from "@public/common/context";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { getFlightRoute } from "@public/common/api";
 import RouteItem from "@components/list_flight/route_item";
