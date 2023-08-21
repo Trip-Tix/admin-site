@@ -1,5 +1,5 @@
 import { Tag } from "@chakra-ui/react";
-import { getClassNameBus } from "@public/common/api";
+import { getClassNameFlight } from "@public/common/api";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
@@ -24,7 +24,7 @@ export default function ClassTag({ classId }: ClassTagProps) {
       setUserToken(sessionStorage.getItem("user-token") || "");
       try {
         const response = await axios.post(
-          getClassNameBus,
+          getClassNameFlight,
           {
             classId: classId,
           },
@@ -39,14 +39,14 @@ export default function ClassTag({ classId }: ClassTagProps) {
         } else {
           console.error(
             "Failed to fetch class name",
-            "component/list_bus/class_tag.tsx",
+            "component/list_flight/class_tag.tsx",
           );
         }
       } catch (error) {
         console.error(
           "An error occurred while fetching class name:",
           error,
-          "component/list_bus/class_tag.tsx",
+          "component/list_flight/class_tag.tsx",
         );
       }
     };
