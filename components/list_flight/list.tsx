@@ -11,60 +11,60 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getAllBus } from "@public/common/api";
+import { getAllFlight } from "@public/common/api";
 import axios from "axios";
-import TableItem from "@components/list_bus/table_item";
+import TableItem from "@components/list_flight/table_item";
 
-interface BusInfo {
-  busName: string;
-  busId: string;
-  coachId: string;
+interface FlightInfo {
+  flightName: string;
+  flightId: string;
+  classId: string;
   amount: number;
 }
 
 export default function List() {
-  const [busInfoList, setBusInfoList] = useState<BusInfo[]>([]);
-  const [busInfoLoading, setBusInfoLoading] = useState(true);
+  const [flightInfoList, setFlightInfoList] = useState<FlightInfo[]>([]);
+  const [flightInfoLoading, setFlightInfoLoading] = useState(true);
   const [userToken, setUserToken] = useState<string>("");
 
-  // api call to get the bus list
+  // api call to get the flight list
   useEffect(() => {
-    async function fetchBusInfo() {
-      setBusInfoLoading(true);
+    async function fetchFlightInfo() {
+      setFlightInfoLoading(true);
       setUserToken(sessionStorage.getItem("user-token") || "");
       try {
-        const response = await axios.post(getAllBus, null, {
+        const response = await axios.post(getAllFlight, null, {
           headers: {
             usertoken: userToken,
           },
         });
 
         if (response.status === 200) {
-          setBusInfoList(response.data);
+          setFlightInfoList(response.data);
         } else {
           console.error(
-            "Failed to fetch bus information",
-            "component/list_bus/list.tsx",
+            "Failed to fetch flight information",
+            "component/list_flight/list.tsx",
           );
         }
       } catch (error) {
         console.error(
-          "An error occurred while fetching bus information:",
+          "An error occurred while fetching flight information:",
           error,
-          "component/list_bus/list.tsx",
+          "component/list_flight/list.tsx",
         );
       }
-      setBusInfoLoading(false);
+      setFlightInfoLoading(false);
     }
-    fetchBusInfo();
+    fetchFlightInfo();
   }, [userToken]);
 
   return (
     <VStack spacing={4} align="stretch" flex={1} ml={10} mr={10}>
       <Heading as="h1" size="lg" color="primary.800">
-        List of Buses
+        List of Flights
       </Heading>
-      {busInfoLoading ? (
+      {flightInfoLoading ? (
         <>
           <Heading as="h2" size="md" color="primary.800">
             Loading...
@@ -82,20 +82,20 @@ export default function List() {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th>Bus Name</Th>
-                <Th>Bus ID</Th>
-                <Th>Coach Type</Th>
+                <Th>Flight Name</Th>
+                <Th>Flight ID</Th>
+                <Th>Class Type</Th>
                 <Th isNumeric>Amount</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {busInfoList.map((bus) => (
+              {flightInfoList.map((flight) => (
                 <TableItem
-                  key={bus.busId}
-                  name={bus.busName}
-                  busId={bus.busId}
-                  coachId={bus.coachId}
-                  amount={bus.amount}
+                  key={flight.flightId}
+                  name={flight.flightName}
+                  flightId={flight.flightId}
+                  classId={flight.classId}
+                  amount={flight.amount}
                 />
               ))}
             </Tbody>
