@@ -82,16 +82,20 @@ export default function Layout({ busId, busCoachId }: LayoutProps) {
         {loading ? (
           <Spinner />
         ) : (
-          <VStack spacing={1}>
-            {RowArray.map((row) => (
-              <HStack spacing={1} key={row}>
-                {ColumnArray.map((column) => (
-                  <Seat exists={layout[row][column] === 1} key={column} />
+          <>
+            {/* {(row === layout.length && column === layout[0].length) && (
+              <VStack spacing={1}>
+                {RowArray.map((row) => (
+                  <HStack spacing={1} key={row}>
+                    {ColumnArray.map((column) => (
+                      <Seat exists={layout[row][column] === 1} key={column} />
+                    ))}
+                    <Text ml={"10px"}>Row {row}</Text>
+                  </HStack>
                 ))}
-                <Text ml={"10px"}>Row {row}</Text>
-              </HStack>
-            ))}
-          </VStack>
+              </VStack>
+            )} */}
+          </>
         )}
       </HStack>
     </Flex>
