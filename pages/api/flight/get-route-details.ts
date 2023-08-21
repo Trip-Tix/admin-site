@@ -32,12 +32,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { flightId, coachId, from, to } = req.body;
+    const { flightId, classId, from, to } = req.body;
 
-    if (!flightId || !coachId || !from || !to) {
+    if (!flightId || !classId || !from || !to) {
       return res
         .status(400)
-        .json({ error: "Missing flightId, coachId, from or to" });
+        .json({ error: "Missing flightId, classId, from or to" });
     }
 
     const response: schedulingDetail[] = [...schedulingDetails];

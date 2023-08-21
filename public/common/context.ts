@@ -48,6 +48,14 @@ export interface CoachInfo {
   layout: number[][];
   availableSeat: number;
 }
+export interface ClassInfo {
+  className: string;
+  availableNumber: number;
+  row: number;
+  column: number;
+  layout: number[][];
+  availableSeat: number;
+}
 
 export interface BusAddContextType {
   busName: string;
@@ -92,5 +100,39 @@ export interface CoachInfoContextType {
 }
 
 export const CoachInfoContext = createContext<CoachInfoContextType | null>(
+  null
+);
+
+
+export interface FlightAddContextType {
+  flightName: string;
+  setFlightName: (flightName: string) => void;
+  classes: ClassInfo[];
+  setClasses: (classes: ClassInfo[]) => void;
+  submit: boolean;
+  setSubmit: (submit: boolean) => void;
+  check: boolean;
+  setCheck: (check: boolean) => void;
+}
+
+export const FlightAddContext = createContext<FlightAddContextType | null>(null);
+
+
+export interface ClassInfoContextType {
+  className: string;
+  setClassName: (className: string) => void;
+  availableNumber: number;
+  setAvailableNumber: (availableNumber: number) => void;
+  row: number;
+  setRow: (row: number) => void;
+  column: number;
+  setColumn: (column: number) => void;
+  layout: number[][];
+  setLayout: (layout: number[][]) => void;
+  availableSeat: number;
+  setAvailableSeat: (availableSeat: number) => void;
+}
+
+export const ClassInfoContext = createContext<ClassInfoContextType | null>(
   null
 );

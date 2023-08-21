@@ -1,9 +1,9 @@
 import { Button } from "@chakra-ui/button";
 import { HStack, VStack } from "@chakra-ui/layout";
 import { useContext, useEffect, useState } from "react";
-import { FlightInfoContext } from "@public/common/context";
 import axios from "axios";
 import { getRouteDetailsFlight } from "@public/common/api";
+import { FlightInfoContext } from "@public/common/context";
 import { Text } from "@chakra-ui/react";
 import {
   AiOutlineRight,
@@ -28,16 +28,14 @@ interface ScheduleDetail {
 export default function RouteItem({ from, to, amount }: RouteItemProps) {
   const [showDetails, setShowDetails] = useState(false);
   const { flightId, classId } = useContext(FlightInfoContext);
-  const [schedulingDetails, setSchedulingDetails] = useState<ScheduleDetail[]>(
-    [],
-  );
+  const [schedulingDetails, setSchedulingDetails] = useState<ScheduleDetail[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userToken = "your_user_token";
+        const userToken = "your_user_token"; 
         const response = await axios.post<ScheduleDetail[]>(
-          getRouteDetailsFlight,
+          getRouteDetailsFlight, 
           {
             flightId: flightId,
             classId: classId,
