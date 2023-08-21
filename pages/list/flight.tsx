@@ -10,8 +10,8 @@ import {
 import Layout from "@components/layout";
 import SidebarWithHeader from "@components/sidebar_with_header";
 import StatCard from "@components/stat_card";
-import List from "@components/list_bus/list";
-import Details from "@components/list_bus/details";
+import List from "@components/list_flight/list";
+import Details from "@components/list_flight/details";
 import TransportSelect from "@components/transport_select";
 import {
   NavigationOption,
