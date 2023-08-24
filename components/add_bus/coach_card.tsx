@@ -19,6 +19,7 @@ interface CoachCardProps {
   removeCoach: (key: string) => void;
   coachList: coach[];
   coachBrandsList: coachBrands[];
+  submit: boolean;
 }
 
 export default function CoachCard({
@@ -26,6 +27,7 @@ export default function CoachCard({
   removeCoach,
   coachList,
   coachBrandsList,
+  submit,
 }: CoachCardProps) {
   const [selectedCoach, setSelectedCoach] = useState<coach>();
   const [selectedBrand, setSelectedBrand] = useState<string>();
@@ -40,6 +42,23 @@ export default function CoachCard({
   const [numSeat, setNumSeat] = useState<number>(2);
   const [numBus, setNumBus] = useState<number>(0);
   const [uniqueBusId, setUniqueBusId] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (submit) {
+      console.log("submitting");
+      console.log({
+        coachId: selectedCoach?.coachId,
+        brandName: selectedBrand,
+        isBrandNew: isBrandNew,
+        row: row,
+        col: col,
+        numSeat: numSeat,
+        layout: layout,
+        numBus: numBus,
+        uniqueBusId: uniqueBusId,
+      })
+    }
+  }, [submit]);
 
   return (
     <>

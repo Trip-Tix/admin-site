@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HStack, Text, Input, Spinner, FormControl, FormErrorMessage } from "@chakra-ui/react";
+import { HStack, Text, Input, Spinner, FormControl, FormErrorMessage, FormLabel, Flex } from "@chakra-ui/react";
 
 interface AmountListProps {
   coachId: number;
@@ -27,7 +27,7 @@ export default function AmountList({
     setLoading(true);
     const tempBusId: string[] = [];
     for (let i = 0; i < 4; i++) {
-      tempBusId.push("busId" + i);
+      tempBusId.push(`Company-${coachId}-${brandName}-${i}`);
     }
 
     setExistingBusId(tempBusId);
@@ -49,11 +49,15 @@ export default function AmountList({
 
   const handleInputChange = (index: number, value: string) => {
     const updatedUniqueBusId = [...uniqueBusId];
-    updatedUniqueBusId[index] = value;
+    updatedUniqueBusId[index] = `Company-${coachId}-${brandName}-${value}`;
     setUniqueBusId(updatedUniqueBusId);
-    if (existingBusId.includes(value)) {
+    if (existingBusId.includes(`Company-${coachId}-${brandName}-${value}`)) {
       const updatedWrongBusId = [...wrongBusId];
       updatedWrongBusId[index] = true;
+      setWrongBusId(updatedWrongBusId);
+    }else {
+      const updatedWrongBusId = [...wrongBusId];
+      updatedWrongBusId[index] = false;
       setWrongBusId(updatedWrongBusId);
     }
   };
@@ -73,11 +77,13 @@ export default function AmountList({
           </HStack>
           {Array.from({ length: numBus }).map((_, index) => (
             <FormControl key={index} isInvalid={wrongBusId[index]}>
-              <Input
+              <Flex align="center">
+              <FormLabel flex={1}>{`Company-${coachId}-${brandName}-`}</FormLabel>
+              <Input flex={1}
                 placeholder={`Bus ${index + 1} ID`}
-                value={uniqueBusId[index]}
                 onChange={(e) => handleInputChange(index, e.target.value)}
               />
+              </Flex>
               <FormErrorMessage>
                 {"Bus Id Already Exist"}
               </FormErrorMessage>
