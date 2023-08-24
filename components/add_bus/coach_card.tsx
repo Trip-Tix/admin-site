@@ -1,148 +1,106 @@
 import {
-  Flex,
-  VStack,
-  Divider,
-  Button,
-  Heading,
   Box,
-  HStack,
+  Button,
+  Input,
+  List,
+  Text,
+  Select,
+  VStack,
 } from "@chakra-ui/react";
-import { useState, useEffect, useContext } from "react";
-import { CoachInfoContext } from "@public/common/context";
-import { BusAddContext } from "@public/common/context";
-import { useColorModeValue } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import axios from "axios";
-import { postAddBus } from "@public/common/server_api";
-import { list_bus_url } from "@public/common/pagelinks";
-
-import SelectCoach from "@components/add_bus/select_coach";
-import SelectRow from "@components/add_bus/select_row";
-import SelectColumn from "@components/add_bus/select_column";
-import SelectAmount from "@components/add_bus/select_amount";
-import SeatLayout from "@components/add_bus/seat_layout";
+import { use, useState, useEffect } from "react";
+import { coach, coachBrands } from "@public/common/bus_interfaces";
 
 interface CoachCardProps {
-  ChildrenButton: React.ReactNode;
+  coachKey: string;
+  removeCoach: (key: string) => void;
+  coachList: coach[];
+  coachBrandsList: coachBrands[];
 }
 
-export default function CoachCard({ ChildrenButton }: CoachCardProps) {
-  const [coachName, setCoachName] = useState("");
-  const [availableNumber, setAvailableNumber] = useState(1);
-  const [row, setRow] = useState(2);
-  const [column, setColumn] = useState(2);
-  const [layout, setLayout] = useState<number[][]>([
-    [1, 0],
-    [0, 1],
-  ]);
-  const [availableSeat, setAvailableSeat] = useState<number>(2);
-  const [coachSelected, setCoachSelected] = useState(false);
-  const { submit, busName } = useContext(BusAddContext);
-  const [userToken, setUserToken] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const router = useRouter();
+export default function CoachCard({
+  coachKey,
+  removeCoach,
+  coachList,
+  coachBrandsList,
+}: CoachCardProps) {
+  const [selectedCoach, setSelectedCoach] = useState<coach>();
+  const [selectedBrand, setSelectedBrand] = useState<string>();
+  const [brandNames, setBrandNames] = useState<string[]>([]);
+  const [isBrandNew, setIsBrandNew] = useState<boolean>(false);
 
+  // generate brand names
   useEffect(() => {
-    const sendData = async () => {
-      setUserToken(sessionStorage.getItem("user-token") || "");
-      setUsername(sessionStorage.getItem("username") || "");
-      
-      const usernameArray: string[] = [];
-      usernameArray.push(username);
-      try {
-        const response = await axios.post(
-          postAddBus,
-          {
-            busName,
-            coachName,
-            availableNumber,
-            row,
-            column,
-            layout,
-            availableSeat,
-            adminUsernameArray: usernameArray,
-          },
-          {
-            headers: {
-              usertoken: userToken,
-            },
-          },
-        );
-        if (response.status === 200) {
-          console.log("Bus added successfully");
-          router.push(list_bus_url);
-        } else {
-          console.error(
-            "Failed to add bus",
-            "component/add_bus/coach_card.tsx",
-          );
-        }
-      } catch (error) {
-        console.error(
-          "An error occurred while adding bus:",
-          error,
-          "component/add_bus/coach_card.tsx",
-        );
+    if (selectedCoach) {
+      const selectedCoachBrands = coachBrandsList.find(
+        (coachBrand) => coachBrand.coachId === selectedCoach.coachId,
+      );
+      if (selectedCoachBrands) {
+        setBrandNames(selectedCoachBrands.brandList);
       }
-    };
-    if (submit) {
-      sendData();
     }
-  }, [submit, userToken]);
+  }, [selectedCoach]);
 
-  // useEffect(() => {
-  //   console.log({
-  //     coachName,
-  //     availableNumber,
-  //     row,
-  //     column,
-  //     layout,
-  //     availableSeat,
-  //   });
-  //   }, [ coachName, availableNumber, row, column, layout, availableSeat ]);
+  // if coach changes, reset brand names
+  useEffect(() => {
+    setFilteredBrandNames(brandNames);
+  }, [brandNames]);
+
+  // actual list data
+  const [filteredBrandNames, setFilteredBrandNames] = useState<string[]>([]);
+  useEffect(() => {
+    if (!selectedBrand) {
+      setFilteredBrandNames(brandNames);
+    } else {
+      setFilteredBrandNames(
+        brandNames.filter((brand) => brand.includes(selectedBrand)),
+      );
+    }
+  }, [selectedBrand, brandNames]);
+
+  // new brand or old brand
+  useEffect(() => {
+    if (selectedBrand && !brandNames.includes(selectedBrand.trim())) {
+      setIsBrandNew(true);
+    } else {
+      setIsBrandNew(false);
+    }
+    console.log(isBrandNew);
+  }, [selectedBrand]);
 
   return (
-    <CoachInfoContext.Provider
-      value={{
-        coachName,
-        setCoachName,
-        availableNumber,
-        setAvailableNumber,
-        row,
-        setRow,
-        column,
-        setColumn,
-        layout,
-        setLayout,
-        availableSeat,
-        setAvailableSeat,
-      }}
-    >
-      {!coachSelected ? (
-        <SelectCoach
-          coachSelected={coachSelected}
-          setCoachSelected={setCoachSelected}
-        />
-      ) : (
-        <Flex
-          direction={"row"}
-          justifyContent={"space-between"}
-          w={"full"}
-          borderRadius={5}
-          p={5}
-          bg={useColorModeValue("gray.300", "gray.700")}
+    <>
+      <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={2}>
+        <Select
+          placeholder="Select Coach"
+          onChange={(e) =>
+            setSelectedCoach(
+              coachList.find((coach) => coach.coachName === e.target.value),
+            )
+          }
         >
-          <VStack spacing={5} align="left">
-            <Heading size="md">Coach: {coachName}</Heading>
-            {ChildrenButton}
-            <SelectRow />
-            <SelectColumn />
-            <SelectAmount />
-          </VStack>
-          <Divider orientation="vertical" />
-          <SeatLayout />
-        </Flex>
-      )}
-    </CoachInfoContext.Provider>
+          {coachList.map((coach) => (
+            <option key={coach.coachId}>{coach.coachName}</option>
+          ))}
+        </Select>
+
+        <Input
+          placeholder={"Select Brand"}
+          onChange={(e) => setSelectedBrand(e.target.value)}
+          value={selectedBrand || ""}
+        />
+
+        {filteredBrandNames.length > 0 && <VStack spacing={3}>
+          {filteredBrandNames.map((brand) => (
+            <Button key={brand} onClick={() => setSelectedBrand(brand)}>
+              {brand}
+            </Button>
+          ))}
+        </VStack>}
+
+        <Button variant="outline" onClick={() => removeCoach(coachKey)}>
+          Remove
+        </Button>
+      </Box>
+    </>
   );
 }

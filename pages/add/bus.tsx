@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/react";
+import { Button, VStack } from "@chakra-ui/react";
 import Layout from "@components/layout";
 import SidebarWithHeader from "@components/sidebar_with_header";
 import TransportSelect from "@components/transport_select";
@@ -6,54 +6,68 @@ import {
   NavigationOption,
   TransportType,
 } from "@public/common/navigation_option";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
-import Title from "@components/add_bus/title";
-import NameForm from "@components/add_bus/name_form";
-import NewCoaches from "@components/add_bus/new_coaches";
-import SubmitButton from "@components/add_bus/submit_button";
 
-import { BusAddContext, CoachInfo } from "@public/common/context";
-import { postAddBus } from "@public/common/api";
+import { coach, coachBrands } from "@public/common/bus_interfaces";
+import CoachCard from "@components/add_bus/coach_card";
+
+
 
 export default function Main() {
-  const [busName, setBusName] = useState("");
-  const [coaches, setCoaches] = useState<CoachInfo[]>([]);
-  const [submit, setSubmit] = useState(false);
-  const [check, setCheck] = useState(false);
-  const [coachKeys, setCoachKeys] = useState<number[]>([]);
 
-  useEffect (() => {
-    if (check && busName && coachKeys.length > 0) {
-      setSubmit(true);
+  const [coachKeys, setCoachKeys] = useState<string[]>([]);
+  const [newId, setNewId] = useState<number>(0);
+  const addNewCoach = () => {
+    setCoachKeys([...coachKeys, `Coach ${newId}`]);
+    setNewId(newId + 1);
+  };
+  const removeCoach = (key: string) => {
+    setCoachKeys(coachKeys.filter((coachKey) => coachKey !== key));
+  }
+
+
+  //change this to api in future
+  const [coachList, setCoachList] = useState<coach[]>([]);
+  useEffect(() => {
+    const tempCoachList: coach[] = [];
+    for (let i = 0; i < 10; i++) {
+      tempCoachList.push({
+        coachId: i,
+        coachName: `Coach ${i}`,
+      });
     }
-  }, [check]);
+
+    setCoachList(tempCoachList);
+  }, []);
+
+  //change this to api in future
+  const [coachBrandsList, setCoachBrandsList] = useState<coachBrands[]>([]);
+  useEffect(() => {
+    const tempCoachBrandsList: coachBrands[] = [];
+    for (let i = 0; i < 10; i++) {
+      const tempBrands: string[] = [];
+      for (let j = 0; j < 10; j++) {
+        tempBrands.push(`Brand ${i}:${j}`);
+      }
+      tempCoachBrandsList.push({
+        coachId: i,
+        coachName: `Coach ${i}`,
+        brandList: tempBrands,
+      });
+    }
+
+    setCoachBrandsList(tempCoachBrandsList);
+  }, []);
 
   return (
     <Layout title="Add Bus" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.Add}>
         <VStack spacing="4" align="stretch">
-          <BusAddContext.Provider
-            value={{
-              busName,
-              setBusName,
-              coaches,
-              setCoaches,
-              submit,
-              setSubmit,
-              check,
-              setCheck,
-            }}
-          >
-            <TransportSelect
-              transport={TransportType.Bus}
-              navigation={NavigationOption.Add}
-            />
-            <Title />
-            <NameForm />
-            <NewCoaches coachKeys={coachKeys} setCoachKeys={setCoachKeys}/>
-            <SubmitButton coachKeys={coachKeys}/>
-          </BusAddContext.Provider>
+          {coachKeys.map((key) => (
+            <CoachCard key={key} coachKey={key} removeCoach={removeCoach} coachList={coachList} coachBrandsList={coachBrandsList}/>
+          ))}
+          <Button onClick={addNewCoach}> Add Coach </Button>
         </VStack>
       </SidebarWithHeader>
     </Layout>
