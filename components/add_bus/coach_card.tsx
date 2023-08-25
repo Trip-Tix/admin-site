@@ -15,16 +15,18 @@ import LayoutCreation from "@components/add_bus/layout_creation";
 import AmountList from "@components/add_bus/amount_list";
 
 interface CoachCardProps {
-  coachKey: string;
-  removeCoach: (key: string) => void;
+  removalAction: {
+    key: string;
+    removeCoach: (key: string) => void;
+    validateCoach: (key: string, isValid: boolean) => void;
+  };
   coachList: coach[];
   coachBrandsList: coachBrands[];
   submit: boolean;
 }
 
 export default function CoachCard({
-  coachKey,
-  removeCoach,
+  removalAction,
   coachList,
   coachBrandsList,
   submit,
@@ -56,7 +58,7 @@ export default function CoachCard({
         layout: layout,
         numBus: numBus,
         uniqueBusId: uniqueBusId,
-      })
+      });
     }
   }, [submit]);
 
@@ -108,7 +110,10 @@ export default function CoachCard({
             setUniqueBusId={setUniqueBusId}
           />
         )}
-        <Button variant="outline" onClick={() => removeCoach(coachKey)}>
+        <Button
+          variant="outline"
+          onClick={() => removalAction.removeCoach(removalAction.key)}
+        >
           Remove
         </Button>
       </Box>

@@ -22,23 +22,35 @@ import axios from "axios";
 import { fetchCoachList } from "@public/common/server_api";
 
 export default function Main() {
-  const [coachKeys, setCoachKeys] = useState<string[]>([]);
+  // Coach Card Addition and Removal
+  interface coachKeyItem {
+    coachKey: string;
+    isValid: boolean;
+  }
+  const [coachKeys, setCoachKeys] = useState<coachKeyItem[]>([]);
   const [newId, setNewId] = useState<number>(0);
-  const [submit, setSubmit] = useState<boolean>(false);
-  const [coachListLoading, setCoachListLoading] = useState<boolean>(false);
-  const [coachBrandsListLoading, setCoachBrandsListLoading] =
-    useState<boolean>(false);
-
   const addNewCoach = () => {
-    setCoachKeys([...coachKeys, `Coach ${newId}`]);
+    setCoachKeys([...coachKeys, { coachKey: `Coach ${newId}`, isValid: true }]);
     setNewId(newId + 1);
   };
   const removeCoach = (key: string) => {
-    setCoachKeys(coachKeys.filter((coachKey) => coachKey !== key));
+    setCoachKeys(coachKeys.filter((item) => item.coachKey !== key));
+  };
+  const validateCoach = (key: string, isValid: boolean) => {
+    setCoachKeys(
+      coachKeys.map((item) => {
+        if (item.coachKey === key) {
+          return { coachKey: key, isValid: isValid };
+        } else {
+          return item;
+        }
+      }),
+    );
   };
 
-  //change this to api in future
+  // Coach Card needs pre-fetched coach list
   const [coachList, setCoachList] = useState<coach[]>([]);
+  const [coachListLoading, setCoachListLoading] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
       setCoachListLoading(true);
@@ -53,8 +65,11 @@ export default function Main() {
     console.log(coachList);
   }, [coachList]);
 
-  //change this to api in future
+  // change this to api in future
+  // Coach Card needs pre-fetched coach brands list
   const [coachBrandsList, setCoachBrandsList] = useState<coachBrands[]>([]);
+  const [coachBrandsListLoading, setCoachBrandsListLoading] =
+    useState<boolean>(false);
   // useEffect(() => {
   //   const tempCoachBrandsList: coachBrands[] = [];
   //   for (let i = 0; i < 10; i++) {
@@ -72,6 +87,9 @@ export default function Main() {
   //   setCoachBrandsList(tempCoachBrandsList);
   // }, []);
 
+  // Button for submitting
+  const [submit, setSubmit] = useState<boolean>(false);
+
   return (
     <Layout title="Add Bus" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.Add}>
@@ -87,19 +105,29 @@ export default function Main() {
             </Stack>
           ) : (
             <>
-              {coachKeys.map((key) => (
+              {coachKeys.map((item) => (
                 <CoachCard
-                  key={key}
-                  coachKey={key}
-                  removeCoach={removeCoach}
+                  key={item.coachKey}
+                  removalAction={{
+                    key: item.coachKey,
+                    removeCoach: removeCoach,
+                    validateCoach: validateCoach,
+                  }}
                   coachList={coachList}
                   coachBrandsList={coachBrandsList}
                   submit={submit}
                 />
               ))}
               <Button onClick={addNewCoach}> Add Coach </Button>
-              <Button colorScheme="blue" onClick={() => setSubmit(true)}>
-                Submit{" "}
+              <Button
+                colorScheme="blue"
+                onClick={() => setSubmit(true)}
+                isDisabled={
+                  coachKeys.length === 0 /* if no card */ ||
+                  coachKeys.some((item) => !item.isValid) /* if some card has invalid values */
+                }
+              >
+                {"Submit"}
               </Button>
             </>
           )}
