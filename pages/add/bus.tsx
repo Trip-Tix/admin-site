@@ -19,10 +19,10 @@ import { coach, coachBrands } from "@public/common/bus_interfaces";
 import CoachCard from "@components/add_bus/coach_card";
 import axios from "axios";
 
-import { fetchCoachList } from "@public/common/server_api";
+import { fetchCoachList, fetchCoachBrandList } from "@public/common/server_api";
 
 export default function Main() {
-  // Coach Card Addition and Removal
+  // Coach Card Addition, Removal and Validation
   interface coachKeyItem {
     coachKey: string;
     isValid: boolean;
@@ -48,7 +48,7 @@ export default function Main() {
     );
   };
 
-  // Coach Card needs pre-fetched coach list
+  // Coach Cards need pre-fetched coach list
   const [coachList, setCoachList] = useState<coach[]>([]);
   const [coachListLoading, setCoachListLoading] = useState<boolean>(false);
   useEffect(() => {
@@ -60,32 +60,28 @@ export default function Main() {
     };
     fetchData();
   }, []);
-  // check for fetching coach list
   useEffect(() => {
     console.log(coachList);
   }, [coachList]);
 
   // change this to api in future
-  // Coach Card needs pre-fetched coach brands list
+  // Coach Cards need pre-fetched coach brands list
   const [coachBrandsList, setCoachBrandsList] = useState<coachBrands[]>([]);
   const [coachBrandsListLoading, setCoachBrandsListLoading] =
     useState<boolean>(false);
-  // useEffect(() => {
-  //   const tempCoachBrandsList: coachBrands[] = [];
-  //   for (let i = 0; i < 10; i++) {
-  //     const tempBrands: string[] = [];
-  //     for (let j = 0; j < 10; j++) {
-  //       tempBrands.push(`Brand${i}:${j}`);
-  //     }
-  //     tempCoachBrandsList.push({
-  //       coachId: i,
-  //       coachName: `Coach${i}`,
-  //       brandList: tempBrands,
-  //     });
-  //   }
+  useEffect(() => {
+    const fetchData = async () => {
+      setCoachBrandsListLoading(true);
+      const coachBrands = await fetchCoachBrandList();
+      setCoachBrandsList(coachBrands);
+      setCoachBrandsListLoading(false);
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    console.log(coachBrandsList);
+  }, [coachBrandsList]);
 
-  //   setCoachBrandsList(tempCoachBrandsList);
-  // }, []);
 
   // Button for submitting
   const [submit, setSubmit] = useState<boolean>(false);

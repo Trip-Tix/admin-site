@@ -62,9 +62,10 @@ export default function CoachCard({
     }
   }, [submit]);
 
+
   return (
     <>
-      <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={2}>
+      <VStack borderWidth="1px" borderRadius="lg" overflow="hidden" p={2}>
         {!isSelectingBrand ? (
           <SelectCoachBrand
             coachList={coachList}
@@ -116,7 +117,7 @@ export default function CoachCard({
         >
           Remove
         </Button>
-      </Box>
+      </VStack>
     </>
   );
 }

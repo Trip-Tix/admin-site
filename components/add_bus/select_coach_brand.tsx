@@ -6,9 +6,13 @@ import {
   Text,
   Select,
   VStack,
+  Center,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { use, useState, useEffect } from "react";
 import { coach, coachBrands } from "@public/common/bus_interfaces";
+import { AiFillStar } from "react-icons/ai";
 
 interface selectedCoachBrandsProps {
   coachList: coach[];
@@ -74,39 +78,46 @@ export default function selectedCoachBrands({
   }, [selectedBrand]);
 
   return (
-    <>
-      <Select
-        placeholder="Select Coach"
-        onChange={(e) =>
-          setSelectedCoach(
-            coachList.find((coach) => coach.coachName === e.target.value),
-          )
-        }
-      >
-        {coachList.map((coach) => (
-          <option key={coach.coachId}>{coach.coachName}</option>
-        ))}
-      </Select>
-
-      <Input
-        placeholder={"Select Brand"}
-        onChange={(e) => setSelectedBrand(e.target.value)}
-        value={selectedBrand || ""}
-      />
-
-      {isBrandNew && (
-        <VStack spacing={3} align={"left"}>
-          {filteredBrandNames.map((brand) => (
-            <Button key={brand} onClick={() => setSelectedBrand(brand)}>
-              {brand}
-            </Button>
+    <Center>
+      <VStack>
+        <Select
+          placeholder="Select Coach"
+          onChange={(e) =>
+            setSelectedCoach(
+              coachList.find((coach) => coach.coachName === e.target.value),
+            )
+          }
+        >
+          {coachList.map((coach) => (
+            <option key={coach.coachId}>{coach.coachName}</option>
           ))}
-        </VStack>
-      )}
-
-      <Button variant="outline" onClick={() => setIsSelectingBrand(true)}>
-        Continue
-      </Button>
-    </>
+        </Select>
+        <InputGroup>
+          <Input
+            placeholder={"Select Brand"}
+            onChange={(e) => setSelectedBrand(e.target.value)}
+            value={selectedBrand || ""}
+            isDisabled={!selectedCoach}
+          />
+          {isBrandNew && <InputRightElement children={<AiFillStar />} />}
+          {isBrandNew && (
+            <VStack spacing={3} align={"left"}>
+              {filteredBrandNames.map((brand) => (
+                <Button key={brand} onClick={() => setSelectedBrand(brand)}>
+                  {brand}
+                </Button>
+              ))}
+            </VStack>
+          )}
+        </InputGroup>
+        <Button
+          variant="outline"
+          onClick={() => setIsSelectingBrand(true)}
+          isDisabled={!selectedCoach || !selectedBrand}
+        >
+          Continue
+        </Button>
+      </VStack>
+    </Center>
   );
 }
