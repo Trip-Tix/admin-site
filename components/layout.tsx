@@ -27,6 +27,8 @@ const Layout: React.FC<LayoutProps> = ({ title, isProtected, children }) => {
       console.log({
         isLogin: isLogin,
         userToken: sessionStorage.getItem("user-token"),
+        userRole: sessionStorage.getItem("user-role"),
+        userCompany: sessionStorage.getItem("company-name"),
       });
     }
 
@@ -51,6 +53,7 @@ const Layout: React.FC<LayoutProps> = ({ title, isProtected, children }) => {
         isLogin: isLogin_login,
         userToken: sessionStorage.getItem("user-token"),
         userRole: sessionStorage.getItem("user-role"),
+        userCompany: sessionStorage.getItem("company-name"),
       });
     }
 

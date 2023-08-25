@@ -1,4 +1,11 @@
-import { Button, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  VStack,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+  Stack,
+} from "@chakra-ui/react";
 import Layout from "@components/layout";
 import SidebarWithHeader from "@components/sidebar_with_header";
 import TransportSelect from "@components/transport_select";
@@ -10,11 +17,17 @@ import { useState, useEffect, use } from "react";
 
 import { coach, coachBrands } from "@public/common/bus_interfaces";
 import CoachCard from "@components/add_bus/coach_card";
+import axios from "axios";
+
+import { fetchCoachList } from "@public/common/server_api";
 
 export default function Main() {
   const [coachKeys, setCoachKeys] = useState<string[]>([]);
   const [newId, setNewId] = useState<number>(0);
   const [submit, setSubmit] = useState<boolean>(false);
+  const [coachListLoading, setCoachListLoading] = useState<boolean>(false);
+  const [coachBrandsListLoading, setCoachBrandsListLoading] =
+    useState<boolean>(false);
 
   const addNewCoach = () => {
     setCoachKeys([...coachKeys, `Coach ${newId}`]);
@@ -27,35 +40,37 @@ export default function Main() {
   //change this to api in future
   const [coachList, setCoachList] = useState<coach[]>([]);
   useEffect(() => {
-    const tempCoachList: coach[] = [];
-    for (let i = 0; i < 10; i++) {
-      tempCoachList.push({
-        coachId: i,
-        coachName: `Coach ${i}`,
-      });
-    }
-
-    setCoachList(tempCoachList);
+    const fetchData = async () => {
+      setCoachListLoading(true);
+      const coaches = await fetchCoachList();
+      setCoachList(coaches);
+      setCoachListLoading(false);
+    };
+    fetchData();
   }, []);
+  // check for fetching coach list
+  useEffect(() => {
+    console.log(coachList);
+  }, [coachList]);
 
   //change this to api in future
   const [coachBrandsList, setCoachBrandsList] = useState<coachBrands[]>([]);
-  useEffect(() => {
-    const tempCoachBrandsList: coachBrands[] = [];
-    for (let i = 0; i < 10; i++) {
-      const tempBrands: string[] = [];
-      for (let j = 0; j < 10; j++) {
-        tempBrands.push(`Brand${i}:${j}`);
-      }
-      tempCoachBrandsList.push({
-        coachId: i,
-        coachName: `Coach${i}`,
-        brandList: tempBrands,
-      });
-    }
+  // useEffect(() => {
+  //   const tempCoachBrandsList: coachBrands[] = [];
+  //   for (let i = 0; i < 10; i++) {
+  //     const tempBrands: string[] = [];
+  //     for (let j = 0; j < 10; j++) {
+  //       tempBrands.push(`Brand${i}:${j}`);
+  //     }
+  //     tempCoachBrandsList.push({
+  //       coachId: i,
+  //       coachName: `Coach${i}`,
+  //       brandList: tempBrands,
+  //     });
+  //   }
 
-    setCoachBrandsList(tempCoachBrandsList);
-  }, []);
+  //   setCoachBrandsList(tempCoachBrandsList);
+  // }, []);
 
   return (
     <Layout title="Add Bus" isProtected={true}>
@@ -65,20 +80,29 @@ export default function Main() {
             transport={TransportType.Bus}
             navigation={NavigationOption.Add}
           />
-          {coachKeys.map((key) => (
-            <CoachCard
-              key={key}
-              coachKey={key}
-              removeCoach={removeCoach}
-              coachList={coachList}
-              coachBrandsList={coachBrandsList}
-              submit={submit}
-            />
-          ))}
-          <Button onClick={addNewCoach}> Add Coach </Button>
-          <Button colorScheme="blue" onClick={() => setSubmit(true)}>
-            Submit{" "}
-          </Button>
+          {coachListLoading || coachBrandsListLoading ? (
+            <Stack>
+              <Skeleton height="10vh" />
+              <Skeleton height="10vh" />
+            </Stack>
+          ) : (
+            <>
+              {coachKeys.map((key) => (
+                <CoachCard
+                  key={key}
+                  coachKey={key}
+                  removeCoach={removeCoach}
+                  coachList={coachList}
+                  coachBrandsList={coachBrandsList}
+                  submit={submit}
+                />
+              ))}
+              <Button onClick={addNewCoach}> Add Coach </Button>
+              <Button colorScheme="blue" onClick={() => setSubmit(true)}>
+                Submit{" "}
+              </Button>
+            </>
+          )}
         </VStack>
       </SidebarWithHeader>
     </Layout>
