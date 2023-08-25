@@ -31,7 +31,9 @@ export default function ShowLayout({ coachId, brandName }: ShowLayoutProps) {
     };
     fetchData();
   }, [coachId, brandName]);
-
+  useEffect(() => {
+    console.log(layout);
+  }, [layout]);
   return (
     <>
       {loading ? (

@@ -97,6 +97,7 @@ export const fetchCoachBrandList = async (): Promise<coachBrands[]> => {
 // get layout of a coach
 const getBusLayout = main_url + "/api/admin/getBusLayout";
 import { brandData } from "@public/common/bus_interfaces";
+import exp from "constants";
 interface getBusLayoutResponse {
   layout: number[][];
   existingNumBus: number;
@@ -143,3 +144,95 @@ export const fetchBusLayout = async (
     };
   }
 };
+
+
+// get existing bus ids list given coach id and brand name
+const getExistingBusIds = main_url + "/api/admin/getUniqueBusIdList";
+interface getExistingBusIdsResponse {
+  unique_bus_id: string;
+}
+
+export const fetchExistingBusIds = async (
+  coachId: number,
+  brandName: string,
+): Promise<string[]> => {
+  try {
+    const response = await axios.post(
+      getExistingBusIds,
+      { 
+        coachId: coachId, 
+        brandName: brandName 
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      console.log("existing bus ids fetched");
+      const tempBusIds: string[] = response.data.map(
+        (bus: getExistingBusIdsResponse) => bus.unique_bus_id,
+      );
+      return tempBusIds;
+    }
+    else {
+      console.log(response.data.message);
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+}
+
+
+// add new bus
+const addBus = main_url + "/api/admin/addBusInfo";
+import { busInfo } from "@public/common/bus_interfaces";
+interface addBusResponse {
+  message: string;
+}
+
+export const addNewBus = async (
+  busInfo: busInfo,
+): Promise<string> => {
+  console.log("add new bus");
+  console.log(busInfo);
+  try {
+    const response = await axios.post(
+      addBus,
+      { 
+        coachId: busInfo.coachId, 
+        brandName: busInfo.brandName,
+        alreadyExist: busInfo.alreadyExist,
+        numBus: busInfo.numBus,
+        uniqueBusId: busInfo.uniqueBusId,
+        numSeat: busInfo.numSeat,
+        layout: busInfo.layout,
+        row: busInfo.row,
+        col: busInfo.col
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      console.log("new bus added");
+      return response.data.message;
+    }
+    else {
+      console.log(response.data.message);
+      return response.data.message;
+    }
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}

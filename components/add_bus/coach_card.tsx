@@ -23,6 +23,7 @@ import SelectCoachBrand from "@components/add_bus/select_coach_brand";
 import ShowLayout from "@components/add_bus/show_layout";
 import LayoutCreation from "@components/add_bus/layout_creation";
 import AmountList from "@components/add_bus/amount_list";
+import { addNewBus } from "@public/common/server_api";
 
 interface CoachCardProps {
   removalAction: {
@@ -57,17 +58,16 @@ export default function CoachCard({
 
   useEffect(() => {
     if (submit) {
-      console.log("submitting");
-      console.log({
+      addNewBus({
         coachId: selectedCoach?.coachId,
         brandName: selectedBrand,
-        isBrandNew: isBrandNew,
-        row: row,
-        col: col,
-        numSeat: numSeat,
-        layout: layout,
+        alreadyExist: !isBrandNew,
         numBus: numBus,
         uniqueBusId: uniqueBusId,
+        numSeat: numSeat,
+        layout: layout,
+        row: row,
+        col: col,
       });
     }
   }, [submit]);
@@ -135,8 +135,8 @@ export default function CoachCard({
                   <AiOutlineArrowLeft />
                 </Button>
               </Flex>
-              <Divider />
             </VStack>
+            <Divider />
             {isBrandNew ? (
               <LayoutCreation
                 row={row}
@@ -156,14 +156,17 @@ export default function CoachCard({
             )}
           </>
         )}
+        <Divider />
         {isSelectingBrand && (
           <AmountList
+            coachName={selectedCoach?.coachName}
             coachId={selectedCoach?.coachId}
             brandName={selectedBrand}
             numBus={numBus}
             setNumBus={setNumBus}
             uniqueBusId={uniqueBusId}
             setUniqueBusId={setUniqueBusId}
+            removalAction={removalAction}
           />
         )}
         <Button

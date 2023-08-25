@@ -14,7 +14,7 @@ import {
   SliderFilledTrack,
   SliderThumb,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 interface LayoutCreationProps {
   row: number;
@@ -91,6 +91,10 @@ export default function LayoutCreation({
       });
     });
     setNumSeat(tempNumSeat);
+  }, [layout]);
+
+  useEffect(() => {
+    console.log(layout);
   }, [layout]);
 
   return (
