@@ -37,9 +37,8 @@ export default function selectedCoachBrands({
   setIsBrandNew,
   setIsSelectingBrand,
 }: selectedCoachBrandsProps) {
+  // generating brand names
   const [brandNames, setBrandNames] = useState<string[]>([]);
-
-  // generate brand names
   useEffect(() => {
     if (selectedCoach) {
       const selectedCoachBrands = coachBrandsList.find(
@@ -50,13 +49,12 @@ export default function selectedCoachBrands({
       }
     }
   }, [selectedCoach]);
-
-  // if coach changes, reset brand names
   useEffect(() => {
     setFilteredBrandNames(brandNames);
   }, [brandNames]);
 
-  // actual list data
+
+  // filtering brand names
   const [filteredBrandNames, setFilteredBrandNames] = useState<string[]>([]);
   useEffect(() => {
     if (!selectedBrand) {
@@ -67,6 +65,7 @@ export default function selectedCoachBrands({
       );
     }
   }, [selectedBrand, brandNames]);
+
 
   // new brand or old brand
   useEffect(() => {
