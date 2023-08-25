@@ -78,8 +78,8 @@ export default function selectedCoachBrands({
   }, [selectedBrand]);
 
   return (
-    <Center>
-      <VStack>
+    <Center w={"100%"} h={"100%"}>
+      <VStack p={10}>
         <Select
           placeholder="Select Coach"
           onChange={(e) =>
@@ -88,9 +88,11 @@ export default function selectedCoachBrands({
             )
           }
         >
+
           {coachList.map((coach) => (
             <option key={coach.coachId}>{coach.coachName}</option>
           ))}
+          
         </Select>
         <InputGroup>
           <Input
@@ -110,13 +112,6 @@ export default function selectedCoachBrands({
             </VStack>
           )}
         </InputGroup>
-        <Button
-          variant="outline"
-          onClick={() => setIsSelectingBrand(true)}
-          isDisabled={!selectedCoach || !selectedBrand}
-        >
-          Continue
-        </Button>
       </VStack>
     </Center>
   );

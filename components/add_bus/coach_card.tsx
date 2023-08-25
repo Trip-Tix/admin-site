@@ -6,7 +6,17 @@ import {
   Text,
   Select,
   VStack,
+  HStack,
+  useColorModeValue,
+  Heading,
+  Flex,
+  Divider,
 } from "@chakra-ui/react";
+import {
+  AiOutlineClose,
+  AiOutlineArrowRight,
+  AiOutlineArrowLeft,
+} from "react-icons/ai";
 import { use, useState, useEffect } from "react";
 import { coach, coachBrands } from "@public/common/bus_interfaces";
 import SelectCoachBrand from "@components/add_bus/select_coach_brand";
@@ -62,26 +72,64 @@ export default function CoachCard({
     }
   }, [submit]);
 
+  useEffect(() => {
+    if (selectedCoach && selectedBrand) {
+      removalAction.validateCoach(removalAction.key, true);
+    } else {
+      removalAction.validateCoach(removalAction.key, false);
+    }
+  }, [selectedCoach, selectedBrand]);
 
   return (
     <>
-      <VStack borderWidth="1px" borderRadius="lg" overflow="hidden" p={2}>
+      <VStack
+        borderRadius={"md"}
+        overflow="hidden"
+        maxW={"100%"}
+        bg={useColorModeValue("gray.300", "gray.800")}
+        spacing={0}
+        boxShadow={"md"}
+      >
         {!isSelectingBrand ? (
-          <SelectCoachBrand
-            coachList={coachList}
-            coachBrandsList={coachBrandsList}
-            selectedCoach={selectedCoach}
-            setSelectedCoach={setSelectedCoach}
-            selectedBrand={selectedBrand}
-            setSelectedBrand={setSelectedBrand}
-            isBrandNew={isBrandNew}
-            setIsBrandNew={setIsBrandNew}
-            setIsSelectingBrand={setIsSelectingBrand}
-          />
-        ) : (
           <>
-            <Text>The Thing is : {isBrandNew ? "New" : "Old"}</Text>
-            <Button onClick={() => setIsSelectingBrand(false)}>Back</Button>
+            <SelectCoachBrand
+              coachList={coachList}
+              coachBrandsList={coachBrandsList}
+              selectedCoach={selectedCoach}
+              setSelectedCoach={setSelectedCoach}
+              selectedBrand={selectedBrand}
+              setSelectedBrand={setSelectedBrand}
+              isBrandNew={isBrandNew}
+              setIsBrandNew={setIsBrandNew}
+              setIsSelectingBrand={setIsSelectingBrand}
+            />
+            <Button
+              colorScheme="green"
+              onClick={() => setIsSelectingBrand(true)}
+              isDisabled={!selectedCoach || !selectedBrand}
+              w={"100%"}
+              rightIcon={<AiOutlineArrowRight />}
+              borderRadius={0}
+            />
+          </>
+        ) : (
+          <VStack w={"100%"} h={"100%"} p={5}>
+            <Flex justifyContent={"space-between"} w={"100%"}>
+              <Flex align={"right"} direction={"column"} w={"100%"} mr={5}>
+                <Flex alignContent={"center"}>
+                  <Text fontWeight={"bold"} mr={2}>Coach:</Text>
+                  <Text fontStyle={"italic"}>{selectedCoach.coachName}</Text>
+                </Flex>
+                <Flex alignContent={"center"}>
+                  <Text fontWeight={"bold"} mr={2}>Brand: </Text>
+                  <Text fontStyle={"italic"}>{selectedBrand}</Text>
+                </Flex>
+              </Flex>
+              <Button onClick={() => setIsSelectingBrand(false)}>
+                <AiOutlineArrowLeft />
+              </Button>
+            </Flex>
+            <Divider />
             {isBrandNew ? (
               <LayoutCreation
                 row={row}
@@ -99,7 +147,7 @@ export default function CoachCard({
                 brandName={selectedBrand}
               />
             )}
-          </>
+          </VStack>
         )}
         {isSelectingBrand && (
           <AmountList
@@ -112,11 +160,13 @@ export default function CoachCard({
           />
         )}
         <Button
-          variant="outline"
           onClick={() => removalAction.removeCoach(removalAction.key)}
-        >
-          Remove
-        </Button>
+          w={"100%"}
+          colorScheme="red"
+          rightIcon={<AiOutlineClose />}
+          borderTopEndRadius={0}
+          borderTopStartRadius={0}
+        />
       </VStack>
     </>
   );

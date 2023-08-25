@@ -100,7 +100,7 @@ export default function Main() {
               <Skeleton height="10vh" />
             </Stack>
           ) : (
-            <>
+            <VStack>
               {coachKeys.map((item) => (
                 <CoachCard
                   key={item.coachKey}
@@ -125,7 +125,7 @@ export default function Main() {
               >
                 {"Submit"}
               </Button>
-            </>
+            </VStack>
           )}
         </VStack>
       </SidebarWithHeader>
