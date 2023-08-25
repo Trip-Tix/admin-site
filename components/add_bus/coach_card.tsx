@@ -113,23 +113,30 @@ export default function CoachCard({
             />
           </>
         ) : (
-          <VStack w={"100%"} h={"100%"} p={5}>
-            <Flex justifyContent={"space-between"} w={"100%"}>
-              <Flex align={"right"} direction={"column"} w={"100%"} mr={5}>
-                <Flex alignContent={"center"}>
-                  <Text fontWeight={"bold"} mr={2}>Coach:</Text>
-                  <Text fontStyle={"italic"}>{selectedCoach.coachName}</Text>
+          <>
+            {" "}
+            <VStack w={"100%"} h={"100%"} p={5}>
+              <Flex justifyContent={"space-between"} w={"100%"}>
+                <Flex align={"right"} direction={"column"} w={"100%"} mr={5}>
+                  <Flex alignContent={"center"}>
+                    <Text fontWeight={"bold"} mr={2}>
+                      Coach:
+                    </Text>
+                    <Text fontStyle={"italic"}>{selectedCoach.coachName}</Text>
+                  </Flex>
+                  <Flex alignContent={"center"}>
+                    <Text fontWeight={"bold"} mr={2}>
+                      Brand:{" "}
+                    </Text>
+                    <Text fontStyle={"italic"}>{selectedBrand}</Text>
+                  </Flex>
                 </Flex>
-                <Flex alignContent={"center"}>
-                  <Text fontWeight={"bold"} mr={2}>Brand: </Text>
-                  <Text fontStyle={"italic"}>{selectedBrand}</Text>
-                </Flex>
+                <Button onClick={() => setIsSelectingBrand(false)}>
+                  <AiOutlineArrowLeft />
+                </Button>
               </Flex>
-              <Button onClick={() => setIsSelectingBrand(false)}>
-                <AiOutlineArrowLeft />
-              </Button>
-            </Flex>
-            <Divider />
+              <Divider />
+            </VStack>
             {isBrandNew ? (
               <LayoutCreation
                 row={row}
@@ -147,7 +154,7 @@ export default function CoachCard({
                 brandName={selectedBrand}
               />
             )}
-          </VStack>
+          </>
         )}
         {isSelectingBrand && (
           <AmountList

@@ -146,8 +146,7 @@ export default function LayoutCreation({
             </Slider>
           </Flex>
         </VStack>
-        <VStack>
-          <VStack>
+          <VStack mr={"1rem"}>
             {rowArray.map((row) => (
               <HStack key={row}>
                 {colArray.map((col) => (
@@ -168,7 +167,6 @@ export default function LayoutCreation({
               </HStack>
             ))}
           </VStack>
-        </VStack>
       </Flex>
     </>
   );

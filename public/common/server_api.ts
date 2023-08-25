@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const main_url = process.env.NEXT_PUBLIC_MAIN_URL;
 
 // for admin user
@@ -8,7 +7,6 @@ export const postLogin = main_url + "/api/admin/login";
 
 // for bus
 export const getAllBus = main_url + "/api/admin/getAllBus";
-export const getBusLayout = main_url + "/api/admin/getBusLayout";
 export const postAddBus = main_url + "/api/admin/addBusInfo";
 export const getBusNames = main_url + "/api/admin/getBusNames";
 export const getAllCoachesBus = main_url + "/api/admin/getBusCoachInfo";
@@ -62,9 +60,9 @@ export const fetchCoachList = async (): Promise<coach[]> => {
 const getAllCoachBrand = main_url + "/api/admin/getBrandInfo";
 import { coachBrands } from "@public/common/bus_interfaces";
 interface getAllCoachBrandResponse {
-  coach_id: number;
-  coach_name: string;
-  brand_list: string[];
+  coachId: number;
+  coachName: string;
+  brandList: string[];
 }
 
 export const fetchCoachBrandList = async (): Promise<coachBrands[]> => {
@@ -80,9 +78,9 @@ export const fetchCoachBrandList = async (): Promise<coachBrands[]> => {
       console.log("coach brand list fetched");
       const tempCoachBrandList: coachBrands[] = response.data.map(
         (coach: getAllCoachBrandResponse) => ({
-          coachId: coach.coach_id,
-          coachName: coach.coach_name,
-          brandList: coach.brand_list,
+          coachId: coach.coachId,
+          coachName: coach.coachName,
+          brandList: coach.brandList,
         }),
       );
       return tempCoachBrandList;
@@ -94,5 +92,54 @@ export const fetchCoachBrandList = async (): Promise<coachBrands[]> => {
     console.log(err);
     return [];
   }
+};
+
+// get layout of a coach
+const getBusLayout = main_url + "/api/admin/getBusLayout";
+import { brandData } from "@public/common/bus_interfaces";
+interface getBusLayoutResponse {
+  layout: number[][];
+  existingNumBus: number;
 }
 
+export const fetchBusLayout = async (
+  coachId: number,
+  brandName: string,
+): Promise<brandData> => {
+  try {
+    const response = await axios.post(
+      getBusLayout,
+      { 
+        coachId: coachId, 
+        brandName: brandName 
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      console.log("layout fetched");
+      const tempLayout: brandData = {
+        layout: response.data.layout,
+        numBus: response.data.number_of_bus,
+      };
+      return tempLayout;
+    } else {
+      console.log(response.data.message);
+      return {
+        layout: [],
+        numBus: 0,
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      layout: [],
+      numBus: 0,
+    };
+  }
+};

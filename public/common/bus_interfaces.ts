@@ -9,3 +9,7 @@ export  interface coachBrands {
     brandList: string[];
   }
   
+  export interface brandData {
+    layout: number[][];
+    numBus: number;
+  }

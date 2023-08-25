@@ -101,7 +101,8 @@ export default function selectedCoachBrands({
             isDisabled={!selectedCoach}
           />
           {isBrandNew && <InputRightElement children={<AiFillStar />} />}
-          {isBrandNew && (
+          </InputGroup>
+          {(isBrandNew || !selectedBrand) && (
             <VStack spacing={3} align={"left"}>
               {filteredBrandNames.map((brand) => (
                 <Button key={brand} onClick={() => setSelectedBrand(brand)}>
@@ -110,7 +111,7 @@ export default function selectedCoachBrands({
               ))}
             </VStack>
           )}
-        </InputGroup>
+        
       </VStack>
     </Center>
   );
