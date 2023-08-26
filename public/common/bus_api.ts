@@ -95,7 +95,7 @@ export const fetchCoachBrandList = async (): Promise<coachBrands[]> => {
 };
 
 // get layout of a coach
-const getBusLayout = main_url + "/api/admin/getBusLayout";
+export const getBusLayout = main_url + "/api/admin/getBusLayout";
 import { brandData } from "@public/common/bus_interfaces";
 import exp from "constants";
 interface getBusLayoutResponse {

@@ -137,6 +137,18 @@ const NavItem = ({ icon, children, selected, link, ...rest }: NavItemProps) => {
   const onClick = () => {
     router.push(link);
   };
+  const bgColor = useColorModeValue(
+    selected ? "gray.200" : "transparent",
+    selected ? "gray.700" : "transparent",
+  );
+  const hoverBgColor = useColorModeValue(
+    selected ? "" : "gray.200",
+    selected ? "" : "gray.700",
+  );
+  const color = useColorModeValue(
+    selected ? "" : "black",
+    selected ? "" : "white",
+  );
   return (
     <Box
       as="a"
@@ -151,38 +163,11 @@ const NavItem = ({ icon, children, selected, link, ...rest }: NavItemProps) => {
         borderRadius="lg"
         role="group"
         cursor={selected ? "default" : "pointer"}
-        bg={
-          selected ? useColorModeValue("gray.200", "gray.700") : useColorModeValue("transparent", "transparent")
-        }
-        _hover={
-          selected
-            ? {}
-            : {
-                bg: useColorModeValue("gray.200", "gray.700"),
-                color: useColorModeValue("black", "white"),
-              }
-        }
+        bg={bgColor} // Use the precalculated value
+        onClick={selected ? () => {} : onClick}
         {...rest}
-        onClick={
-          selected
-            ? () => {}
-            : onClick
-        }
       >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={
-              selected
-                ? {}
-                : {
-                    color: useColorModeValue("black", "white"),
-                  }
-            }
-            as={icon}
-          />
-        )}
+        {icon && <Icon mr="4" fontSize="16" as={icon} />}
         {children}
       </Flex>
     </Box>
@@ -191,7 +176,7 @@ const NavItem = ({ icon, children, selected, link, ...rest }: NavItemProps) => {
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -270,7 +255,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem><Link href={logout_url}>Sign out</Link></MenuItem>
+              <MenuItem>
+                <Link href={logout_url}>Sign out</Link>
+              </MenuItem>
             </MenuList>
           </Menu>
         </Flex>
