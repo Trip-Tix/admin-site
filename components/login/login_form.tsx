@@ -21,7 +21,7 @@ import {
 } from "@public/common/color";
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
-import { postLogin } from "@public/common/server_api";
+import { postLogin } from "@public/common/bus_api";
 import axios from "axios";
 import { home_url } from "@public/common/pagelinks";
 

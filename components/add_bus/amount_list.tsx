@@ -11,7 +11,7 @@ import {
   VStack,
   Center,
 } from "@chakra-ui/react";
-import { fetchExistingBusIds } from "@public/common/server_api";
+import { fetchExistingBusIds } from "@public/common/bus_api";
 
 interface AmountListProps {
   coachId: number;

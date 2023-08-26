@@ -110,9 +110,9 @@ export const fetchBusLayout = async (
   try {
     const response = await axios.post(
       getBusLayout,
-      { 
-        coachId: coachId, 
-        brandName: brandName 
+      {
+        coachId: coachId,
+        brandName: brandName,
       },
       {
         headers: {
@@ -145,7 +145,6 @@ export const fetchBusLayout = async (
   }
 };
 
-
 // get existing bus ids list given coach id and brand name
 const getExistingBusIds = main_url + "/api/admin/getUniqueBusIdList";
 interface getExistingBusIdsResponse {
@@ -159,9 +158,9 @@ export const fetchExistingBusIds = async (
   try {
     const response = await axios.post(
       getExistingBusIds,
-      { 
-        coachId: coachId, 
-        brandName: brandName 
+      {
+        coachId: coachId,
+        brandName: brandName,
       },
       {
         headers: {
@@ -177,8 +176,7 @@ export const fetchExistingBusIds = async (
         (bus: getExistingBusIdsResponse) => bus.unique_bus_id,
       );
       return tempBusIds;
-    }
-    else {
+    } else {
       console.log(response.data.message);
       return [];
     }
@@ -186,8 +184,7 @@ export const fetchExistingBusIds = async (
     console.log(err);
     return [];
   }
-}
-
+};
 
 // add new bus
 const addBus = main_url + "/api/admin/addBusInfo";
@@ -196,16 +193,14 @@ interface addBusResponse {
   message: string;
 }
 
-export const addNewBus = async (
-  busInfo: busInfo,
-): Promise<string> => {
+export const addNewBus = async (busInfo: busInfo): Promise<string> => {
   console.log("add new bus");
   console.log(busInfo);
   try {
     const response = await axios.post(
       addBus,
-      { 
-        coachId: busInfo.coachId, 
+      {
+        coachId: busInfo.coachId,
         brandName: busInfo.brandName,
         alreadyExist: busInfo.alreadyExist,
         numBus: busInfo.numBus,
@@ -213,7 +208,7 @@ export const addNewBus = async (
         numSeat: busInfo.numSeat,
         layout: busInfo.layout,
         row: busInfo.row,
-        col: busInfo.col
+        col: busInfo.col,
       },
       {
         headers: {
@@ -226,8 +221,7 @@ export const addNewBus = async (
     if (response.status === 200) {
       console.log("new bus added");
       return response.data.message;
-    }
-    else {
+    } else {
       console.log(response.data.message);
       return response.data.message;
     }
@@ -235,4 +229,46 @@ export const addNewBus = async (
     console.log(err);
     return err;
   }
+};
+
+// get available location
+const getLocations = main_url + "/api/admin/getLocation";
+interface getLocationsResponse {
+  location_id: number;
+  location_name: string;
 }
+export const fetchLocations = async (): Promise<string[]> => {
+  // try {
+  //   const response = await axios.post(getLocations, null, {
+  //     headers: {
+  //       token: sessionStorage.getItem("user-token"),
+  //       companyname: sessionStorage.getItem("company-name"),
+  //     },
+  //   });
+
+  //   if (response.status === 200) {
+  //     console.log("locations fetched");
+  //     const tempLocations: string[] = response.data.map(
+  //       (location: getLocationsResponse) => location.location_name,
+  //     );
+  //     return tempLocations;
+  //   } else {
+  //     console.log(response.data.message);
+  //     return [];
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  //   return [];
+  // }
+  console.log("locations fetched");
+  return [
+    "Dhaka",
+    "Chittagong",
+    "Sylhet",
+    "Khulna",
+    "Rajshahi",
+    "Barishal",
+    "Rangpur",
+    "Mymensingh",
+  ];
+};

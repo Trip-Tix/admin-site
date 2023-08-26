@@ -23,7 +23,7 @@ import SelectCoachBrand from "@components/add_bus/select_coach_brand";
 import ShowLayout from "@components/add_bus/show_layout";
 import LayoutCreation from "@components/add_bus/layout_creation";
 import AmountList from "@components/add_bus/amount_list";
-import { addNewBus } from "@public/common/server_api";
+import { addNewBus } from "@public/common/bus_api";
 
 interface CoachCardProps {
   removalAction: {

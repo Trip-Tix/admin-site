@@ -3,7 +3,7 @@ import { Divider } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
 import { use, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { getBusLayout } from "@public/common/server_api";
+import { getBusLayout } from "@public/common/bus_api";
 import { Spinner } from "@chakra-ui/react";
 
 import Seat from "@components/seat";

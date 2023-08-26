@@ -19,7 +19,7 @@ import { coach, coachBrands } from "@public/common/bus_interfaces";
 import CoachCard from "@components/add_bus/coach_card";
 import axios from "axios";
 
-import { fetchCoachList, fetchCoachBrandList } from "@public/common/server_api";
+import { fetchCoachList, fetchCoachBrandList } from "@public/common/bus_api";
 
 export default function Main() {
   // Coach Card Addition, Removal and Validation

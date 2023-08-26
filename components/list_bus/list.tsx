@@ -11,7 +11,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getAllBus } from "@public/common/server_api";
+import { getAllBus } from "@public/common/bus_api";
 import axios from "axios";
 import TableItem from "@components/list_bus/table_item";
 

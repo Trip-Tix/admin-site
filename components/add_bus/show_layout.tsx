@@ -9,7 +9,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import { fetchBusLayout } from "@public/common/server_api";
+import { fetchBusLayout } from "@public/common/bus_api";
 
 interface ShowLayoutProps {
   coachId: number;

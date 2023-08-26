@@ -10,8 +10,10 @@ import {
   InputGroup,
   InputRightElement,
   Spacer,
+  Select,
 } from "@chakra-ui/react";
 import { SchedulingContext, Day } from "@public/common/temporary_context";
+import { fetchLocations } from "@public/common/bus_api";
 
 interface InitialFormProps {
   isInitialForm: boolean;
@@ -73,6 +75,15 @@ export default function InitialForm({
     });
   }, [startingLocation, destinations, startingDate, endingDate]);
 
+  const [locations, setLocations] = useState<string[]>([]);
+  const [locationLoading, setLocationLoading] = useState<boolean>(true);
+  useEffect(() => {
+    fetchLocations().then((locations) => {
+      setLocations(locations);
+      setLocationLoading(false);
+    });
+  }, []);
+
   return (
     <>
       {isInitialForm ? (
@@ -95,14 +106,18 @@ export default function InitialForm({
             p={2}
             m={2}
           >
-            <Input
-              value={startingLocation}
-              onChange={(e) => setStartingLocation(e.target.value)}
+            <Select 
+              placeholder="Select Location"
               width={"40%"}
-            />
+              onChange={(e) => setStartingLocation(e.target.value)}
+            >
+              {locations.map((location, index) => (
+                <option key={index} value={location}>{location}</option>
+              ))}
+            </Select>
 
             <VStack spacing={3} align={"right"} w="40%">
-              {destinations.map((destination, index) => (
+              {/* {destinations.map((destination, index) => (
                 <InputGroup key={index}>
                   <Input
                     value={destination}
@@ -118,6 +133,22 @@ export default function InitialForm({
                     </Button>
                   </InputRightElement>
                 </InputGroup>
+              ))} */}
+              {destinations.map((destination, index) => (
+                <Flex key={index} align="center" justify="space-between" direction="row" w="full">
+                  <Select 
+                    placeholder="Select Location"
+                    width={"full"}
+                    onChange={(e) => handleDestinationChange(index, e.target.value)}
+                  >
+                    {locations.map((location, index) => (
+                      <option key={index} value={location}>{location}</option>
+                    ))}
+                  </Select>
+                  <Button onClick={() => removeDestination(index)}>
+                    Remove
+                  </Button>
+                </Flex>
               ))}
               <Button onClick={addDestination}>Add Destination</Button>
             </VStack>
