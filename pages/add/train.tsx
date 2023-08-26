@@ -7,12 +7,6 @@ import {
   TransportType,
 } from "@public/common/navigation_option";
 import { useState, useEffect } from "react";
-
-import Title from "@components/add_train/title";
-import NameForm from "@components/add_train/name_form";
-import NewCoaches from "@components/add_train/new_coaches";
-import SubmitButton from "@components/add_train/submit_button";
-
 import { TrainAddContext, CoachInfo } from "@public/common/context";
 import { postAddTrain } from "@public/common/api";
 
@@ -49,10 +43,6 @@ export default function Main() {
               transport={TransportType.Train}
               navigation={NavigationOption.Add}
             />
-            <Title />
-            <NameForm />
-            <NewCoaches coachKeys={coachKeys} setCoachKeys={setCoachKeys} />
-            <SubmitButton coachKeys={coachKeys} />
           </TrainAddContext.Provider>
         </VStack>
       </SidebarWithHeader>

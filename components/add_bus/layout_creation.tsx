@@ -122,7 +122,7 @@ export default function LayoutCreation({
               <SliderTrack>
                 <SliderFilledTrack />
               </SliderTrack>
-              <SliderThumb fontSize="sm" boxSize="32px" children={row} />
+              <SliderThumb fontSize="sm" boxSize="32px">{row}</SliderThumb>
             </Slider>
           </Flex>
           <Text>Column</Text>
@@ -146,7 +146,7 @@ export default function LayoutCreation({
               <SliderTrack>
                 <SliderFilledTrack />
               </SliderTrack>
-              <SliderThumb fontSize="sm" boxSize="32px" children={col} />
+              <SliderThumb fontSize="sm" boxSize="32px">{col}</SliderThumb>
             </Slider>
           </Flex>
         </VStack>

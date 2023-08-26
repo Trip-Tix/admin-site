@@ -26,7 +26,7 @@ interface selectedCoachBrandsProps {
   setIsSelectingBrand: (isSelectingBrand: boolean) => void;
 }
 
-export default function selectedCoachBrands({
+export default function SelectedCoachBrands({
   coachList,
   coachBrandsList,
   selectedCoach,
@@ -37,8 +37,10 @@ export default function selectedCoachBrands({
   setIsBrandNew,
   setIsSelectingBrand,
 }: selectedCoachBrandsProps) {
+
   // generating brand names
   const [brandNames, setBrandNames] = useState<string[]>([]);
+  const [filteredBrandNames, setFilteredBrandNames] = useState<string[]>([]);
   useEffect(() => {
     if (selectedCoach) {
       const selectedCoachBrands = coachBrandsList.find(
@@ -49,13 +51,8 @@ export default function selectedCoachBrands({
       }
     }
   }, [selectedCoach]);
-  useEffect(() => {
-    setFilteredBrandNames(brandNames);
-  }, [brandNames]);
-
 
   // filtering brand names
-  const [filteredBrandNames, setFilteredBrandNames] = useState<string[]>([]);
   useEffect(() => {
     if (!selectedBrand) {
       setFilteredBrandNames(brandNames);
@@ -100,7 +97,7 @@ export default function selectedCoachBrands({
             value={selectedBrand || ""}
             isDisabled={!selectedCoach}
           />
-          {isBrandNew && <InputRightElement children={<AiFillStar />} />}
+          {isBrandNew && <InputRightElement><AiFillStar /></InputRightElement>}
           </InputGroup>
           {(isBrandNew || !selectedBrand) && (
             <VStack spacing={3} align={"left"}>

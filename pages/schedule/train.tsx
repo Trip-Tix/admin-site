@@ -9,7 +9,7 @@ import { NavigationOption, TransportType } from "@public/common/navigation_optio
 
 export default function Main() {
   return (
-    <Layout title="Schedule Train">
+    <Layout title="Schedule Train" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.Schedule}>
         <VStack spacing="4" align="stretch">
         <TransportSelect transport={TransportType.Train} navigation={NavigationOption.Schedule} />

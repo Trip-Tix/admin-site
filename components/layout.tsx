@@ -11,57 +11,87 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ title, isProtected, children }) => {
-  const router = useRouter();
   // for protected pages
-  const getLogin = () => {
-    const [isLogin, setIsLogin] = useState(true);
-    useEffect(() => {
-      setIsLogin(sessionStorage.getItem("is-login") === "true");
-    }, []);
+  // const [isLogin, setIsLogin] = useState(true);
+  // useEffect(() => {
+  //   setIsLogin(sessionStorage.getItem("is-login") === "true");
+  // }, []);
 
-    return isLogin;
-  };
-  const isLogin = getLogin();
+  // const getLogin = () => {
+
+  //   return isLogin;
+  // };
+  // const isLogin = getLogin();
+  // useEffect(() => {
+  //   if (isProtected) {
+  //     console.log({
+  //       isLogin: isLogin,
+  //       userToken: sessionStorage.getItem("user-token"),
+  //       userRole: sessionStorage.getItem("user-role"),
+  //       userCompany: sessionStorage.getItem("company-name"),
+  //     });
+  //   }
+
+  //   if (isProtected && !isLogin) {
+  //     router.push(login_url);
+  //   }
+  // }, [isLogin]);
+
+  // // for login page
+  // const getLogin_login = () => {
+  //   const [isLogin, setIsLogin] = useState(false);
+  //   useEffect(() => {
+  //     setIsLogin(sessionStorage.getItem("is-login") === "true");
+  //   }, []);
+
+  //   return isLogin;
+  // };
+  // const isLogin_login = getLogin_login();
+  // useEffect(() => {
+  //   if (!isProtected) {
+  //     console.log({
+  //       isLogin: isLogin_login,
+  //       userToken: sessionStorage.getItem("user-token"),
+  //       userRole: sessionStorage.getItem("user-role"),
+  //       userCompany: sessionStorage.getItem("company-name"),
+  //     });
+  //   }
+
+  //   if (!isProtected && isLogin_login) {
+  //     router.push(home_url);
+  //   }
+  // }, [isLogin_login]);
+
+  const router = useRouter();
   useEffect(() => {
     if (isProtected) {
       console.log({
-        isLogin: isLogin,
+        isLogin: sessionStorage.getItem("is-login") === "true",
         userToken: sessionStorage.getItem("user-token"),
         userRole: sessionStorage.getItem("user-role"),
         userCompany: sessionStorage.getItem("company-name"),
       });
     }
 
-    if (isProtected && !isLogin) {
+    if (isProtected && sessionStorage.getItem("is-login") !== "true") {
       router.push(login_url);
     }
-  }, [isLogin]);
+  }, []);
 
-  // for login page
-  const getLogin_login = () => {
-    const [isLogin, setIsLogin] = useState(false);
-    useEffect(() => {
-      setIsLogin(sessionStorage.getItem("is-login") === "true");
-    }, []);
-
-    return isLogin;
-  };
-  const isLogin_login = getLogin_login();
   useEffect(() => {
     if (!isProtected) {
       console.log({
-        isLogin: isLogin_login,
+        isLogin: sessionStorage.getItem("is-login") === "true",
         userToken: sessionStorage.getItem("user-token"),
         userRole: sessionStorage.getItem("user-role"),
         userCompany: sessionStorage.getItem("company-name"),
       });
     }
 
-    if (!isProtected && isLogin_login) {
+    if (!isProtected && sessionStorage.getItem("is-login") === "true") {
       router.push(home_url);
     }
-  }, [isLogin_login]);
-
+  }, []);
   return (
     <Box>
       <Head>

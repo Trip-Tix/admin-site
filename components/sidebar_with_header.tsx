@@ -152,7 +152,7 @@ const NavItem = ({ icon, children, selected, link, ...rest }: NavItemProps) => {
         role="group"
         cursor={selected ? "default" : "pointer"}
         bg={
-          selected ? useColorModeValue("gray.200", "gray.700") : "transparent"
+          selected ? useColorModeValue("gray.200", "gray.700") : useColorModeValue("transparent", "transparent")
         }
         _hover={
           selected
