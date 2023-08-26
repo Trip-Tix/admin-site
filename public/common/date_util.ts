@@ -69,11 +69,33 @@ export const getDaysInRange = (startingDate: Day, endingDate: Day): Day[] => {
 };
 
 export function formatDate(day: Day): string {
-    const { day: d, month: m, year: y } = day;
+  const { day: d, month: m, year: y } = day;
 
-    const formattedDay = d.toString().padStart(2, '0');
-    const formattedMonth = m.toString().padStart(2, '0');
-    const formattedYear = y.toString();
+  const formattedDay = d.toString().padStart(2, "0");
+  const formattedMonth = m.toString().padStart(2, "0");
+  const formattedYear = y.toString();
 
-    return `${formattedDay}-${formattedMonth}-${formattedYear}`;
+  return `${formattedDay}-${formattedMonth}-${formattedYear}`;
 }
+
+export const convertTo12HourFormat = (time24: string): string => {
+  const [hour, minute] = time24.split(":").map(Number);
+
+  let period = "AM";
+  let formattedHour = hour;
+
+  if (hour >= 12) {
+    period = "PM";
+    formattedHour = hour === 12 ? 12 : hour - 12;
+  }
+
+  if (formattedHour === 0) {
+    formattedHour = 12;
+  }
+
+  const formattedTime = `${formattedHour.toString().padStart(2, "0")}:${minute
+    .toString()
+    .padStart(2, "0")} ${period}`;
+
+  return formattedTime;
+};

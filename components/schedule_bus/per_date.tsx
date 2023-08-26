@@ -1,5 +1,5 @@
 import { Day, SchedulingContext } from "@public/common/temporary_context";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Text,
@@ -12,13 +12,14 @@ import {
 import { ScheduleEntry } from "@public/common/bus_interfaces";
 import PerTime from "@components/schedule_bus/per_time";
 import { formatDate } from "@public/common/date_util";
-
+import { postScheduleInfo } from "@public/common/bus_api";
 
 interface PerDateProps {
   currentDate: Day;
+  submitted: boolean;
 }
 
-export default function PerDate({ currentDate }: PerDateProps) {
+export default function PerDate({ currentDate, submitted }: PerDateProps) {
   const [scheduleEntries, setScheduleEntries] = useState<ScheduleEntry[]>([]);
   const [id, setId] = useState(0);
   const addScheduleEntry = () => {
@@ -36,10 +37,35 @@ export default function PerDate({ currentDate }: PerDateProps) {
   };
   const removeScheduleEntry = (index: number) => {
     const updatedScheduleEntries = scheduleEntries.filter(
-      (entry) => entry.key !== index
+      (entry) => entry.key !== index,
     );
     setScheduleEntries(updatedScheduleEntries);
   };
+
+  useEffect(() => {
+    console.log(scheduleEntries);
+  }, [scheduleEntries]);
+
+  //finally submitting results
+  const { startingLocation, destinations } = useContext(SchedulingContext);
+  useEffect(() => {
+    if (submitted) {
+      const tempSchedule = [];
+      scheduleEntries.forEach((entry) => {
+        tempSchedule.push({
+          time: entry.time,
+          fare: entry.fare,
+          uniqueBusId: entry.uniqueBusId,
+        });
+      });
+      postScheduleInfo({
+        src: startingLocation,
+        dest: destinations,
+        date: formatDate(currentDate),
+        schedule: tempSchedule,
+      });
+    }
+  }, [submitted]);
 
   return (
     <>
@@ -58,10 +84,12 @@ export default function PerDate({ currentDate }: PerDateProps) {
         />
       ))}
       <Button
-          colorScheme="red"
-          variant="outline"
-          onClick={() => addScheduleEntry()}
-        >Add Schedule Entry</Button>
+        colorScheme="red"
+        variant="outline"
+        onClick={() => addScheduleEntry()}
+      >
+        Add Schedule Entry
+      </Button>
       <Divider />
     </>
   );

@@ -272,3 +272,111 @@ export const fetchLocations = async (): Promise<string[]> => {
     "Mymensingh",
   ];
 };
+
+
+//fetch all the unique buses
+const getAllUniqueBus = main_url + "/api/admin/getAllUniqueBus";
+export const fetchAllUniqueBus = async ({
+  date,
+  time,
+  coachId,
+  brandName,
+}: {
+  date: string;
+  time: string;
+  coachId: number;
+  brandName: string;
+}): Promise<string[]> => {
+  // try {
+  //   const response = await axios.post(
+  //     getAllUniqueBus,
+  //     {
+  //       date: date,
+  //       time: time,
+  //       coachId: coachId,
+  //       brandName: brandName,
+  //     },
+  //     {
+  //       headers: {
+  //         token: sessionStorage.getItem("user-token"),
+  //         companyname: sessionStorage.getItem("company-name"),
+  //       },
+  //     },
+  //   );
+
+  //   if (response.status === 200) {
+  //     console.log("unique bus fetched");
+  //     const tempUniqueBus: string[] = response.data;
+  //     return tempUniqueBus;
+  //   } else {
+  //     console.log(response.data.message);
+  //     return [];
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  //   return [];
+  // }
+  return [
+    "18-07-2021-1",
+    "22-09-2020-2",
+    "18-10-2020-3",
+    "18-11-2020-4",
+    "18-12-2020-5",
+  ];
+}
+
+
+// send all the schedule info to the backend
+const postSchedule = main_url + "/api/admin/addSchedule";
+interface postRequest {
+  src: string;
+  dest: string[];
+  date: string;
+  schedule: {
+    time: string;
+    fare: number;
+    uniqueBusId: string;
+  }[];
+}
+export const postScheduleInfo = async ({
+  src,
+  dest,
+  date,
+  schedule,
+}: postRequest): Promise<string> => {
+  // try {
+  //   const response = await axios.post(
+  //     postSchedule,
+  //     {
+  //       src: src,
+  //       dest: dest,
+  //       date: date,
+  //       schedule: schedule,
+  //     },
+  //     {
+  //       headers: {
+  //         token: sessionStorage.getItem("user-token"),
+  //         companyname: sessionStorage.getItem("company-name"),
+  //       },
+  //     },
+  //   );
+
+  //   if (response.status === 200) {
+  //     console.log("schedule added");
+  //     return response.data.message;
+  //   } else {
+  //     console.log(response.data.message);
+  //     return response.data.message;
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  //   return err;
+  // }
+  console.log({
+    src: src,
+    dest: dest,
+    date: date,
+    schedule: schedule,
+  });
+  return "schedule added";
+}
