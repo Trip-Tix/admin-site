@@ -25,3 +25,11 @@ export interface busInfo {
   row: number,
   col: number
 }
+
+export interface ScheduleEntry {
+  key: number;
+  date: string;
+  time: string;
+  fare: number;
+  uniqueBusId: string;
+}
