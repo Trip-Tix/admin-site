@@ -13,7 +13,7 @@ import { TrainAddContext } from "@public/common/context";
 import { useColorModeValue } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { postAddTrain } from "@public/common/api";
+import { postAddTrain } from "@public/common/server_api";
 import { list_train_url } from "@public/common/pagelinks";
 
 import SelectCoach from "@components/add_train/select_coach";

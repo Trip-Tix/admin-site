@@ -11,6 +11,9 @@ export const postAddBus = main_url + '/api/admin/addBusInfo'
 export const getBusNames = main_url + '/api/admin/getBusNames'
 export const getAllCoachesBus = main_url + '/api/admin/getBusCoachInfo'
 
+// for train
+export const postAddTrain = main_url + '/api/admin/addTrainInfo'
+
 
 // export const postLogin = '/api/user/login'
 // export const getAllBus = '/api/bus/get-all-bus'
