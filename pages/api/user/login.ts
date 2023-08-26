@@ -4,6 +4,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const { username, password } = req.body;
     const userToken = "1234567890"
+    const companyName = "Ena"
+    const adminRole = "admin"
+
     console.log(username, password);
 
     if (!username || !password) {
@@ -18,8 +21,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(402).json({ error: "Password is wrong" });
     }
 
-    const response: { userToken: string } = {
+    const response = {
         userToken: userToken,
+        companyName: companyName,
+        adminRole: adminRole
     }
 
     return res.status(200).json(response);

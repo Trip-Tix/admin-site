@@ -19,6 +19,7 @@
     "@fontsource/open-sans": "^5.0.8",
     "@fontsource/rajdhani": "^5.0.8",
     "@fontsource/raleway": "^5.0.8",
+    "@fontsource/ubuntu": "^5.0.8",
     "@types/react": "^17.0.38",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
