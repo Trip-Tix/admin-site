@@ -30,7 +30,7 @@ export interface ScheduleEntry {
   key: number;
   date: string;
   time: string;
-  fare: number;
+  fare: number[];
   uniqueBusId: string;
 }
 

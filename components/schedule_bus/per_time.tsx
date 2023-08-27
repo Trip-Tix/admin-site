@@ -6,6 +6,7 @@ import { coachBrands } from "@public/common/bus_interfaces";
 import { formatDate, convertTo12HourFormat } from "@public/common/date_util";
 
 interface PerTimeProps {
+  destinations: string[];
   currentKey: number;
   scheduleEntries: ScheduleEntry[];
   setScheduleEntries: (value: ScheduleEntry[]) => void;
@@ -13,6 +14,7 @@ interface PerTimeProps {
 }
 
 export default function PerTime({
+  destinations,
   currentKey,
   scheduleEntries,
   setScheduleEntries,
@@ -62,8 +64,8 @@ export default function PerTime({
   };
 
   //time data
-  const [time, setTime] = useState("");
-  const [time24, setTime24] = useState("");
+  const [time, setTime] = useState("00:00");
+  const [time24, setTime24] = useState("00:00");
   const handleTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTime24(event.target.value);
     setTime(convertTo12HourFormat(event.target.value));
@@ -87,13 +89,17 @@ export default function PerTime({
   const [uniqueBusId, setUniqueBusId] = useState("");
 
   //fare data
-  const [fare, setFare] = useState(0);
-  const handleFareChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFare(parseInt(event.target.value));
-  };
+  const [fare, setFare] = useState<number[]>([0]);
+  useEffect(() => {
+    const tempList: number[] = [];
+    destinations.forEach(() => {
+      tempList.push(0);
+    });
+    setFare(tempList);
+  }, [destinations]);
 
   //every time you change something, update the schedule entry
-  const updateScheduleEntry = () => {
+  useEffect(() => {
     const updatedScheduleEntries = scheduleEntries.map((entry) => {
       if (entry.key === currentKey) {
         return {
@@ -108,9 +114,6 @@ export default function PerTime({
       }
     });
     setScheduleEntries(updatedScheduleEntries);
-  };
-  useEffect(() => {
-    updateScheduleEntry();
   }, [fare, uniqueBusId, time]);
 
   return (
@@ -162,14 +165,38 @@ export default function PerTime({
         </select>
       </Flex>
       <Flex justify="space-between" direction="row" w="full">
-        <Text mt={4}>Fare: </Text>
-        <Input
-          type="number"
-          value={fare}
-          onChange={handleFareChange}
-          w="full"
-          maxW="sm"
-        />
+        {/* {destinations.map((destination, index) => (
+          <Flex key={index} justify="space-between" direction="row" w="full">
+            <Text mt={4}>{destination}: </Text>
+            <Input
+              type="number"
+              value={fare[index]}
+              onChange={(event) => {
+                const tempFare = [...fare];
+                tempFare[index] = parseInt(event.target.value);
+                setFare(tempFare);
+              }}
+              w="full"
+              maxW="sm"
+            />
+          </Flex>
+        ))} */}
+        {fare.map((item, index) => (
+          <Flex key={index} justify="space-between" direction="row" w="full">
+            <Text mt={4}>{destinations[index]}: </Text>
+            <Input
+              type="number"
+              value={item}
+              onChange={(event) => {
+                const tempFare = [...fare];
+                tempFare[index] = parseInt(event.target.value);
+                setFare(tempFare);
+              }}
+              w="full"
+              maxW="sm"
+            />
+          </Flex>
+        ))}
       </Flex>
 
       <Flex justify="center" direction="row" w="full">

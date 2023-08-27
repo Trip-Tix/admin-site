@@ -30,7 +30,7 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
         key: id,
         date: formatDate(currentDate),
         time: "00:00 AM",
-        fare: 0,
+        fare: [],
         uniqueBusId: "",
       },
     ]);
@@ -77,6 +77,7 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
       {scheduleEntries.map((entry) => (
         <PerTime
           key={entry.key}
+          destinations={destinations}
           currentKey={entry.key}
           scheduleEntries={scheduleEntries}
           setScheduleEntries={setScheduleEntries}
