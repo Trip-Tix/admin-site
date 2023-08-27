@@ -46,6 +46,7 @@ export default function List() {
     setNumSeat(bus.numSeat);
     setBusLayoutId(bus.busLayoutId);
   };
+  const hoverBackgroundColor = useColorModeValue("gray.200", "gray.600");
 
   return (
     <VStack spacing={4} align="stretch" flex={1} ml={10} mr={10}>
@@ -82,7 +83,7 @@ export default function List() {
                   onClick={() => handleClick(bus)}
                   cursor={"pointer"}
                   _hover={{
-                    background: useColorModeValue("gray.200", "gray.600"),
+                    background: hoverBackgroundColor,
                   }}
                 >
                   <Td>{bus.coachName}</Td>
