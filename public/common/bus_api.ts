@@ -425,4 +425,47 @@ export const fetchAllBusToList = async (): Promise<coachBrandEntry[]> => {
     console.log(err);
     return [];
   }
+};
+
+// get all unique bus id list from coach id and brand name
+const getAllUniqueBusId = main_url + "/api/admin/getAllUniqueBus";
+interface getAllUniqueBusIdResponse {
+  unique_bus_id: string;
 }
+export const fetchAllUniqueBusId = async ({
+  coachId,
+  brandName,
+}: {
+  coachId: number;
+  brandName: string;
+}): Promise<string[]> => {
+  try {
+    const response = await axios.post(
+      getAllUniqueBusId,
+      {
+        coachId: coachId,
+        brandName: brandName,
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      console.log("unique bus id list fetched");
+      const tempUniqueBusIdList: string[] = response.data.map(
+        (bus: getAllUniqueBusIdResponse) => bus.unique_bus_id,
+      );
+      return tempUniqueBusIdList;
+    } else {
+      console.log(response.data.message);
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};

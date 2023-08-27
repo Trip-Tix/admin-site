@@ -2,14 +2,13 @@ import { VStack, Heading } from "@chakra-ui/react";
 import { useContext } from "react";
 import { BusInfoContext } from "@public/common/context";
 
-import RouteList from "@components/list_bus/route_list";
 import Layout from "@components/list_bus/layout";
-import CoachType from "@components/coach_type";
-import BusId from "@components/list_bus/bus_id";
+import InfoTag from "@components/list_bus/info_tag";
+import UniqueBusList from "@components/list_bus/unique_bus_list";
+
 
 export default function Details() {
-  const { busId, coachId } = useContext(BusInfoContext);
-
+  const { coachId, coachName, brandName, layout, numSeat, busLayoutId, numBus } = useContext(BusInfoContext);
   return (
     <VStack
       spacing={4}
@@ -20,10 +19,14 @@ export default function Details() {
       <Heading as="h1" size="lg" color="primary.800">
         Details
       </Heading>
-      <BusId busId={busId} />
-      <CoachType coachName={coachId} />
-      <Layout busId={busId} busCoachId={coachId} />
-      <RouteList busId={busId} coachId={coachId} />
+      <InfoTag info={coachId.toString()} label="Coach ID" />
+      <InfoTag info={coachName} label="Coach Name" />
+      <InfoTag info={brandName} label="Brand Name" />
+      <InfoTag info={numBus.toString()} label="Number of Buses" />
+      <InfoTag info={numSeat.toString()} label="Number of Seats" />
+      <InfoTag info={busLayoutId.toString()} label="Layout ID" />
+      <Layout layout={layout} />
+      <UniqueBusList coachId={coachId} brandName={brandName}/>
     </VStack>
   );
 }

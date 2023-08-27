@@ -16,6 +16,7 @@
     "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fontsource-variable/nunito": "^5.0.9",
     "@fontsource/open-sans": "^5.0.8",
     "@fontsource/rajdhani": "^5.0.8",
     "@fontsource/raleway": "^5.0.8",

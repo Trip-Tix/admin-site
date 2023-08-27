@@ -1,12 +1,12 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { IconContext } from "react-icons";
-import "@fontsource/rajdhani";
+import '@fontsource-variable/nunito';
 import { useContext, useState, useEffect } from "react";
 
 const theme = extendTheme({
   fonts: {
-    body: "Ubuntu, sans-serif",
-    heading: "Ubuntu, sans-serif",
+    body: "Nunito Variable, sans-serif",
+    heading: "Nunito Variable, sans-serif",
   },
 });
 

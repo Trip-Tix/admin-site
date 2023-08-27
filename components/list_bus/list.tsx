@@ -9,11 +9,9 @@ import {
   Heading,
   TableContainer,
   Spinner,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { getAllBus } from "@public/common/bus_api";
-import axios from "axios";
-import TableItem from "@components/list_bus/table_item";
+import { useContext, useEffect, useState } from "react";
 import { BusInfoContext } from "@public/common/context";
 import { coachBrandEntry } from "@public/common/bus_interfaces";
 import { fetchAllBusToList } from "@public/common/bus_api";
@@ -21,6 +19,15 @@ import { fetchAllBusToList } from "@public/common/bus_api";
 export default function List() {
   const [busInfoLoading, setBusInfoLoading] = useState<boolean>(true);
   const [busInfo, setBusInfo] = useState<coachBrandEntry[]>([]);
+  const {
+    setCoachId,
+    setCoachName,
+    setBrandName,
+    setLayout,
+    setNumBus,
+    setNumSeat,
+    setBusLayoutId,
+  } = useContext(BusInfoContext);
 
   useEffect(() => {
     fetchAllBusToList().then((res) => {
@@ -28,6 +35,17 @@ export default function List() {
       setBusInfoLoading(false);
     });
   }, []);
+
+  const handleClick = (bus: coachBrandEntry) => {
+    console.log(bus);
+    setCoachId(bus.coachId);
+    setCoachName(bus.coachName);
+    setBrandName(bus.brandName);
+    setLayout(bus.layout);
+    setNumBus(bus.numBus);
+    setNumSeat(bus.numSeat);
+    setBusLayoutId(bus.busLayoutId);
+  };
 
   return (
     <VStack spacing={4} align="stretch" flex={1} ml={10} mr={10}>
@@ -59,7 +77,14 @@ export default function List() {
             </Thead>
             <Tbody>
               {busInfo.map((bus, index) => (
-                <Tr key={index}>
+                <Tr
+                  key={index}
+                  onClick={() => handleClick(bus)}
+                  cursor={"pointer"}
+                  _hover={{
+                    background: useColorModeValue("gray.200", "gray.600"),
+                  }}
+                >
                   <Td>{bus.coachName}</Td>
                   <Td>{bus.brandName}</Td>
                   <Td isNumeric>{bus.numBus}</Td>

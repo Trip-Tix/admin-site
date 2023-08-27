@@ -37,19 +37,23 @@ export default function SelectedCoachBrands({
   setIsBrandNew,
   setIsSelectingBrand,
 }: selectedCoachBrandsProps) {
-
   // generating brand names
   const [brandNames, setBrandNames] = useState<string[]>([]);
   const [filteredBrandNames, setFilteredBrandNames] = useState<string[]>([]);
   useEffect(() => {
     if (selectedCoach) {
-      const selectedCoachBrands = coachBrandsList.find(
-        (coachBrand) => coachBrand.coachId === selectedCoach.coachId,
-      );
-      if (selectedCoachBrands) {
-        setBrandNames(selectedCoachBrands.brandList);
-      }
+      const tempBrandNames = [];
+      coachBrandsList.forEach((brand) => {
+        if (brand.coachId === selectedCoach.coachId) {
+          tempBrandNames.push(...brand.brandList);
+        }
+      });
+      setBrandNames(tempBrandNames);
+    } else {
+      setBrandNames([]);
     }
+    console.log(selectedCoach);
+    setSelectedBrand("");
   }, [selectedCoach]);
 
   // filtering brand names
@@ -62,7 +66,6 @@ export default function SelectedCoachBrands({
       );
     }
   }, [selectedBrand, brandNames]);
-
 
   // new brand or old brand
   useEffect(() => {
@@ -84,11 +87,9 @@ export default function SelectedCoachBrands({
             )
           }
         >
-
           {coachList.map((coach) => (
             <option key={coach.coachId}>{coach.coachName}</option>
           ))}
-          
         </Select>
         <InputGroup>
           <Input
@@ -97,18 +98,21 @@ export default function SelectedCoachBrands({
             value={selectedBrand || ""}
             isDisabled={!selectedCoach}
           />
-          {isBrandNew && <InputRightElement><AiFillStar /></InputRightElement>}
-          </InputGroup>
-          {(isBrandNew || !selectedBrand) && (
-            <VStack spacing={3} align={"left"}>
-              {filteredBrandNames.map((brand) => (
-                <Button key={brand} onClick={() => setSelectedBrand(brand)}>
-                  {brand}
-                </Button>
-              ))}
-            </VStack>
+          {isBrandNew && (
+            <InputRightElement>
+              <AiFillStar />
+            </InputRightElement>
           )}
-        
+        </InputGroup>
+        {(isBrandNew || !selectedBrand) && (
+          <VStack spacing={3} align={"left"}>
+            {filteredBrandNames.map((brand) => (
+              <Button key={brand} onClick={() => setSelectedBrand(brand)}>
+                {brand}
+              </Button>
+            ))}
+          </VStack>
+        )}
       </VStack>
     </Center>
   );
