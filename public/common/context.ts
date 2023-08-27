@@ -1,10 +1,20 @@
 import { createContext } from "react";
 
 export interface BusInfoContextType {
-  busId: string;
-  setBusId: (busId: string) => void;
-  coachId: string;
-  setCoachId: (coachId: string) => void;
+  coachId: number;
+  setCoachId: (coachId: number) => void;
+  coachName: string;
+  setCoachName: (coachName: string) => void;
+  brandName: string;
+  setBrandName: (brandName: string) => void;
+  layout: number[][];
+  setLayout: (layout: number[][]) => void;
+  numSeat: number;
+  setNumSeat: (numSeat: number) => void;
+  busLayoutId: number;
+  setBusLayoutId: (busLayoutId: number) => void;
+  numBus: number;
+  setNumBus: (numBus: number) => void;
 }
 
 export const BusInfoContext = createContext<BusInfoContextType | null>(null);

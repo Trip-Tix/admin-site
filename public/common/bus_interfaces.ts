@@ -33,3 +33,13 @@ export interface ScheduleEntry {
   fare: number;
   uniqueBusId: string;
 }
+
+export interface coachBrandEntry {
+  coachId: number;
+  coachName: string;
+  brandName: string;
+  layout: number[][];
+  numSeat: number;
+  numBus: number;
+  busLayoutId: number;
+}

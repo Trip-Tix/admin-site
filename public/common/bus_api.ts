@@ -273,7 +273,6 @@ export const fetchLocations = async (): Promise<string[]> => {
   ];
 };
 
-
 //fetch all the unique buses
 const getAllUniqueBus = main_url + "/api/admin/getAllUniqueBus";
 export const fetchAllUniqueBus = async ({
@@ -323,8 +322,7 @@ export const fetchAllUniqueBus = async ({
     "18-11-2020-4",
     "18-12-2020-5",
   ];
-}
-
+};
 
 // send all the schedule info to the backend
 const postSchedule = main_url + "/api/admin/addSchedule";
@@ -379,4 +377,52 @@ export const postScheduleInfo = async ({
     schedule: schedule,
   });
   return "schedule added";
+};
+
+// get all bus to list
+const getAllBusToList = main_url + "/api/admin/getBusInfo";
+interface getAllBusToListResponse {
+  bus_coach_id: number;
+  number_of_bus: number;
+  brand_name: string;
+  coach_name: string;
+  coach_id: number;
+  bus_layout_id: number;
+  number_of_seats: number;
+  row: number;
+  col: number;
+  layout: number[][];
+}
+import { coachBrandEntry } from "@public/common/bus_interfaces";
+export const fetchAllBusToList = async (): Promise<coachBrandEntry[]> => {
+  try {
+    const response = await axios.post(getAllBusToList, null, {
+      headers: {
+        token: sessionStorage.getItem("user-token"),
+        companyname: sessionStorage.getItem("company-name"),
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("all bus to list fetched");
+      const tempBusToList: coachBrandEntry[] = response.data.map(
+        (bus: getAllBusToListResponse) => ({
+          coachId: bus.coach_id,
+          coachName: bus.coach_name,
+          brandName: bus.brand_name,
+          layout: bus.layout,
+          numSeat: bus.number_of_seats,
+          numBus: bus.number_of_bus,
+          busLayoutId: bus.bus_layout_id,
+        }),
+      );
+      return tempBusToList;
+    } else {
+      console.log(response.data.message);
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 }

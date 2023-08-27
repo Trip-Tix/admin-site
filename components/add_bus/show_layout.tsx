@@ -31,6 +31,7 @@ export default function ShowLayout({ coachId, brandName }: ShowLayoutProps) {
     };
     fetchData();
   }, [coachId, brandName]);
+
   useEffect(() => {
     console.log(layout);
   }, [layout]);
@@ -51,12 +52,10 @@ export default function ShowLayout({ coachId, brandName }: ShowLayoutProps) {
                   {row.map((seat, seatIndex) => (
                     <Box
                       key={seatIndex}
-                      w="8"
-                      h="8"
-                      visibility={
-                        layout[rowIndex][seatIndex] === 1 ? "visible" : "hidden"
-                      }
-                      bg={{ useColorModeValue: "gray.200", dark: "gray.700" }}
+                      w="4"
+                      h="4"
+                      visibility={seat === 0 ? "hidden" : "visible"}
+                      bg={"green.500"}
                       borderRadius={"md"}
                     />
                   ))}
