@@ -165,22 +165,6 @@ export default function PerTime({
         </select>
       </Flex>
       <Flex justify="space-between" direction="row" w="full">
-        {/* {destinations.map((destination, index) => (
-          <Flex key={index} justify="space-between" direction="row" w="full">
-            <Text mt={4}>{destination}: </Text>
-            <Input
-              type="number"
-              value={fare[index]}
-              onChange={(event) => {
-                const tempFare = [...fare];
-                tempFare[index] = parseInt(event.target.value);
-                setFare(tempFare);
-              }}
-              w="full"
-              maxW="sm"
-            />
-          </Flex>
-        ))} */}
         {fare.map((item, index) => (
           <Flex key={index} justify="space-between" direction="row" w="full">
             <Text mt={4}>{destinations[index]}: </Text>
