@@ -10,7 +10,10 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/react";
-import { fetchCoachBrandList, fetchAllUniqueBus } from "@public/common/bus_api";
+import {
+  fetchCoachBrandList,
+  fetchAllAvailableBus,
+} from "@public/common/bus_api";
 import { coachBrands } from "@public/common/bus_interfaces";
 import { formatDate, convertTo12HourFormat } from "@public/common/date_util";
 import { AiOutlineClose } from "react-icons/ai";
@@ -84,21 +87,24 @@ export default function PerTime({
   //now according to selected date, time, coach and brand fetch all the possible unique bus id
   const [uniqueBusList, setUniqueBusList] = useState<string[]>([]);
   const [isUniqueBusListLoading, setIsUniqueBusListLoading] = useState(false);
-  
   useEffect(() => {
-    if(scheduleEntries[currentKey] === null || scheduleEntries[currentKey] === undefined)
+    if (
+      scheduleEntries[currentKey] === null ||
+      scheduleEntries[currentKey] === undefined
+    )
       return;
+    if (coachId === 0 || brand === "" || time === "00:00") return;
     setIsUniqueBusListLoading(true);
-    fetchAllUniqueBus({
-      date: scheduleEntries[currentKey].date,
-      time: time,
-      coachId: coachId,
-      brandName: brand,
-    }).then((data) => {
+    fetchAllAvailableBus(
+      scheduleEntries[currentKey].date,
+      time,
+      coachId,
+      brand,
+    ).then((data) => {
       setUniqueBusList(data);
       setIsUniqueBusListLoading(false);
     });
-  }, [coachId, brand, time, scheduleEntries, currentKey]);
+  }, [coachId, brand, time, currentKey]);
   const [uniqueBusId, setUniqueBusId] = useState("");
 
   //fare data
@@ -132,7 +138,13 @@ export default function PerTime({
   return (
     <>
       <Divider />
-      <Flex direction="row-reverse" w="100%" m={2} justifyContent={"space-between"} alignContent={"center"}>
+      <Flex
+        direction="row-reverse"
+        w="100%"
+        m={2}
+        justifyContent={"space-between"}
+        alignContent={"center"}
+      >
         <Button
           onClick={() => removeScheduleEntry(currentKey)}
           colorScheme="red"
@@ -176,17 +188,21 @@ export default function PerTime({
         </Flex>
         <Flex direction="row" w="full" alignItems={"center"}>
           <Text mr={6}>Unique Bus: </Text>
-          <select
-            onChange={(event) => setUniqueBusId(event.target.value)}
-            value={uniqueBusId}
-          >
-            <option value="">Select Unique Bus</option>
-            {uniqueBusList.map((uniqueBus) => (
-              <option key={uniqueBus} value={uniqueBus}>
-                {uniqueBus}
-              </option>
-            ))}
-          </select>
+          {isUniqueBusListLoading ? (
+            <Text>Loading...</Text>
+          ) : (
+            <select
+              onChange={(event) => setUniqueBusId(event.target.value)}
+              value={uniqueBusId}
+            >
+              <option value="">Select Unique Bus</option>
+              {uniqueBusList.map((uniqueBus) => (
+                <option key={uniqueBus} value={uniqueBus}>
+                  {uniqueBus}
+                </option>
+              ))}
+            </select>
+          )}
         </Flex>
       </Grid>
       <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"} mt={6} mb={6}>
@@ -201,7 +217,7 @@ export default function PerTime({
               value={item}
               onChange={(event) => {
                 const tempFare = [...fare];
-                tempFare[index] = parseInt(event.target.value);
+                tempFare[index] = parseInt(event.target.value || "0");
                 setFare(tempFare);
               }}
               w="full"

@@ -238,90 +238,73 @@ interface getLocationsResponse {
   location_name: string;
 }
 export const fetchLocations = async (): Promise<string[]> => {
-  // try {
-  //   const response = await axios.post(getLocations, null, {
-  //     headers: {
-  //       token: sessionStorage.getItem("user-token"),
-  //       companyname: sessionStorage.getItem("company-name"),
-  //     },
-  //   });
+  try {
+    const response = await axios.post(getLocations, null, {
+      headers: {
+        token: sessionStorage.getItem("user-token"),
+        companyname: sessionStorage.getItem("company-name"),
+      },
+    });
 
-  //   if (response.status === 200) {
-  //     console.log("locations fetched");
-  //     const tempLocations: string[] = response.data.map(
-  //       (location: getLocationsResponse) => location.location_name,
-  //     );
-  //     return tempLocations;
-  //   } else {
-  //     console.log(response.data.message);
-  //     return [];
-  //   }
-  // } catch (err) {
-  //   console.log(err);
-  //   return [];
-  // }
-  console.log("locations fetched");
-  return [
-    "Dhaka",
-    "Chittagong",
-    "Sylhet",
-    "Khulna",
-    "Rajshahi",
-    "Barishal",
-    "Rangpur",
-    "Mymensingh",
-  ];
+    if (response.status === 200) {
+      console.log("locations fetched");
+      const tempLocations: string[] = response.data.map(
+        (location: getLocationsResponse) => location.location_name,
+      );
+      return tempLocations;
+    } else {
+      console.log(response.data.message);
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 };
 
 //fetch all the unique buses
-const getAllUniqueBus = main_url + "/api/admin/getAllUniqueBus";
-export const fetchAllUniqueBus = async ({
-  date,
-  time,
-  coachId,
-  brandName,
-}: {
-  date: string;
-  time: string;
-  coachId: number;
-  brandName: string;
-}): Promise<string[]> => {
-  // try {
-  //   const response = await axios.post(
-  //     getAllUniqueBus,
-  //     {
-  //       date: date,
-  //       time: time,
-  //       coachId: coachId,
-  //       brandName: brandName,
-  //     },
-  //     {
-  //       headers: {
-  //         token: sessionStorage.getItem("user-token"),
-  //         companyname: sessionStorage.getItem("company-name"),
-  //       },
-  //     },
-  //   );
+const getAllAvailableBus = main_url + "/api/admin/getAvailableBus";
+interface getAllUniqueBusResponse {
+  unique_bus_id: string;
+}
+export const fetchAllAvailableBus = async (
+  date: string,
+  time: string,
+  coachId: number,
+  brandName: string,
+): Promise<string[]> => {
+  try {
+    const response = await axios.post(
+      getAllAvailableBus,
+      {
+        date: date,
+        time: time,
+        coachId: coachId,
+        brandName: brandName,
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      },
+    );
 
-  //   if (response.status === 200) {
-  //     console.log("unique bus fetched");
-  //     const tempUniqueBus: string[] = response.data;
-  //     return tempUniqueBus;
-  //   } else {
-  //     console.log(response.data.message);
-  //     return [];
-  //   }
-  // } catch (err) {
-  //   console.log(err);
-  //   return [];
-  // }
-  return [
-    "18-07-2021-1",
-    "22-09-2020-2",
-    "18-10-2020-3",
-    "18-11-2020-4",
-    "18-12-2020-5",
-  ];
+    if (response.status === 200) {
+      console.log("all available bus fetched");
+      const tempAvailableBus: string[] = [];
+      response.data.uniqueBusId.map((bus: getAllUniqueBusResponse) =>
+        tempAvailableBus.push(bus.unique_bus_id),
+      );
+      return tempAvailableBus;
+    } else {
+      console.log(response.data.message);
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 };
 
 // send all the schedule info to the backend
@@ -342,41 +325,43 @@ export const postScheduleInfo = async ({
   date,
   schedule,
 }: postRequest): Promise<string> => {
-  // try {
-  //   const response = await axios.post(
-  //     postSchedule,
-  //     {
-  //       src: src,
-  //       dest: dest,
-  //       date: date,
-  //       schedule: schedule,
-  //     },
-  //     {
-  //       headers: {
-  //         token: sessionStorage.getItem("user-token"),
-  //         companyname: sessionStorage.getItem("company-name"),
-  //       },
-  //     },
-  //   );
+  try {
+    console.log("post schedule info");
+    console.log({
+      src: src,
+      dest: dest[dest.length - 1],
+      destPoints: dest,
+      date: date,
+      schedule: schedule,
+    });
+    const response = await axios.post(
+      postSchedule,
+      {
+        src: src,
+        dest: dest[dest.length - 1],
+        destPoints: dest,
+        date: date,
+        schedule: schedule,
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      },
+    );
 
-  //   if (response.status === 200) {
-  //     console.log("schedule added");
-  //     return response.data.message;
-  //   } else {
-  //     console.log(response.data.message);
-  //     return response.data.message;
-  //   }
-  // } catch (err) {
-  //   console.log(err);
-  //   return err;
-  // }
-  console.log({
-    src: src,
-    dest: dest,
-    date: date,
-    schedule: schedule,
-  });
-  return "schedule added";
+    if (response.status === 200) {
+      console.log("schedule added");
+      return response.data.message;
+    } else {
+      console.log(response.data.message);
+      return response.data.message;
+    }
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
 };
 
 // get all bus to list

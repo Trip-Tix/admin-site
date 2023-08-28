@@ -11,6 +11,7 @@ import {
   InputRightElement,
   Spacer,
   Select,
+  Spinner,
 } from "@chakra-ui/react";
 import { SchedulingContext, Day } from "@public/common/temporary_context";
 import { fetchLocations } from "@public/common/bus_api";
@@ -89,68 +90,85 @@ export default function InitialForm({
     <>
       {isInitialForm ? (
         <>
-          <Flex align="center" justify="space-between" direction="row" w="full">
-            <Text fontSize="xl" fontWeight="bold" p={2}>
-              {" "}
-              Starting Location{" "}
-            </Text>
-            <Text fontSize="xl" fontWeight="bold" p={2}>
-              {" "}
-              Destinations{" "}
-            </Text>
-          </Flex>
-          <Flex
-            align="flex-start"
-            justify="space-between"
-            direction="row"
-            w="full"
-            p={2}
-            m={2}
-          >
-            <Select
-              placeholder="Select Location"
-              width={"40%"}
-              onChange={(e) => setStartingLocation(e.target.value)}
-              value={startingLocation}
-            >
-              {locations.map((location, index) => (
-                <option key={index} value={location}>
-                  {location}
-                </option>
-              ))}
-            </Select>
-
-            <VStack spacing={3} align={"right"} w="40%">
-              {destinations.map((destination, index) => (
-                <Flex
-                  key={index}
-                  align="center"
-                  justify="space-between"
-                  direction="row"
-                  w="full"
+          {locationLoading ? (
+            <Flex align="center" justify="center" direction="row" w="full">
+              <Text fontSize="xl" fontWeight="bold" p={2}>
+                {" "}
+                Loading Locations{" "}
+              </Text>
+              <Spinner />
+            </Flex>
+          ) : (
+            <>
+              <Flex
+                align="center"
+                justify="space-between"
+                direction="row"
+                w="full"
+              >
+                <Text fontSize="xl" fontWeight="bold" p={2}>
+                  {" "}
+                  Starting Location{" "}
+                </Text>
+                <Text fontSize="xl" fontWeight="bold" p={2}>
+                  {" "}
+                  Destinations{" "}
+                </Text>
+              </Flex>
+              <Flex
+                align="flex-start"
+                justify="space-between"
+                direction="row"
+                w="full"
+                p={2}
+                m={2}
+              >
+                <Select
+                  placeholder="Select Location"
+                  width={"40%"}
+                  onChange={(e) => setStartingLocation(e.target.value)}
+                  value={startingLocation}
                 >
-                  <Select
-                    placeholder="Select Location"
-                    width={"full"}
-                    value={destination}
-                    onChange={(e) =>
-                      handleDestinationChange(index, e.target.value)
-                    }
-                  >
-                    {locations.map((location, index) => (
-                      <option key={index} value={location}>
-                        {location}
-                      </option>
-                    ))}
-                  </Select>
-                  <Button onClick={() => removeDestination(index)}>
-                    Remove
-                  </Button>
-                </Flex>
-              ))}
-              <Button onClick={addDestination}>Add Destination</Button>
-            </VStack>
-          </Flex>
+                  {locations.map((location, index) => (
+                    <option key={index} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </Select>
+
+                <VStack spacing={3} align={"right"} w="40%">
+                  {destinations.map((destination, index) => (
+                    <Flex
+                      key={index}
+                      align="center"
+                      justify="space-between"
+                      direction="row"
+                      w="full"
+                    >
+                      <Select
+                        placeholder="Select Location"
+                        width={"full"}
+                        value={destination}
+                        onChange={(e) =>
+                          handleDestinationChange(index, e.target.value)
+                        }
+                      >
+                        {locations.map((location, index) => (
+                          <option key={index} value={location}>
+                            {location}
+                          </option>
+                        ))}
+                      </Select>
+                      <Button onClick={() => removeDestination(index)}>
+                        Remove
+                      </Button>
+                    </Flex>
+                  ))}
+                  <Button onClick={addDestination}>Add Destination</Button>
+                </VStack>
+              </Flex>
+            </>
+          )}
           <Flex align="center" justify="space-between" direction="row" w="full">
             <Text fontSize="xl" fontWeight="bold" p={2}>
               {" "}

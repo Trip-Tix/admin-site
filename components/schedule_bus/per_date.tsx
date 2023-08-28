@@ -67,9 +67,10 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
         dest: destinations,
         date: formatDate(currentDate),
         schedule: tempSchedule,
+      }).then((response) => {
+        router.push(home_url);
       });
     }
-    router.push(home_url);
   }, [submitted, router]);
 
   return (
@@ -82,8 +83,12 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
         alignItems={"center"}
       >
         <Flex alignItems={"center"}>
-          <Text fontWeight={"bold"} mr={2} >Schedule for:</Text>
-          <Text bg={"gray.500"} borderRadius={5} padding={2}>{formatDate(currentDate)}</Text>
+          <Text fontWeight={"bold"} mr={2}>
+            Schedule for:
+          </Text>
+          <Text bg={"gray.500"} borderRadius={5} padding={2}>
+            {formatDate(currentDate)}
+          </Text>
         </Flex>
         <Button onClick={() => addScheduleEntry()}>
           <IoMdAddCircle />
