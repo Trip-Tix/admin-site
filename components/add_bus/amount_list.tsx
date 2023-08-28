@@ -14,6 +14,8 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { fetchExistingBusIds } from "@public/common/bus_api";
 
@@ -138,23 +140,31 @@ export default function AmountList({
             </Slider>
           </VStack>
           {wrongBusId.includes(true) && (
-            <Text color="red.500">Bus ID already exists</Text>
+            <Text color="red.500" m={"1rem"}>
+              Bus ID already exists
+            </Text>
           )}
-          {Array.from({ length: numBus }).map((_, index) => (
-            <Flex key={index} alignItems="center">
-              <Text
-                flexShrink={0}
-                color={wrongBusId[index] ? "red.500" : "default"}
-              >{`${company}-${coachName}-${brandName}-`}</Text>
-              <Input
-                flex="1"
-                placeholder={`Bus ${index + 1} ID`}
-                onChange={(e) => handleInputChange(index, e.target.value)}
-                isInvalid={wrongBusId[index]}
-                color={wrongBusId[index] ? "red.500" : "default"}
-              />
-            </Flex>
-          ))}
+          <Grid templateColumns="repeat(2, 1fr)" gap={6} m={"1rem"}>
+            {Array.from({ length: numBus }).map((_, index) => (
+              <GridItem key={index}>
+                <Flex alignItems="center">
+                  <Text
+                    flexShrink={0}
+                    color={wrongBusId[index] ? "red.500" : "default"}
+                  >{`${company}-${coachName}-${brandName}-`}</Text>
+                  <Input
+                    flex="1"
+                    placeholder={` Bus ${index + 1} ID`}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    isInvalid={wrongBusId[index]}
+                    color={wrongBusId[index] ? "red.500" : "default"}
+                    textAlign="left"
+                    pl={0}
+                  />
+                </Flex>
+              </GridItem>
+            ))}
+          </Grid>
         </>
       )}
     </>
