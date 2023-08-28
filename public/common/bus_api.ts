@@ -332,7 +332,7 @@ interface postRequest {
   date: string;
   schedule: {
     time: string;
-    fare: number;
+    fare: number[];
     uniqueBusId: string;
   }[];
 }
