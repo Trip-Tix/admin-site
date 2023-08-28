@@ -7,7 +7,7 @@ import {
   Divider,
   Flex,
   Center,
-  useColorModeValue,
+  useColorMode,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { fetchBusLayout } from "@public/common/bus_api";
@@ -18,6 +18,7 @@ interface ShowLayoutProps {
 }
 
 export default function ShowLayout({ coachId, brandName }: ShowLayoutProps) {
+  const { colorMode } = useColorMode();
   const [layout, setLayout] = useState<number[][]>([]);
   const [existingNumber, setExistingNumber] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -58,7 +59,7 @@ export default function ShowLayout({ coachId, brandName }: ShowLayoutProps) {
                         w="4"
                         h="4"
                         visibility={seat === 0 ? "hidden" : "visible"}
-                        bg={useColorModeValue("gray.400", "gray.500")}
+                        bg={colorMode === 'light' ? "gray.400" : "gray.500"}
                         borderRadius={"md"}
                       />
                     ))}
