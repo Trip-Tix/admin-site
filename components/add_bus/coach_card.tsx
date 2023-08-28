@@ -82,14 +82,34 @@ export default function CoachCard({
 
   return (
     <>
-      <VStack
+      <Flex
+        direction={"column"}
         borderRadius={"md"}
         overflow="hidden"
-        maxW={"100%"}
+        w={"100%"}
         bg={useColorModeValue("gray.300", "gray.800")}
-        spacing={0}
         boxShadow={"md"}
       >
+        {/* Remove Coach Button */}
+        <Flex
+          w={"100%"}
+          p={5}
+          direction={"row-reverse"}
+          justifyContent={"space-between"}
+        >
+          <Button
+            onClick={() => removalAction.removeCoach(removalAction.key)}
+            colorScheme="red"
+          >
+            <AiOutlineClose />
+          </Button>
+          {isSelectingBrand && (
+            <Button onClick={() => setIsSelectingBrand(false)}>
+              <AiOutlineArrowLeft />
+            </Button>
+          )}
+        </Flex>
+        {/* Coach Card Content */}
         {!isSelectingBrand ? (
           <>
             <SelectCoachBrand
@@ -114,28 +134,25 @@ export default function CoachCard({
           </>
         ) : (
           <>
-            {" "}
-            <VStack w={"100%"} h={"100%"} p={5}>
-              <Flex justifyContent={"space-between"} w={"100%"}>
-                <Flex align={"right"} direction={"column"} w={"100%"} mr={5}>
-                  <Flex alignContent={"center"}>
-                    <Text fontWeight={"bold"} mr={2}>
-                      Coach:
-                    </Text>
-                    <Text fontStyle={"italic"}>{selectedCoach.coachName}</Text>
-                  </Flex>
-                  <Flex alignContent={"center"}>
-                    <Text fontWeight={"bold"} mr={2}>
-                      Brand:{" "}
-                    </Text>
-                    <Text fontStyle={"italic"}>{selectedBrand}</Text>
-                  </Flex>
-                </Flex>
-                <Button onClick={() => setIsSelectingBrand(false)}>
-                  <AiOutlineArrowLeft />
-                </Button>
+            <Flex
+              align={"right"}
+              w={"100%"}
+              justifyContent={"space-between"}
+              p={2}
+            >
+              <Flex alignContent={"center"}>
+                <Text fontWeight={"bold"} mr={2}>
+                  Coach:
+                </Text>
+                <Text fontStyle={"italic"}>{selectedCoach.coachName}</Text>
               </Flex>
-            </VStack>
+              <Flex alignContent={"center"}>
+                <Text fontWeight={"bold"} mr={2}>
+                  Brand:{" "}
+                </Text>
+                <Text fontStyle={"italic"}>{selectedBrand}</Text>
+              </Flex>
+            </Flex>
             <Divider />
             {isBrandNew ? (
               <LayoutCreation
@@ -169,15 +186,7 @@ export default function CoachCard({
             removalAction={removalAction}
           />
         )}
-        <Button
-          onClick={() => removalAction.removeCoach(removalAction.key)}
-          w={"100%"}
-          colorScheme="red"
-          rightIcon={<AiOutlineClose />}
-          borderTopEndRadius={0}
-          borderTopStartRadius={0}
-        />
-      </VStack>
+      </Flex>
     </>
   );
 }

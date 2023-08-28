@@ -13,6 +13,7 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  useColorMode,
 } from "@chakra-ui/react";
 import { use, useEffect, useState } from "react";
 
@@ -37,6 +38,7 @@ export default function LayoutCreation({
   numSeat,
   setNumSeat,
 }: LayoutCreationProps) {
+  const { colorMode } = useColorMode();
   const [rowArray, setRowArray] = useState<number[]>([]);
   const [colArray, setColArray] = useState<number[]>([]);
   useEffect(() => {
@@ -93,84 +95,68 @@ export default function LayoutCreation({
     setNumSeat(tempNumSeat);
   }, [layout]);
 
-  useEffect(() => {
-    console.log(layout);
-  }, [layout]);
-
   return (
     <>
-      <Flex direction="row" align="top" justify="space-between" minW={"70vw"}>
+      <Flex direction="row" align="top" justify="space-between" mt={2} mb={2}>
+        {/* Row and Col */}
         <VStack align={"left"} spacing={4} w="50%" mr={5} ml={"1rem"}>
           <Text>Row</Text>
-          <Flex wrap={"wrap"}>
-            <NumberInput
-              mr="2rem"
-              value={row}
-              onChange={(e) => setRow(parseInt(e))}
-              min={1}
-              max={50}
-            >
-              <NumberInputField />
-            </NumberInput>
-            <Slider
-              focusThumbOnChange={false}
-              value={row}
-              onChange={(e) => setRow(e)}
-              min={1}
-              max={50}
-            >
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb fontSize="sm" boxSize="32px">{row}</SliderThumb>
-            </Slider>
-          </Flex>
+          <Slider
+            focusThumbOnChange={false}
+            value={row}
+            onChange={(e) => setRow(e)}
+            min={1}
+            max={50}
+          >
+            <SliderTrack>
+              <SliderFilledTrack />
+            </SliderTrack>
+            <SliderThumb fontSize="sm" boxSize="32px" color={"black"}>
+              {row}
+            </SliderThumb>
+          </Slider>
+
           <Text>Column</Text>
-          <Flex wrap={"wrap"}>
-            <NumberInput
-              mr="2rem"
-              value={col}
-              onChange={(e) => setCol(parseInt(e))}
-              min={1}
-              max={10}
-            >
-              <NumberInputField />
-            </NumberInput>
-            <Slider
-              focusThumbOnChange={false}
-              value={col}
-              onChange={(e) => setCol(e)}
-              min={1}
-              max={10}
-            >
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb fontSize="sm" boxSize="32px">{col}</SliderThumb>
-            </Slider>
-          </Flex>
+
+          <Slider
+            focusThumbOnChange={false}
+            value={col}
+            onChange={(e) => setCol(e)}
+            min={1}
+            max={10}
+          >
+            <SliderTrack>
+              <SliderFilledTrack />
+            </SliderTrack>
+            <SliderThumb fontSize="sm" boxSize="32px" color={"black"}>
+              {col}
+            </SliderThumb>
+          </Slider>
         </VStack>
-          <VStack mr={"1rem"}>
-            {rowArray.map((row) => (
-              <HStack key={row}>
-                {colArray.map((col) => (
-                  <Box
-                    height={"4vh"}
-                    width={"4vh"}
-                    key={col}
-                    cursor={"pointer"}
-                    borderRadius={"md"}
-                    bg={layout[row][col] === 0 ? "red" : "green"}
-                    onClick={() => {
-                      const tempLayout = JSON.parse(JSON.stringify(layout)); //deep copy
-                      tempLayout[row][col] = tempLayout[row][col] === 0 ? 1 : 0;
-                      setLayout(tempLayout);
-                    }}
-                  />
-                ))}
-              </HStack>
-            ))}
-          </VStack>
+        {/* Layout */}
+        <VStack mr={"1rem"}>
+          {rowArray.map((row) => (
+            <HStack key={row}>
+              {colArray.map((col) => (
+                <Box
+                  height={"4vh"}
+                  width={"4vh"}
+                  key={col}
+                  cursor={"pointer"}
+                  borderRadius={"md"}
+                  bg={layout[row][col] === 0 ? "invisible" : colorMode === 'light' ? "gray.400" : "gray.500"}
+                  borderColor={layout[row][col] === 0 ? colorMode === 'light' ? "gray.400" : "gray.500" : "invisible"}
+                  borderWidth={layout[row][col] === 0 ? "1px" : "invisible"}
+                  onClick={() => {
+                    const tempLayout = JSON.parse(JSON.stringify(layout)); //deep copy
+                    tempLayout[row][col] = tempLayout[row][col] === 0 ? 1 : 0;
+                    setLayout(tempLayout);
+                  }}
+                />
+              ))}
+            </HStack>
+          ))}
+        </VStack>
       </Flex>
     </>
   );

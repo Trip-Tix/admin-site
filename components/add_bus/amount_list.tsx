@@ -10,6 +10,10 @@ import {
   Flex,
   VStack,
   Center,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
 } from "@chakra-ui/react";
 import { fetchExistingBusIds } from "@public/common/bus_api";
 
@@ -38,7 +42,9 @@ export default function AmountList({
   setUniqueBusId,
   removalAction,
 }: AmountListProps) {
-  const [company, setCompany] = useState<string>(sessionStorage.getItem("company-name") || "");
+  const [company, setCompany] = useState<string>(
+    sessionStorage.getItem("company-name") || "",
+  );
 
   // fetch data
   const [existingBusId, setExistingBusId] = useState<string[]>([]);
@@ -74,7 +80,9 @@ export default function AmountList({
     const updatedUniqueBusId = [...uniqueBusId];
     updatedUniqueBusId[index] = `${company}-${coachName}-${brandName}-${value}`;
     setUniqueBusId(updatedUniqueBusId);
-    if (existingBusId.includes(`${company}-${coachName}-${brandName}-${value}`)) {
+    if (
+      existingBusId.includes(`${company}-${coachName}-${brandName}-${value}`)
+    ) {
       const updatedWrongBusId = [...wrongBusId];
       updatedWrongBusId[index] = true;
       setWrongBusId(updatedWrongBusId);
@@ -108,11 +116,27 @@ export default function AmountList({
           <Spinner />
         </>
       ) : (
-        <VStack m={"1rem"} w={"100%"}>
-          <HStack>
-            <Text w={"100%"}>Number of Bus: </Text>
-            <Input onChange={(e) => setNumBus(parseInt(e.target.value))} />
-          </HStack>
+        <>
+          {/* Selecting Number of Bus */}
+          <VStack align={"left"} spacing={4} w="100%" m={"1rem"}>
+            <Text>Number of Bus</Text>
+            <Slider
+              focusThumbOnChange={false}
+              value={numBus}
+              onChange={(e) => setNumBus(e)}
+              min={1}
+              max={50}
+              ml={"1rem"}
+              w={"80%"}
+            >
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb fontSize="sm" boxSize="32px" color={"black"}>
+                {numBus}
+              </SliderThumb>
+            </Slider>
+          </VStack>
           {wrongBusId.includes(true) && (
             <Text color="red.500">Bus ID already exists</Text>
           )}
@@ -131,7 +155,7 @@ export default function AmountList({
               />
             </Flex>
           ))}
-        </VStack>
+        </>
       )}
     </>
   );

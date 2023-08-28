@@ -9,6 +9,8 @@ import {
   Center,
   InputGroup,
   InputRightElement,
+  Flex,
+  HStack,
 } from "@chakra-ui/react";
 import { use, useState, useEffect } from "react";
 import { coach, coachBrands } from "@public/common/bus_interfaces";
@@ -77,8 +79,9 @@ export default function SelectedCoachBrands({
   }, [selectedBrand]);
 
   return (
-    <Center w={"100%"} h={"100%"}>
-      <VStack p={10}>
+    <>
+      <Flex p={2} justifyContent={"space-around"}>
+        {/* Selecting Coach */}
         <Select
           placeholder="Select Coach"
           onChange={(e) =>
@@ -86,11 +89,13 @@ export default function SelectedCoachBrands({
               coachList.find((coach) => coach.coachName === e.target.value),
             )
           }
+          mr={2}
         >
           {coachList.map((coach) => (
             <option key={coach.coachId}>{coach.coachName}</option>
           ))}
         </Select>
+        {/* Selecting Brand */}
         <InputGroup>
           <Input
             placeholder={"Select Brand"}
@@ -104,16 +109,19 @@ export default function SelectedCoachBrands({
             </InputRightElement>
           )}
         </InputGroup>
-        {(isBrandNew || !selectedBrand) && (
-          <VStack spacing={3} align={"left"}>
+      </Flex>
+      <Flex p={2} justifyContent={"flex-start"} align={"center"}>
+        {(isBrandNew || !selectedBrand) && filteredBrandNames.length !== 0 && (
+          <>
+            <Text>Brand List:</Text>
             {filteredBrandNames.map((brand) => (
-              <Button key={brand} onClick={() => setSelectedBrand(brand)}>
+              <Button key={brand} onClick={() => setSelectedBrand(brand)} m={1}>
                 {brand}
               </Button>
             ))}
-          </VStack>
+          </>
         )}
-      </VStack>
-    </Center>
+      </Flex>
+    </>
   );
 }

@@ -7,6 +7,7 @@ import {
   Divider,
   Flex,
   Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { fetchBusLayout } from "@public/common/bus_api";
@@ -44,28 +45,27 @@ export default function ShowLayout({ coachId, brandName }: ShowLayoutProps) {
         </>
       ) : (
         <>
-          <HStack justifyContent={"space-between"} w={"100%"}  p={"1rem"}>
-            <Text>Layout</Text>
-            <VStack>
-              {layout.map((row, rowIndex) => (
-                <HStack key={rowIndex}>
-                  {row.map((seat, seatIndex) => (
-                    <Box
-                      key={seatIndex}
-                      w="4"
-                      h="4"
-                      visibility={seat === 0 ? "hidden" : "visible"}
-                      bg={"green.500"}
-                      borderRadius={"md"}
-                    />
-                  ))}
-                </HStack>
-              ))}
-            </VStack>
-          </HStack>
           <HStack justifyContent={"space-between"} w={"100%"} p={"1rem"}>
-            <Text>Existing Number:</Text>
-            <Text>{existingNumber}</Text>
+            <Text>Existing Number: {existingNumber}</Text>
+            <Flex alignItems={"center"}>
+              <Text mr={2}>Layout: </Text>
+              <VStack>
+                {layout.map((row, rowIndex) => (
+                  <HStack key={rowIndex}>
+                    {row.map((seat, seatIndex) => (
+                      <Box
+                        key={seatIndex}
+                        w="4"
+                        h="4"
+                        visibility={seat === 0 ? "hidden" : "visible"}
+                        bg={useColorModeValue("gray.400", "gray.500")}
+                        borderRadius={"md"}
+                      />
+                    ))}
+                  </HStack>
+                ))}
+              </VStack>
+            </Flex>
           </HStack>
         </>
       )}
