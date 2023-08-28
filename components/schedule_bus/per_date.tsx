@@ -13,6 +13,9 @@ import { ScheduleEntry } from "@public/common/bus_interfaces";
 import PerTime from "@components/schedule_bus/per_time";
 import { formatDate } from "@public/common/date_util";
 import { postScheduleInfo } from "@public/common/bus_api";
+import { IoMdAddCircle } from "react-icons/io";
+import { useRouter } from "next/router";
+import { home_url } from "@public/common/pagelinks";
 
 interface PerDateProps {
   currentDate: Day;
@@ -47,6 +50,7 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
   }, [scheduleEntries]);
 
   //finally submitting results
+  const router = useRouter();
   const { startingLocation, destinations } = useContext(SchedulingContext);
   useEffect(() => {
     if (submitted) {
@@ -65,14 +69,25 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
         schedule: tempSchedule,
       });
     }
-  }, [submitted]);
+    router.push(home_url);
+  }, [submitted, router]);
 
   return (
     <>
-      <Flex justify="space-between" direction="row" w="full">
-        <Text mt={4}>
-          Date: {currentDate.day}/{currentDate.month}/{currentDate.year}
-        </Text>
+      <Flex
+        justify="space-between"
+        direction="row"
+        w="full"
+        m={2}
+        alignItems={"center"}
+      >
+        <Flex alignItems={"center"}>
+          <Text fontWeight={"bold"} mr={2} >Schedule for:</Text>
+          <Text bg={"gray.500"} borderRadius={5} padding={2}>{formatDate(currentDate)}</Text>
+        </Flex>
+        <Button onClick={() => addScheduleEntry()}>
+          <IoMdAddCircle />
+        </Button>
       </Flex>
       {scheduleEntries.map((entry) => (
         <PerTime
@@ -84,13 +99,7 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
           removeScheduleEntry={removeScheduleEntry}
         />
       ))}
-      <Button
-        colorScheme="red"
-        variant="outline"
-        onClick={() => addScheduleEntry()}
-      >
-        Add Schedule Entry
-      </Button>
+
       <Divider />
     </>
   );

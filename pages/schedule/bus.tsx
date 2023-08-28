@@ -46,7 +46,7 @@ export default function Main() {
               setEndingDate,
             }}
           >
-            <Flex align="center" justify="space-between" direction="column" w="full">
+            <Flex align="center" justify="space-between" direction="column" w="100%">
               <InitialForm
                 isInitialForm={isInitialForm}
                 setIsInitialForm={setIsInitialForm}

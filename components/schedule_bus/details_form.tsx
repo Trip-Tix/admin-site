@@ -28,7 +28,7 @@ export default function DetailsForm({ isInitialForm }: DetailsFormProps) {
           {daysInRange.map((day) => (
             <PerDate key={day.day.toString()+day.month.toString()+day.year.toString()} currentDate={day} submitted={submitted}/>
           ))}
-          <Button onClick={() => setSubmitted(true)}>Fix Schedule</Button>
+          <Button onClick={() => setSubmitted(true)} m={2}>Fix Schedule</Button>
         </>
       )}
     </>

@@ -1,9 +1,19 @@
 import { ScheduleEntry } from "@public/common/bus_interfaces";
 import { ChangeEvent, use, useEffect, useState } from "react";
-import { Box, Text, Button, Flex, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Button,
+  Flex,
+  Input,
+  Divider,
+  Grid,
+  GridItem,
+} from "@chakra-ui/react";
 import { fetchCoachBrandList, fetchAllUniqueBus } from "@public/common/bus_api";
 import { coachBrands } from "@public/common/bus_interfaces";
 import { formatDate, convertTo12HourFormat } from "@public/common/date_util";
+import { AiOutlineClose } from "react-icons/ai";
 
 interface PerTimeProps {
   destinations: string[];
@@ -74,7 +84,10 @@ export default function PerTime({
   //now according to selected date, time, coach and brand fetch all the possible unique bus id
   const [uniqueBusList, setUniqueBusList] = useState<string[]>([]);
   const [isUniqueBusListLoading, setIsUniqueBusListLoading] = useState(false);
+  
   useEffect(() => {
+    if(scheduleEntries[currentKey] === null || scheduleEntries[currentKey] === undefined)
+      return;
     setIsUniqueBusListLoading(true);
     fetchAllUniqueBus({
       date: scheduleEntries[currentKey].date,
@@ -117,57 +130,72 @@ export default function PerTime({
   }, [fare, uniqueBusId, time]);
 
   return (
-    <Box>
-      <Flex justify="space-between" direction="row" w="full">
-        <Text mt={4}>Time: </Text>
-        <Input
-          type="time"
-          value={time24}
-          onChange={handleTimeChange}
-          w="full"
-          maxW="sm"
-        />
-      </Flex>
-      <Flex justify="space-between" direction="row" w="full">
-        <Text mt={4}>Coach: </Text>
-        <select onChange={handleCoachChange} value={coach}>
-          <option value="">Select Coach</option>
-          {coachList.map((coach) => (
-            <option key={coach} value={coach}>
-              {coach}
-            </option>
-          ))}
-        </select>
-      </Flex>
-      <Flex justify="space-between" direction="row" w="full">
-        <Text mt={4}>Brand: </Text>
-        <select onChange={handleBrandChange} value={brand}>
-          <option value="">Select Brand</option>
-          {brandList.map((brand) => (
-            <option key={brand} value={brand}>
-              {brand}
-            </option>
-          ))}
-        </select>
-      </Flex>
-      <Flex justify="space-between" direction="row" w="full">
-        <Text mt={4}>Unique Bus: </Text>
-        <select
-          onChange={(event) => setUniqueBusId(event.target.value)}
-          value={uniqueBusId}
+    <>
+      <Divider />
+      <Flex direction="row-reverse" w="100%" m={2} justifyContent={"space-between"} alignContent={"center"}>
+        <Button
+          onClick={() => removeScheduleEntry(currentKey)}
+          colorScheme="red"
         >
-          <option value="">Select Unique Bus</option>
-          {uniqueBusList.map((uniqueBus) => (
-            <option key={uniqueBus} value={uniqueBus}>
-              {uniqueBus}
-            </option>
-          ))}
-        </select>
+          <AiOutlineClose />
+        </Button>
+        <Text>{`Time Entry ${currentKey}`}</Text>
       </Flex>
-      <Flex justify="space-between" direction="row" w="full">
+      <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"}>
+        <Flex direction="row" w="full" alignItems={"center"}>
+          <Text mr={6}>Time: </Text>
+          <Input
+            type="time"
+            value={time24}
+            onChange={handleTimeChange}
+            w="full"
+            maxW="sm"
+          />
+        </Flex>
+        <Flex direction="row" w="full" alignItems={"center"}>
+          <Text mr={6}>Coach: </Text>
+          <select onChange={handleCoachChange} value={coach}>
+            <option value="">Select Coach</option>
+            {coachList.map((coach) => (
+              <option key={coach} value={coach}>
+                {coach}
+              </option>
+            ))}
+          </select>
+        </Flex>
+        <Flex direction="row" w="full" alignItems={"center"}>
+          <Text mr={6}>Brand: </Text>
+          <select onChange={handleBrandChange} value={brand}>
+            <option value="">Select Brand</option>
+            {brandList.map((brand) => (
+              <option key={brand} value={brand}>
+                {brand}
+              </option>
+            ))}
+          </select>
+        </Flex>
+        <Flex direction="row" w="full" alignItems={"center"}>
+          <Text mr={6}>Unique Bus: </Text>
+          <select
+            onChange={(event) => setUniqueBusId(event.target.value)}
+            value={uniqueBusId}
+          >
+            <option value="">Select Unique Bus</option>
+            {uniqueBusList.map((uniqueBus) => (
+              <option key={uniqueBus} value={uniqueBus}>
+                {uniqueBus}
+              </option>
+            ))}
+          </select>
+        </Flex>
+      </Grid>
+      <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"} mt={6} mb={6}>
+        <GridItem colSpan={2}>
+          <Text>Fare: </Text>
+        </GridItem>
         {fare.map((item, index) => (
-          <Flex key={index} justify="space-between" direction="row" w="full">
-            <Text mt={4}>{destinations[index]}: </Text>
+          <Flex key={index} direction="row" w="full" alignItems={"center"}>
+            <Text mr={6}>{destinations[index]}: </Text>
             <Input
               type="number"
               value={item}
@@ -179,13 +207,10 @@ export default function PerTime({
               w="full"
               maxW="sm"
             />
+            <Text ml={6}>Tk</Text>
           </Flex>
         ))}
-      </Flex>
-
-      <Flex justify="center" direction="row" w="full">
-        <Button onClick={() => removeScheduleEntry(currentKey)}>Remove</Button>
-      </Flex>
-    </Box>
+      </Grid>
+    </>
   );
 }

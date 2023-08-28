@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { SchedulingContext, Day } from "@public/common/temporary_context";
 import { fetchLocations } from "@public/common/bus_api";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 interface InitialFormProps {
   isInitialForm: boolean;
@@ -106,43 +107,40 @@ export default function InitialForm({
             p={2}
             m={2}
           >
-            <Select 
+            <Select
               placeholder="Select Location"
               width={"40%"}
               onChange={(e) => setStartingLocation(e.target.value)}
+              value={startingLocation}
             >
               {locations.map((location, index) => (
-                <option key={index} value={location}>{location}</option>
+                <option key={index} value={location}>
+                  {location}
+                </option>
               ))}
             </Select>
 
             <VStack spacing={3} align={"right"} w="40%">
-              {/* {destinations.map((destination, index) => (
-                <InputGroup key={index}>
-                  <Input
+              {destinations.map((destination, index) => (
+                <Flex
+                  key={index}
+                  align="center"
+                  justify="space-between"
+                  direction="row"
+                  w="full"
+                >
+                  <Select
+                    placeholder="Select Location"
+                    width={"full"}
                     value={destination}
                     onChange={(e) =>
                       handleDestinationChange(index, e.target.value)
                     }
-                    key={index}
-                    width={"full"}
-                  />
-                  <InputRightElement width={"4.5rem"}>
-                    <Button onClick={() => removeDestination(index)}>
-                      Remove
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              ))} */}
-              {destinations.map((destination, index) => (
-                <Flex key={index} align="center" justify="space-between" direction="row" w="full">
-                  <Select 
-                    placeholder="Select Location"
-                    width={"full"}
-                    onChange={(e) => handleDestinationChange(index, e.target.value)}
                   >
                     {locations.map((location, index) => (
-                      <option key={index} value={location}>{location}</option>
+                      <option key={index} value={location}>
+                        {location}
+                      </option>
                     ))}
                   </Select>
                   <Button onClick={() => removeDestination(index)}>
@@ -184,37 +182,49 @@ export default function InitialForm({
               width={"40%"}
             />
           </Flex>
-          <Button onClick={() => setIsInitialForm(false)} m={2}>
-            Next
-          </Button>
+          <Button
+            colorScheme="green"
+            onClick={() => setIsInitialForm(false)}
+            w={"100%"}
+            rightIcon={<AiOutlineArrowRight />}
+            borderRadius={0}
+            isDisabled={
+              startingLocation === "" ||
+              destinations.length === 0 ||
+              destinations.some((destination) => destination === "") ||
+              date1 === "" ||
+              date2 === ""
+            }
+          />
         </>
       ) : (
         <>
           <Flex align="center" justify="space-between" direction="row" w="full">
-            <Text fontSize="xl" fontWeight="bold" pl={2}>
-              Starting Location:
-            </Text>
-            <Text fontSize="xl" pr={2}>
-              {startingLocation}
-            </Text>
-            <Text fontSize="xl" fontWeight="bold" pl={2}>
-              Destinations:
-            </Text>
-            <Text fontSize="xl" pr={2}>
-              {destinations.join(", ")}
-            </Text>
-            <Text fontSize="xl" fontWeight="bold" pl={2}>
-              Starting Date:
-            </Text>
-            <Text fontSize="xl" pr={2}>
-              {date1}
-            </Text>
-            <Text fontSize="xl" fontWeight="bold" pl={2}>
-              Ending Date:
-            </Text>
-            <Text fontSize="xl" pr={2}>
-              {date2}
-            </Text>
+            <Flex wrap={"wrap"} pl={2} pr={2}>
+              <Text fontSize="xl" fontWeight="bold">
+                Starting Location:
+              </Text>
+              <Text fontSize="xl">{startingLocation}</Text>
+            </Flex>
+            <Flex wrap={"wrap"} pl={2} pr={2}>
+              <Text fontSize="xl" fontWeight="bold">
+                Destinations:
+              </Text>
+
+              <Text fontSize="xl">{destinations.join(", ")}</Text>
+            </Flex>
+            <Flex wrap={"wrap"} pl={2} pr={2}>
+              <Text fontSize="xl" fontWeight="bold">
+                Starting Date:
+              </Text>
+              <Text fontSize="xl">{date1}</Text>
+            </Flex>
+            <Flex wrap={"wrap"} pl={2} pr={2}>
+              <Text fontSize="xl" fontWeight="bold">
+                Ending Date:
+              </Text>
+              <Text fontSize="xl">{date2}</Text>
+            </Flex>
           </Flex>
           <Button onClick={() => setIsInitialForm(true)} m={2}>
             Edit
