@@ -308,7 +308,7 @@ export const fetchAllAvailableBus = async (
 };
 
 // send all the schedule info to the backend
-const postSchedule = main_url + "/api/admin/addSchedule";
+const postSchedule = main_url + "/api/admin/addBusScheduleInfo";
 interface postRequest {
   src: string;
   dest: string[];
