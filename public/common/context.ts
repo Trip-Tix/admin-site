@@ -30,12 +30,21 @@ export interface TrainInfoContextType {
 export const TrainInfoContext = createContext<TrainInfoContextType | null>(null);
 
 export interface FlightInfoContextType {
-  flightId: string;
-  setFlightId: (flightId: string) => void;
-  classId: string;
-  setClassId: (classId: string) => void;
+  classId: number;
+  setClassId: (classId: number) => void;
+  className: string;
+  setClassName: (className: string) => void;
+  brandName: string;
+  setBrandName: (brandName: string) => void;
+  layout: number[][];
+  setLayout: (layout: number[][]) => void;
+  numSeat: number;
+  setNumSeat: (numSeat: number) => void;
+  flightLayoutId: number;
+  setFlightLayoutId: (flightLayoutId: number) => void;
+  numFlight: number;
+  setNumFlight: (numFlight: number) => void;
 }
-
 
 export const FlightInfoContext = createContext<FlightInfoContextType | null>(null);
 

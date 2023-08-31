@@ -101,6 +101,7 @@ export default function PerTime({
       coachId,
       brand,
     ).then((data) => {
+      console.log(data);
       setUniqueBusList(data);
       setIsUniqueBusListLoading(false);
     });
