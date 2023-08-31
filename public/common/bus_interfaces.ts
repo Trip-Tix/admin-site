@@ -43,3 +43,15 @@ export interface coachBrandEntry {
   numBus: number;
   busLayoutId: number;
 }
+
+export interface UniqueBusScheduleInfoResponse {
+  bus_schedule_id: string;
+  starting_point: string;
+  ending_point: string;
+  destination_points: string[];
+  departure_time: string;
+  bus_fare: number[];
+  schedule_date: string;
+  bookedCount: string;
+  totalCount: string;
+}

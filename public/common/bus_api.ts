@@ -11,6 +11,8 @@ export const postAddBus = main_url + "/api/admin/addBusInfo";
 export const getBusNames = main_url + "/api/admin/getBusNames";
 export const getAllCoachesBus = main_url + "/api/admin/getBusCoachInfo";
 
+export const getUniqueBusScheduleInfo = main_url + "/api/admin/getUniqueBusScheduleInfo";
+
 // export const postLogin = '/api/user/login'
 // export const getAllBus = '/api/bus/get-all-bus'
 // export const getBusLayout = '/api/bus/get-layout'
@@ -445,6 +447,35 @@ export const fetchAllUniqueBusId = async ({
         (bus: getAllUniqueBusIdResponse) => bus.unique_bus_id,
       );
       return tempUniqueBusIdList;
+    } else {
+      console.log(response.data.message);
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+
+import { UniqueBusScheduleInfoResponse } from "@public/common/bus_interfaces";
+export const fetchUniqueBusSchedule = async (uniqueBusId: string): Promise<UniqueBusScheduleInfoResponse[]> => {
+  try {
+    const response = await axios.post(
+      getUniqueBusScheduleInfo,
+      {
+        uniqueBusId: uniqueBusId
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Unique bus schedules fetched");
+      return response.data;
     } else {
       console.log(response.data.message);
       return [];

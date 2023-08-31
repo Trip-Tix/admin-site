@@ -8,14 +8,19 @@ import {
   ListItem,
   Text,
   Divider,
+  Box,
+  Button,
 } from "@chakra-ui/react";
 
 interface BusIdProps {
   coachId: number;
   brandName: string;
+  onBusClick: (busId: string) => void;
+  activeBusId: string | null;
+  schedules: any[];
 }
 
-export default function UniqueBusList({ coachId, brandName }: BusIdProps) {
+export default function UniqueBusList({ coachId, brandName, onBusClick, activeBusId, schedules }: BusIdProps) {
   const [busList, setBusList] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -26,10 +31,6 @@ export default function UniqueBusList({ coachId, brandName }: BusIdProps) {
       setLoading(false);
     });
   }, [coachId, brandName]);
-
-  useEffect(() => {
-    console.log(busList);
-  }, [busList]);
 
   return (
     <Flex
@@ -49,7 +50,36 @@ export default function UniqueBusList({ coachId, brandName }: BusIdProps) {
         ) : (
           <>
             {busList.map((busId) => (
-              <ListItem key={busId}>{busId}</ListItem>
+              <ListItem key={busId}>
+                <Button variant="link" onClick={() => onBusClick(busId)}>[+]</Button> {busId}
+                {activeBusId === busId && schedules.map(schedule => (
+                  <Box key={schedule.bus_schedule_id} ml={4}>
+                  <Text>
+                    Starting Point: {schedule.starting_point}
+                  </Text>
+                  <Text>
+                    Ending Point: {schedule.ending_point}
+                  </Text>
+                  {schedule.destination_points.map((destination, index) => (
+                    <Text key={destination}>
+                      Destination: {destination} - Fare: ${schedule.bus_fare[index]}
+                    </Text>
+                  ))}
+                  <Text>
+                    Departure Time: {schedule.departure_time}
+                  </Text>
+                  <Text>
+                    Schedule Date: {new Date(schedule.schedule_date).toLocaleDateString()}
+                  </Text>
+                  <Text>
+                    Booked Count: {schedule.bookedCount}
+                  </Text>
+                  <Text>
+                    Total Count: {schedule.totalCount}
+                  </Text>
+                </Box>
+                ))}
+              </ListItem>
             ))}
           </>
         )}
