@@ -12,6 +12,7 @@ export const getBusNames = main_url + "/api/admin/getBusNames";
 export const getAllCoachesBus = main_url + "/api/admin/getBusCoachInfo";
 
 export const getUniqueBusScheduleInfo = main_url + "/api/admin/getUniqueBusScheduleInfo";
+export const getAllUniqueBusCount = main_url + "/api/admin/getAllUniqueBusCount";
 
 // export const postLogin = '/api/user/login'
 // export const getAllBus = '/api/bus/get-all-bus'
@@ -483,5 +484,33 @@ export const fetchUniqueBusSchedule = async (uniqueBusId: string): Promise<Uniqu
   } catch (err) {
     console.log(err);
     return [];
+  }
+};
+
+
+// Function to fetch the count of all unique buses
+export const fetchAllUniqueBusCount = async (): Promise<number> => {
+  try {
+    const response = await axios.post(
+      getAllUniqueBusCount, null,
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Unique bus count fetched:", response.data.count);
+      return response.data.totalUniqueBuses;
+    
+    } else {
+      console.log(response.data.message);
+      return 0;
+    }
+  } catch (err) {
+    console.log(err);
+    return 0;
   }
 };
