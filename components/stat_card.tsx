@@ -22,25 +22,18 @@ export default function StatCard({ cardTitle, apiLink, cardImage }: StatCardProp
   const [data, setData] = React.useState<number>(0);
   const [userToken, setUserToken] = React.useState<string>("");
   
-  if (cardTitle == "Total Bus") {
-    useEffect(() => {
-      async function fetchData() {
-          try {
-              const count = await fetchAllUniqueBusCount();
-              setData(count);
-          } catch (error) {
-              console.error("Error fetching bus count:", error);
-          }
-      }
-      fetchData();
-    }, []);
-  }
-
-  else {
-    useEffect(() => {
-      async function fetchData() {
+  useEffect(() => {
+    async function fetchData() {
+      if (cardTitle === "Total Bus") {
+        try {
+          const count = await fetchAllUniqueBusCount();
+          setData(count);
+        } catch (error) {
+          console.error("Error fetching bus count:", error);
+        }
+      } else {
         setUserToken(sessionStorage.getItem("user-token") || "");
-        try{
+        try {
           const response = await axios.post(apiLink, null, {
             headers: {
               'usertoken': userToken,
@@ -52,14 +45,13 @@ export default function StatCard({ cardTitle, apiLink, cardImage }: StatCardProp
           } else {
             console.error(response.data, "component/stat_card.tsx");
           }
-        }
-        catch(error){
+        } catch (error) {
           console.error(error, "component/stat_card.tsx");
         }
       }
-      fetchData();
-    }, [userToken]);    
-  }
+    }
+    fetchData();
+  }, [cardTitle, userToken]);
   
   return (
     <Card
