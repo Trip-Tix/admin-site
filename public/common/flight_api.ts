@@ -156,14 +156,12 @@ interface getExistingFlightIdsResponse {
 
 export const fetchExistingFlightIds = async (
   classId: number,
-  brandName: string,
 ): Promise<string[]> => {
   try {
     const response = await axios.post(
       getExistingFlightIds,
       {
         classId: classId,
-        brandName: brandName,
       },
       {
         headers: {
@@ -204,8 +202,6 @@ export const addNewFlight = async (flightInfo: flightInfo): Promise<string> => {
       addFlight,
       {
         classId: flightInfo.classId,
-        brandName: flightInfo.brandName,
-        alreadyExist: flightInfo.alreadyExist,
         numFlight: flightInfo.numFlight,
         uniqueFlightId: flightInfo.uniqueFlightId,
         numSeat: flightInfo.numSeat,

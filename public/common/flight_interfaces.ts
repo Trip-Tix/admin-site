@@ -16,8 +16,6 @@ export interface brandData {
 
 export interface flightInfo {
   classId : number,
-  brandName : string,
-  alreadyExist : boolean,
   numFlight: number,
   uniqueFlightId : string[],
   numSeat: number,

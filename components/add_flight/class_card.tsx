@@ -17,9 +17,8 @@ import {
   AiOutlineArrowRight,
   AiOutlineArrowLeft,
 } from "react-icons/ai";
-import { use, useState, useEffect } from "react";
-import { class_interface, classBrands } from "@public/common/flight_interfaces";
-import SelectClassBrand from "@components/add_flight/select_class_brand";
+import { useState, useEffect } from "react";
+import { class_interface } from "@public/common/flight_interfaces";
 import ShowLayout from "@components/add_flight/show_layout";
 import LayoutCreation from "@components/add_flight/layout_creation";
 import AmountList from "@components/add_flight/amount_list";
@@ -32,20 +31,15 @@ interface ClassCardProps {
     validateClass: (key: string, isValid: boolean) => void;
   };
   classList: class_interface[];
-  classBrandsList: classBrands[];
   submit: boolean;
 }
 
 export default function ClassCard({
   removalAction,
   classList,
-  classBrandsList,
   submit,
 }: ClassCardProps) {
   const [selectedClass, setSelectedClass] = useState<class_interface>();
-  const [selectedBrand, setSelectedBrand] = useState<string>();
-  const [isBrandNew, setIsBrandNew] = useState<boolean>(true);
-  const [isSelectingBrand, setIsSelectingBrand] = useState<boolean>(false);
   const [layout, setLayout] = useState<number[][]>([
     [1, 0],
     [0, 1],
@@ -60,8 +54,6 @@ export default function ClassCard({
     if (submit) {
       addNewFlight({
         classId: selectedClass?.classId,
-        brandName: selectedBrand,
-        alreadyExist: !isBrandNew,
         numFlight: numFlight,
         uniqueFlightId: uniqueFlightId,
         numSeat: numSeat,
@@ -73,12 +65,12 @@ export default function ClassCard({
   }, [submit]);
 
   useEffect(() => {
-    if (selectedClass && selectedBrand) {
+    if (selectedClass) {
       removalAction.validateClass(removalAction.key, true);
     } else {
       removalAction.validateClass(removalAction.key, false);
     }
-  }, [selectedClass, selectedBrand]);
+  }, [selectedClass]);
 
   return (
     <>
@@ -103,89 +95,42 @@ export default function ClassCard({
           >
             <AiOutlineClose />
           </Button>
-          {isSelectingBrand && (
-            <Button onClick={() => setIsSelectingBrand(false)}>
-              <AiOutlineArrowLeft />
-            </Button>
-          )}
         </Flex>
         {/* Class Card Content */}
-        {!isSelectingBrand ? (
-          <>
-            <SelectClassBrand
-              classList={classList}
-              classBrandsList={classBrandsList}
-              selectedClass={selectedClass}
-              setSelectedClass={setSelectedClass}
-              selectedBrand={selectedBrand}
-              setSelectedBrand={setSelectedBrand}
-              isBrandNew={isBrandNew}
-              setIsBrandNew={setIsBrandNew}
-              setIsSelectingBrand={setIsSelectingBrand}
-            />
-            <Button
-              colorScheme="green"
-              onClick={() => setIsSelectingBrand(true)}
-              isDisabled={!selectedClass || !selectedBrand}
-              w={"100%"}
-              rightIcon={<AiOutlineArrowRight />}
-              borderRadius={0}
-            />
-          </>
-        ) : (
-          <>
-            <Flex
-              align={"right"}
-              w={"100%"}
-              justifyContent={"space-between"}
-              p={2}
-            >
-              <Flex alignContent={"center"}>
-                <Text fontWeight={"bold"} mr={2}>
-                  Class:
-                </Text>
-                <Text fontStyle={"italic"}>{selectedClass.className}</Text>
-              </Flex>
-              <Flex alignContent={"center"}>
-                <Text fontWeight={"bold"} mr={2}>
-                  Brand:{" "}
-                </Text>
-                <Text fontStyle={"italic"}>{selectedBrand}</Text>
-              </Flex>
-            </Flex>
-            <Divider />
-            {isBrandNew ? (
-              <LayoutCreation
-                row={row}
-                setRow={setRow}
-                col={col}
-                setCol={setCol}
-                layout={layout}
-                setLayout={setLayout}
-                numSeat={numSeat}
-                setNumSeat={setNumSeat}
-              />
-            ) : (
-              <ShowLayout
-                classId={selectedClass?.classId}
-                brandName={selectedBrand}
-              />
-            )}
-          </>
-        )}
+        <Flex
+          align={"right"}
+          w={"100%"}
+          justifyContent={"space-between"}
+          p={2}
+        >
+          <Flex alignContent={"center"}>
+            <Text fontWeight={"bold"} mr={2}>
+              Class:
+            </Text>
+            <Text fontStyle={"italic"}>{selectedClass?.className}</Text>
+          </Flex>
+        </Flex>
         <Divider />
-        {isSelectingBrand && (
-          <AmountList
-            className={selectedClass?.className}
-            classId={selectedClass?.classId}
-            brandName={selectedBrand}
-            numFlight={numFlight}
-            setNumFlight={setNumFlight}
-            uniqueFlightId={uniqueFlightId}
-            setUniqueFlightId={setUniqueFlightId}
-            removalAction={removalAction}
-          />
-        )}
+        <LayoutCreation
+          row={row}
+          setRow={setRow}
+          col={col}
+          setCol={setCol}
+          layout={layout}
+          setLayout={setLayout}
+          numSeat={numSeat}
+          setNumSeat={setNumSeat}
+        />
+        <Divider />
+        <AmountList
+          className={selectedClass?.className}
+          classId={selectedClass?.classId}
+          numFlight={numFlight}
+          setNumFlight={setNumFlight}
+          uniqueFlightId={uniqueFlightId}
+          setUniqueFlightId={setUniqueFlightId}
+          removalAction={removalAction}
+        />
       </Flex>
     </>
   );

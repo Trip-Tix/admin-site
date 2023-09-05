@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HStack,
   Text,
@@ -22,7 +22,6 @@ import { fetchExistingFlightIds } from "@public/common/flight_api";
 interface AmountListProps {
   classId: number;
   className: string;
-  brandName: string;
   numFlight: number;
   setNumFlight: (numFlight: number) => void;
   uniqueFlightId: string[];
@@ -37,7 +36,6 @@ interface AmountListProps {
 export default function AmountList({
   classId,
   className,
-  brandName,
   numFlight,
   setNumFlight,
   uniqueFlightId,
@@ -53,11 +51,11 @@ export default function AmountList({
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     setLoading(true);
-    fetchExistingFlightIds(classId, brandName).then((res) => {
+    fetchExistingFlightIds(classId).then((res) => {
       setExistingFlightId(res);
       setLoading(false);
     });
-  }, [classId, brandName]);
+  }, [classId]);
   useEffect(() => {
     console.log(existingFlightId);
   }, [existingFlightId]);
@@ -80,11 +78,9 @@ export default function AmountList({
   // handle input change
   const handleInputChange = (index: number, value: string) => {
     const updatedUniqueFlightId = [...uniqueFlightId];
-    updatedUniqueFlightId[index] = `${company}-${className}-${brandName}-${value}`;
+    updatedUniqueFlightId[index] = `${company}-${className}-${value}`;
     setUniqueFlightId(updatedUniqueFlightId);
-    if (
-      existingFlightId.includes(`${company}-${className}-${brandName}-${value}`)
-    ) {
+    if (existingFlightId.includes(`${company}-${className}-${value}`)) {
       const updatedWrongFlightId = [...wrongFlightId];
       updatedWrongFlightId[index] = true;
       setWrongFlightId(updatedWrongFlightId);
@@ -151,7 +147,7 @@ export default function AmountList({
                   <Text
                     flexShrink={0}
                     color={wrongFlightId[index] ? "red.500" : "default"}
-                  >{`${company}-${className}-${brandName}-`}</Text>
+                  >{`${company}-${className}-`}</Text>
                   <Input
                     flex="1"
                     placeholder={` Flight ${index + 1} ID`}

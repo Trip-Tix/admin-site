@@ -2,8 +2,6 @@ import {
   Button,
   VStack,
   Skeleton,
-  SkeletonCircle,
-  SkeletonText,
   Stack,
 } from "@chakra-ui/react";
 import Layout from "@components/layout";
@@ -13,34 +11,37 @@ import {
   NavigationOption,
   TransportType,
 } from "@public/common/navigation_option";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 
-import { classBrands, class_interface } from "@public/common/flight_interfaces";
+import { class_interface } from "@public/common/flight_interfaces";
 import ClassCard from "@components/add_flight/class_card";
-import axios from "axios";
 
-import { fetchClassList, fetchClassBrandList } from "@public/common/flight_api";
+import { fetchClassList } from "@public/common/flight_api";
 
 export default function Main() {
-  // Class Card Addition, Removal and Validation
-  interface classKeyItem {
-    classKey: string;
+  // Flight Card Addition, Removal and Validation
+  interface flightKeyItem {
+    flightKey: string;
     isValid: boolean;
   }
-  const [classKeys, setClassKeys] = useState<classKeyItem[]>([]);
+
+  const [flightKeys, setFlightKeys] = useState<flightKeyItem[]>([]);
   const [newId, setNewId] = useState<number>(0);
-  const addNewClass = () => {
-    setClassKeys([...classKeys, { classKey: `Class ${newId}`, isValid: true }]);
+
+  const addNewFlight = () => {
+    setFlightKeys([...flightKeys, { flightKey: `Flight ${newId}`, isValid: true }]);
     setNewId(newId + 1);
   };
-  const removeClass = (key: string) => {
-    setClassKeys(classKeys.filter((item) => item.classKey !== key));
+
+  const removeFlight = (key: string) => {
+    setFlightKeys(flightKeys.filter((item) => item.flightKey !== key));
   };
-  const validateClass = (key: string, isValid: boolean) => {
-    setClassKeys(
-      classKeys.map((item) => {
-        if (item.classKey === key) {
-          return { classKey: key, isValid: isValid };
+
+  const validateFlight = (key: string, isValid: boolean) => {
+    setFlightKeys(
+      flightKeys.map((item) => {
+        if (item.flightKey === key) {
+          return { flightKey: key, isValid: isValid };
         } else {
           return item;
         }
@@ -48,7 +49,7 @@ export default function Main() {
     );
   };
 
-  // Class Cards need pre-fetched class list
+  // flight Cards need pre-fetched class list
   const [classList, setClassList] = useState<class_interface[]>([]);
   const [classListLoading, setClassListLoading] = useState<boolean>(false);
   useEffect(() => {
@@ -64,25 +65,6 @@ export default function Main() {
     console.log(classList);
   }, [classList]);
 
-  // change this to api in future
-  // Class Cards need pre-fetched class brands list
-  const [classBrandsList, setClassBrandsList] = useState<classBrands[]>([]);
-  const [classBrandsListLoading, setClassBrandsListLoading] =
-    useState<boolean>(false);
-  useEffect(() => {
-    const fetchData = async () => {
-      setClassBrandsListLoading(true);
-      const classBrands = await fetchClassBrandList();
-      setClassBrandsList(classBrands);
-      setClassBrandsListLoading(false);
-    };
-    fetchData();
-  }, []);
-  useEffect(() => {
-    console.log(classBrandsList);
-  }, [classBrandsList]);
-
-
   // Button for submitting
   const [submit, setSubmit] = useState<boolean>(false);
 
@@ -94,33 +76,32 @@ export default function Main() {
             transport={TransportType.Flight}
             navigation={NavigationOption.Add}
           />
-          {classListLoading || classBrandsListLoading ? (
+          {classListLoading ? (
             <Stack>
               <Skeleton height="10vh" />
               <Skeleton height="10vh" />
             </Stack>
           ) : (
             <VStack>
-              {classKeys.map((item) => (
+              {flightKeys.map((item) => (
                 <ClassCard
-                  key={item.classKey}
+                  key={item.flightKey}
                   removalAction={{
-                    key: item.classKey,
-                    removeClass: removeClass,
-                    validateClass: validateClass,
+                    key: item.flightKey,
+                    removeClass: removeFlight,
+                    validateClass: validateFlight,
                   }}
                   classList={classList}
-                  classBrandsList={classBrandsList}
                   submit={submit}
                 />
               ))}
-              <Button onClick={addNewClass}> Add Class </Button>
+              <Button onClick={addNewFlight}> Add Flight </Button>
               <Button
                 colorScheme="blue"
                 onClick={() => setSubmit(true)}
                 isDisabled={
-                  classKeys.length === 0 /* if no card */ ||
-                  classKeys.some((item) => !item.isValid) /* if some card has invalid values */
+                  flightKeys.length === 0 /* if no card */ ||
+                  flightKeys.some((item) => !item.isValid) /* if some card has invalid values */
                 }
               >
                 {"Submit"}
