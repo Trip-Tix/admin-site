@@ -12,17 +12,14 @@ import {
   Flex,
   Divider,
 } from "@chakra-ui/react";
-import {
-  AiOutlineClose,
-  AiOutlineArrowRight,
-  AiOutlineArrowLeft,
-} from "react-icons/ai";
-import { useState, useEffect } from "react";
-import { class_interface } from "@public/common/flight_interfaces";
-import ShowLayout from "@components/add_flight/show_layout";
+import React, { useState, useEffect } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 import LayoutCreation from "@components/add_flight/layout_creation";
 import AmountList from "@components/add_flight/amount_list";
 import { addNewFlight } from "@public/common/flight_api";
+import { class_interface } from "@public/common/flight_interfaces";
+
+import { fetchClassList } from "@public/common/flight_api";
 
 interface ClassCardProps {
   removalAction: {
@@ -30,16 +27,14 @@ interface ClassCardProps {
     removeClass: (key: string) => void;
     validateClass: (key: string, isValid: boolean) => void;
   };
-  classList: class_interface[];
   submit: boolean;
 }
 
 export default function ClassCard({
   removalAction,
-  classList,
   submit,
 }: ClassCardProps) {
-  const [selectedClass, setSelectedClass] = useState<class_interface>();
+  const [selectedClass, setSelectedClass] = useState<class_interface | undefined>();
   const [layout, setLayout] = useState<number[][]>([
     [1, 0],
     [0, 1],
@@ -49,6 +44,22 @@ export default function ClassCard({
   const [numSeat, setNumSeat] = useState<number>(2);
   const [numFlight, setNumFlight] = useState<number>(0);
   const [uniqueFlightId, setUniqueFlightId] = useState<string[]>([]);
+
+  // Fetching class list within ClassCard
+  const [classList, setClassList] = useState<class_interface[]>([]);
+  const [classListLoading, setClassListLoading] = useState<boolean>(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      setClassListLoading(true);
+      const classes = await fetchClassList();
+      setClassList(classes);
+      setClassListLoading(false);
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    console.log(classList);
+  }, [classList]);
 
   useEffect(() => {
     if (submit) {
@@ -71,6 +82,11 @@ export default function ClassCard({
       removalAction.validateClass(removalAction.key, false);
     }
   }, [selectedClass]);
+
+  const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = classList.find((cls) => cls.classId.toString() === e.target.value);
+    setSelectedClass(selected);
+  };
 
   return (
     <>
@@ -103,11 +119,19 @@ export default function ClassCard({
           justifyContent={"space-between"}
           p={2}
         >
-          <Flex alignContent={"center"}>
-            <Text fontWeight={"bold"} mr={2}>
-              Class:
-            </Text>
-            <Text fontStyle={"italic"}>{selectedClass?.className}</Text>
+          <Flex alignContent={"center"} w={"50%"}>
+            <Select
+              placeholder="Select Class"
+              value={selectedClass?.classId}
+              onChange={handleClassChange}
+              w={"100%"}
+            >
+              {classList.map((cls) => (
+                <option key={cls.classId} value={cls.classId}>
+                  {cls.className}
+                </option>
+              ))}
+            </Select>
           </Flex>
         </Flex>
         <Divider />

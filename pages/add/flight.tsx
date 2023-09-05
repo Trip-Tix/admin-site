@@ -16,8 +16,6 @@ import { useState, useEffect } from "react";
 import { class_interface } from "@public/common/flight_interfaces";
 import ClassCard from "@components/add_flight/class_card";
 
-import { fetchClassList } from "@public/common/flight_api";
-
 export default function Main() {
   // Flight Card Addition, Removal and Validation
   interface flightKeyItem {
@@ -49,22 +47,6 @@ export default function Main() {
     );
   };
 
-  // flight Cards need pre-fetched class list
-  const [classList, setClassList] = useState<class_interface[]>([]);
-  const [classListLoading, setClassListLoading] = useState<boolean>(false);
-  useEffect(() => {
-    const fetchData = async () => {
-      setClassListLoading(true);
-      const classes = await fetchClassList();
-      setClassList(classes);
-      setClassListLoading(false);
-    };
-    fetchData();
-  }, []);
-  useEffect(() => {
-    console.log(classList);
-  }, [classList]);
-
   // Button for submitting
   const [submit, setSubmit] = useState<boolean>(false);
 
@@ -76,38 +58,30 @@ export default function Main() {
             transport={TransportType.Flight}
             navigation={NavigationOption.Add}
           />
-          {classListLoading ? (
-            <Stack>
-              <Skeleton height="10vh" />
-              <Skeleton height="10vh" />
-            </Stack>
-          ) : (
-            <VStack>
-              {flightKeys.map((item) => (
-                <ClassCard
-                  key={item.flightKey}
-                  removalAction={{
-                    key: item.flightKey,
-                    removeClass: removeFlight,
-                    validateClass: validateFlight,
-                  }}
-                  classList={classList}
-                  submit={submit}
-                />
-              ))}
-              <Button onClick={addNewFlight}> Add Flight </Button>
-              <Button
-                colorScheme="blue"
-                onClick={() => setSubmit(true)}
-                isDisabled={
-                  flightKeys.length === 0 /* if no card */ ||
-                  flightKeys.some((item) => !item.isValid) /* if some card has invalid values */
-                }
-              >
-                {"Submit"}
-              </Button>
-            </VStack>
-          )}
+          <VStack>
+            {flightKeys.map((item) => (
+              <ClassCard
+                key={item.flightKey}
+                removalAction={{
+                  key: item.flightKey,
+                  removeClass: removeFlight,
+                  validateClass: validateFlight,
+                }}
+                submit={submit}
+              />
+            ))}
+            <Button onClick={addNewFlight}> Add Flight </Button>
+            <Button
+              colorScheme="blue"
+              onClick={() => setSubmit(true)}
+              isDisabled={
+                flightKeys.length === 0 /* if no card */ ||
+                flightKeys.some((item) => !item.isValid) /* if some card has invalid values */
+              }
+            >
+              {"Submit"}
+            </Button>
+          </VStack>
         </VStack>
       </SidebarWithHeader>
     </Layout>
