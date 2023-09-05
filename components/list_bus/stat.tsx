@@ -7,10 +7,12 @@ import {
   getTotalOnRoutesBus,
 } from "@public/common/api";
 
+import { getAllUniqueBusCount } from "@public/common/bus_api";
+
 const data = [
   {
-    title: "Available Bus",
-    apiLink: getAvailableBus,
+    title: "Total Bus",
+    apiLink: getAllUniqueBusCount,
     cardImage: "/images/bus_available.svg"
   },
   {

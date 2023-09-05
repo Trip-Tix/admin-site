@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useContext } from "react";
 import DummyImage from "@public/images/stat_dummy.jpg";
 import axios from "axios";
+import { fetchAllUniqueBusCount } from "@public/common/bus_api";
 
 interface StatCardProps {
   cardTitle: string;
@@ -21,30 +22,45 @@ export default function StatCard({ cardTitle, apiLink, cardImage }: StatCardProp
   const [data, setData] = React.useState<number>(0);
   const [userToken, setUserToken] = React.useState<string>("");
   
-  useEffect(() => {
-    async function fetchData() {
-      setUserToken(sessionStorage.getItem("user-token") || "");
-      try{
-        const response = await axios.post(apiLink, null, {
-          headers: {
-            'usertoken': userToken,
-          },
-        });
+  if (cardTitle == "Total Bus") {
+    useEffect(() => {
+      async function fetchData() {
+          try {
+              const count = await fetchAllUniqueBusCount();
+              setData(count);
+          } catch (error) {
+              console.error("Error fetching bus count:", error);
+          }
+      }
+      fetchData();
+    }, []);
+  }
 
-        if (response.status === 200) {
-          setData(response.data);
-        } else {
-          console.error(response.data, "component/stat_card.tsx");
+  else {
+    useEffect(() => {
+      async function fetchData() {
+        setUserToken(sessionStorage.getItem("user-token") || "");
+        try{
+          const response = await axios.post(apiLink, null, {
+            headers: {
+              'usertoken': userToken,
+            },
+          });
+  
+          if (response.status === 200) {
+            setData(response.data);
+          } else {
+            console.error(response.data, "component/stat_card.tsx");
+          }
+        }
+        catch(error){
+          console.error(error, "component/stat_card.tsx");
         }
       }
-      catch(error){
-        console.error(error, "component/stat_card.tsx");
-      }
-    }
-    fetchData();
-  }, [userToken]);
-
-
+      fetchData();
+    }, [userToken]);    
+  }
+  
   return (
     <Card
       direction={{ base: "column", sm: "row" }}
