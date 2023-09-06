@@ -14,7 +14,7 @@ import {
 import { useState, useEffect } from "react";
 
 import { class_interface } from "@public/common/flight_interfaces";
-import ClassCard from "@components/add_flight/class_card";
+import ClassCard from "@components/add_flight/flight_card";
 
 export default function Main() {
   // Flight Card Addition, Removal and Validation
@@ -64,8 +64,8 @@ export default function Main() {
                 key={item.flightKey}
                 removalAction={{
                   key: item.flightKey,
-                  removeClass: removeFlight,
-                  validateClass: validateFlight,
+                  removeFlight: removeFlight,
+                  validateFlight: validateFlight,
                 }}
                 submit={submit}
               />

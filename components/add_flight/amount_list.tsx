@@ -28,8 +28,8 @@ interface AmountListProps {
   setUniqueFlightId: (uniqueFlightId: string[]) => void;
   removalAction: {
     key: string;
-    removeClass: (key: string) => void;
-    validateClass: (key: string, isValid: boolean) => void;
+    removeFlight: (key: string) => void;
+    validateFlight: (key: string, isValid: boolean) => void;
   };
 }
 
@@ -94,14 +94,14 @@ export default function AmountList({
   // validate input
   useEffect(() => {
     if (numFlight === 0) {
-      removalAction.validateClass(removalAction.key, false);
+      removalAction.validateFlight(removalAction.key, false);
     } else {
       if (uniqueFlightId.includes("")) {
-        removalAction.validateClass(removalAction.key, false);
+        removalAction.validateFlight(removalAction.key, false);
       } else if (wrongFlightId.includes(true)) {
-        removalAction.validateClass(removalAction.key, false);
+        removalAction.validateFlight(removalAction.key, false);
       } else {
-        removalAction.validateClass(removalAction.key, true);
+        removalAction.validateFlight(removalAction.key, true);
       }
     }
   }, [numFlight, wrongFlightId, uniqueFlightId]);
