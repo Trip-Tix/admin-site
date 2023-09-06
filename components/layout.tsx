@@ -94,6 +94,7 @@ const Layout: React.FC<LayoutProps> = ({ title, isProtected, children }) => {
       router.push(home_url);
     }
   }, []);
+  
   return (
     <Box>
       <Head>

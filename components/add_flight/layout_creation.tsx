@@ -15,7 +15,7 @@ import {
   SliderThumb,
   useColorMode,
 } from "@chakra-ui/react";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface LayoutCreationProps {
   row: number;
@@ -41,6 +41,7 @@ export default function LayoutCreation({
   const { colorMode } = useColorMode();
   const [rowArray, setRowArray] = useState<number[]>([]);
   const [colArray, setColArray] = useState<number[]>([]);
+
   useEffect(() => {
     const tempRowArray: number[] = [];
     for (let i = 0; i < row; i++) {
@@ -59,27 +60,21 @@ export default function LayoutCreation({
 
   useEffect(() => {
     const tempLayout: number[][] = [];
-
     for (let i = 0; i < row; i++) {
       const tempRow: number[] = [];
-
       for (let j = 0; j < col; j++) {
         if (col === 1 || col === 2) {
-          tempRow.push(1); // For a single column, set all elements to 1
+          tempRow.push(1);
         } else if (col % 2 === 1 && j === Math.floor(col / 2)) {
-          // For odd columns, the center column will be floor(col / 2)
           tempRow.push(0);
         } else if (col % 2 === 0 && j === col / 2 - 1) {
-          // For even columns, the center column will be col / 2 - 1
           tempRow.push(0);
         } else {
           tempRow.push(1);
         }
       }
-
       tempLayout.push(tempRow);
     }
-
     setLayout(tempLayout);
   }, [row, col]);
 
@@ -98,7 +93,6 @@ export default function LayoutCreation({
   return (
     <>
       <Flex direction="row" align="top" justify="space-between" mt={2} mb={2}>
-        {/* Row and Col */}
         <VStack align={"left"} spacing={4} w="50%" mr={5} ml={"1rem"}>
           <Text>Row</Text>
           <Slider
@@ -117,7 +111,6 @@ export default function LayoutCreation({
           </Slider>
 
           <Text>Column</Text>
-
           <Slider
             focusThumbOnChange={false}
             value={col}
@@ -133,7 +126,7 @@ export default function LayoutCreation({
             </SliderThumb>
           </Slider>
         </VStack>
-        {/* Layout */}
+
         <VStack mr={"1rem"}>
           {rowArray.map((row) => (
             <HStack key={row}>
@@ -144,9 +137,9 @@ export default function LayoutCreation({
                   key={col}
                   cursor={"pointer"}
                   borderRadius={"md"}
-                  bg={layout[row][col] === 0 ? "invisible" : colorMode === 'light' ? "gray.400" : "gray.500"}
-                  borderColor={layout[row][col] === 0 ? colorMode === 'light' ? "gray.400" : "gray.500" : "invisible"}
-                  borderWidth={layout[row][col] === 0 ? "1px" : "invisible"}
+                  bg={layout[row] && layout[row][col] !== undefined ? (layout[row][col] === 0 ? "invisible" : colorMode === 'light' ? "gray.400" : "gray.500") : "invisible"}
+                  borderColor={layout[row] && layout[row][col] !== undefined ? (layout[row][col] === 0 ? colorMode === 'light' ? "gray.400" : "gray.500" : "invisible") : "invisible"}
+                  borderWidth={layout[row] && layout[row][col] !== undefined ? (layout[row][col] === 0 ? "1px" : "invisible") : "invisible"}
                   onClick={() => {
                     const tempLayout = JSON.parse(JSON.stringify(layout)); //deep copy
                     tempLayout[row][col] = tempLayout[row][col] === 0 ? 1 : 0;
