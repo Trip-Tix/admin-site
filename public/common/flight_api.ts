@@ -25,7 +25,7 @@ export const getAllUniqueFlightCount = main_url + "/api/admin/getAllUniqueFlight
  */
 
 // get all classes list
-const getAllClasses = main_url + "/api/admin/getFlightClassInfo";
+const getAllClasses = main_url + "/api/admin/getAirClassInfo";
 import { class_interface } from "@public/common/flight_interfaces";
 interface getAllClassesResponse {
   class_id: number;
