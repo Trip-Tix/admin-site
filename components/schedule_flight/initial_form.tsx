@@ -72,6 +72,8 @@ export default function InitialForm({
     });
   }, []);
 
+  const { colorMode } = useColorMode();
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -89,7 +91,7 @@ export default function InitialForm({
         ? theme.colors.blue[500]
         : state.isFocused
         ? theme.colors.blue[100]
-        : useColorMode().colorMode === "light" ? theme.colors.gray[300] : theme.colors.gray[800],
+        : colorMode === "light" ? theme.colors.gray[300] : theme.colors.gray[800],
       color: state.isSelected
         ? theme.colors.white
         : state.isFocused
@@ -121,7 +123,7 @@ export default function InitialForm({
     noOptionsMessage: (provided) => ({
       ...provided,
       color: optionColor,
-      backgroundColor: useColorMode().colorMode === "light" ? theme.colors.gray[300] : theme.colors.gray[800],
+      backgroundColor: colorMode === "light" ? theme.colors.gray[300] : theme.colors.gray[800],
       padding: '10px',
       textAlign: 'center',
     }),

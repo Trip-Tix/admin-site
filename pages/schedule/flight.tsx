@@ -9,7 +9,6 @@ import {
 import { useState } from "react";
 import { Day, AirSchedulingContext } from "@public/common/context";
 import InitialForm from "@components/schedule_flight/initial_form";
-import DetailsForm from "@components/schedule_flight/details_form";
 import { locationInfo } from "@public/common/flight_interfaces";
 
 export default function Main() {

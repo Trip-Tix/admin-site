@@ -1,4 +1,4 @@
-import { Day } from "@public/common/temporary_context";
+import { Day } from "@public/common/context";
 
 const daysSince1970 = (date: Day): number => {
   const { day, month, year } = date;
