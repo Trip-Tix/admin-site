@@ -229,17 +229,21 @@ export const fetchAllFlightToList = async (): Promise<uniqueFlightEntry[]> => {
   }
 };
 
-// checkpoint
 
 // get available location
-const getLocations = main_url + "/api/admin/getLocation";
-interface getLocationsResponse {
+const getFlightLocations = main_url + "/api/admin/getFlightLocations";
+import { locationInfo } from "@public/common/flight_interfaces";
+
+interface getFlightLocationsResponse {
   location_id: number;
   location_name: string;
+  country_name: string;
+  location_code: string;
+  airport_name: string;
 }
-export const fetchLocations = async (): Promise<string[]> => {
+export const fetchFlightLocations = async (): Promise<locationInfo[]> => {
   try {
-    const response = await axios.post(getLocations, null, {
+    const response = await axios.post(getFlightLocations, null, {
       headers: {
         token: sessionStorage.getItem("user-token"),
         companyname: sessionStorage.getItem("company-name"),
@@ -247,9 +251,15 @@ export const fetchLocations = async (): Promise<string[]> => {
     });
 
     if (response.status === 200) {
-      console.log("locations fetched");
-      const tempLocations: string[] = response.data.map(
-        (location: getLocationsResponse) => location.location_name,
+      console.log("Flight locations fetched");
+      const tempLocations: locationInfo[] = response.data.map(
+        (location: getFlightLocationsResponse) => ({
+          location_id: location.location_id,
+          location_name: location.location_name,
+          country_name: location.country_name,
+          location_code: location.location_code,
+          airport_name: location.airport_name,
+        }),
       );
       return tempLocations;
     } else {
@@ -261,6 +271,10 @@ export const fetchLocations = async (): Promise<string[]> => {
     return [];
   }
 };
+
+
+// checkpoint
+
 
 //fetch all the unique flights
 const getAllAvailableFlight = main_url + "/api/admin/getAvailableFlight";

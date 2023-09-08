@@ -57,3 +57,11 @@ export interface UniqueFlightScheduleInfoResponse {
   bookedCount: string;
   totalCount: string;
 }
+
+export interface locationInfo {
+  location_id: number;
+  location_name: string;
+  country_name: string;
+  location_code: string;
+  airport_name: string;
+}

@@ -1,4 +1,4 @@
-import { Day, SchedulingContext } from "@public/common/temporary_context";
+import { Day, SchedulingContext } from "@public/common/context";
 import React, { useState, useEffect, useContext } from "react";
 import {
   Box,

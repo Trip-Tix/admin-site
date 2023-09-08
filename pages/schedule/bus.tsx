@@ -7,7 +7,7 @@ import {
   TransportType,
 } from "@public/common/navigation_option";
 import { useState } from "react";
-import { Day, SchedulingContext } from "@public/common/temporary_context";
+import { Day, SchedulingContext } from "@public/common/context";
 import InitialForm from "@components/schedule_bus/initial_form";
 import DetailsForm from "@components/schedule_bus/details_form";
 

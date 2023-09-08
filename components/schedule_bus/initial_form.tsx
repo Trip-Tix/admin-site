@@ -13,7 +13,7 @@ import {
   Select,
   Spinner,
 } from "@chakra-ui/react";
-import { SchedulingContext, Day } from "@public/common/temporary_context";
+import { SchedulingContext, Day } from "@public/common/context";
 import { fetchLocations } from "@public/common/bus_api";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
