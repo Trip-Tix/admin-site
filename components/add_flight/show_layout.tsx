@@ -14,25 +14,22 @@ import { fetchFlightLayout } from "@public/common/flight_api";
 
 interface ShowLayoutProps {
   classId: number;
-  brandName: string;
 }
 
-export default function ShowLayout({ classId, brandName }: ShowLayoutProps) {
+export default function ShowLayout({ classId }: ShowLayoutProps) {
   const { colorMode } = useColorMode();
   const [layout, setLayout] = useState<number[][]>([]);
-  const [existingNumber, setExistingNumber] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const brandData = await fetchFlightLayout(classId, brandName);
-      setLayout(brandData.layout);
-      setExistingNumber(brandData.numFlight);
+      const layoutData = await fetchFlightLayout(classId);
+      setLayout(layoutData.layout);
       setLoading(false);
     };
     fetchData();
-  }, [classId, brandName]);
+  }, [classId]);
 
   useEffect(() => {
     console.log(layout);
@@ -47,7 +44,6 @@ export default function ShowLayout({ classId, brandName }: ShowLayoutProps) {
       ) : (
         <>
           <HStack justifyContent={"space-between"} w={"100%"} p={"1rem"}>
-            <Text>Existing Number: {existingNumber}</Text>
             <Flex alignItems={"center"}>
               <Text mr={2}>Layout: </Text>
               <VStack>

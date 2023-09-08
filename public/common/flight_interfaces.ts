@@ -9,9 +9,8 @@ export interface classBrands {
   brandList: string[];
 }
 
-export interface brandData {
-  layout: number[][];
-  numFlight: number;
+export interface layoutData {
+  layout: number[][],
 }
 
 export interface flightInfo {

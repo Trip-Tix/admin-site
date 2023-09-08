@@ -18,10 +18,10 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import { fetchExistingFlightIds } from "@public/common/flight_api";
+import { class_interface } from "@public/common/flight_interfaces";
 
 interface AmountListProps {
-  classId: number;
-  className: string;
+  classes: class_interface[];
   numFlight: number;
   setNumFlight: (numFlight: number) => void;
   uniqueFlightId: string[];
@@ -34,8 +34,7 @@ interface AmountListProps {
 }
 
 export default function AmountList({
-  classId,
-  className,
+  classes,
   numFlight,
   setNumFlight,
   uniqueFlightId,
@@ -51,11 +50,12 @@ export default function AmountList({
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     setLoading(true);
-    fetchExistingFlightIds(classId).then((res) => {
+    fetchExistingFlightIds().then((res) => {
       setExistingFlightId(res);
       setLoading(false);
     });
-  }, [classId]);
+  }, []);
+
   useEffect(() => {
     console.log(existingFlightId);
   }, [existingFlightId]);
@@ -75,12 +75,19 @@ export default function AmountList({
     setWrongFlightId(tempWrongFlightId);
   }, [numFlight]);
 
+
+  const getAbbreviation = (classes: class_interface[]): string => {
+    return classes.map(cls => cls.className.charAt(0).toUpperCase()).join('');
+  };
+  
   // handle input change
   const handleInputChange = (index: number, value: string) => {
+    const abbreviation = getAbbreviation(classes);
     const updatedUniqueFlightId = [...uniqueFlightId];
-    updatedUniqueFlightId[index] = `${company}-${className}-${value}`;
+    updatedUniqueFlightId[index] = `${company}-${abbreviation}-${value}`;
     setUniqueFlightId(updatedUniqueFlightId);
-    if (existingFlightId.includes(`${company}-${className}-${value}`)) {
+
+    if (existingFlightId.includes(`${company}-${abbreviation}-${value}`)) {
       const updatedWrongFlightId = [...wrongFlightId];
       updatedWrongFlightId[index] = true;
       setWrongFlightId(updatedWrongFlightId);
@@ -90,6 +97,7 @@ export default function AmountList({
       setWrongFlightId(updatedWrongFlightId);
     }
   };
+
 
   // validate input
   useEffect(() => {
@@ -147,7 +155,7 @@ export default function AmountList({
                   <Text
                     flexShrink={0}
                     color={wrongFlightId[index] ? "red.500" : "default"}
-                  >{`${company}-${className}-`}</Text>
+                  >{`${company}-${getAbbreviation(classes)}-`}</Text>
                   <Input
                     flex="1"
                     placeholder={` Flight ${index + 1} ID`}

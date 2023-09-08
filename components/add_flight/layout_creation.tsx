@@ -1,14 +1,9 @@
 import {
   HStack,
-  Input,
   Text,
   VStack,
-  Button,
   Flex,
   Box,
-  Center,
-  NumberInput,
-  NumberInputField,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -39,118 +34,109 @@ export default function LayoutCreation({
   setNumSeat,
 }: LayoutCreationProps) {
   const { colorMode } = useColorMode();
-  const [rowArray, setRowArray] = useState<number[]>([]);
-  const [colArray, setColArray] = useState<number[]>([]);
 
   useEffect(() => {
-    const tempRowArray: number[] = [];
-    for (let i = 0; i < row; i++) {
-      tempRowArray.push(i);
-    }
-    setRowArray(tempRowArray);
-  }, [row]);
+    const tempRowArray = Array.from({ length: row }, (_, i) => i);
+    const tempColArray = Array.from({ length: col }, (_, i) => i);
 
-  useEffect(() => {
-    const tempColArray: number[] = [];
-    for (let i = 0; i < col; i++) {
-      tempColArray.push(i);
-    }
-    setColArray(tempColArray);
-  }, [col]);
-
-  useEffect(() => {
-    const tempLayout: number[][] = [];
-    for (let i = 0; i < row; i++) {
-      const tempRow: number[] = [];
-      for (let j = 0; j < col; j++) {
+    const tempLayout = tempRowArray.map(() => 
+      tempColArray.map((j) => {
         if (col === 1 || col === 2) {
-          tempRow.push(1);
+          return 1;
         } else if (col % 2 === 1 && j === Math.floor(col / 2)) {
-          tempRow.push(0);
+          return 0;
         } else if (col % 2 === 0 && j === col / 2 - 1) {
-          tempRow.push(0);
+          return 0;
         } else {
-          tempRow.push(1);
+          return 1;
         }
-      }
-      tempLayout.push(tempRow);
-    }
+      })
+    );
+
     setLayout(tempLayout);
   }, [row, col]);
 
   useEffect(() => {
-    let tempNumSeat = 0;
-    layout.forEach((row) => {
-      row.forEach((seat) => {
-        if (seat === 1) {
-          tempNumSeat++;
-        }
-      });
-    });
+    const tempNumSeat = layout.flat().filter(seat => seat === 1).length;
     setNumSeat(tempNumSeat);
   }, [layout]);
 
   return (
-    <>
-      <Flex direction="row" align="top" justify="space-between" mt={2} mb={2}>
-        <VStack align={"left"} spacing={4} w="50%" mr={5} ml={"1rem"}>
-          <Text>Row</Text>
-          <Slider
-            focusThumbOnChange={false}
-            value={row}
-            onChange={(e) => setRow(e)}
-            min={1}
-            max={50}
-          >
-            <SliderTrack>
-              <SliderFilledTrack />
-            </SliderTrack>
-            <SliderThumb fontSize="sm" boxSize="32px" color={"black"}>
-              {row}
-            </SliderThumb>
-          </Slider>
+    <Flex direction="row" align="top" justify="space-between" mt={2} mb={2}>
+      <VStack align={"left"} spacing={4} w="50%" mr={5} ml={"1rem"}>
+        <Text>Row</Text>
+        <Slider
+          focusThumbOnChange={false}
+          value={row}
+          onChange={(value) => setRow(value)}
+          min={1}
+          max={50}
+        >
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb fontSize="sm" boxSize="32px" color={"black"}>
+            {row}
+          </SliderThumb>
+        </Slider>
 
-          <Text>Column</Text>
-          <Slider
-            focusThumbOnChange={false}
-            value={col}
-            onChange={(e) => setCol(e)}
-            min={1}
-            max={10}
-          >
-            <SliderTrack>
-              <SliderFilledTrack />
-            </SliderTrack>
-            <SliderThumb fontSize="sm" boxSize="32px" color={"black"}>
-              {col}
-            </SliderThumb>
-          </Slider>
-        </VStack>
+        <Text>Column</Text>
+        <Slider
+          focusThumbOnChange={false}
+          value={col}
+          onChange={(value) => setCol(value)}
+          min={1}
+          max={10}
+        >
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb fontSize="sm" boxSize="32px" color={"black"}>
+            {col}
+          </SliderThumb>
+        </Slider>
+      </VStack>
 
-        <VStack mr={"1rem"}>
-          {rowArray.map((row) => (
-            <HStack key={row}>
-              {colArray.map((col) => (
-                <Box
-                  height={"4vh"}
-                  width={"4vh"}
-                  key={col}
-                  cursor={"pointer"}
-                  borderRadius={"md"}
-                  bg={layout[row] && layout[row][col] !== undefined ? (layout[row][col] === 0 ? "invisible" : colorMode === 'light' ? "gray.400" : "gray.500") : "invisible"}
-                  borderColor={layout[row] && layout[row][col] !== undefined ? (layout[row][col] === 0 ? colorMode === 'light' ? "gray.400" : "gray.500" : "invisible") : "invisible"}
-                  borderWidth={layout[row] && layout[row][col] !== undefined ? (layout[row][col] === 0 ? "1px" : "invisible") : "invisible"}
-                  onClick={() => {
-                    const tempLayout = JSON.parse(JSON.stringify(layout)); //deep copy
-                    tempLayout[row][col] = tempLayout[row][col] === 0 ? 1 : 0;
-                    setLayout(tempLayout);
-                  }}
-                />
-              ))}
-            </HStack>
-          ))}
-        </VStack>
-      </Flex>
-    </>
+      <VStack mr={"1rem"}>
+        {layout.map((rowLayout, rowIdx) => (
+          <HStack key={rowIdx}>
+            {rowLayout.map((seat, colIdx) => (
+              <Box
+                key={colIdx}
+                height={"4vh"}
+                width={"4vh"}
+                cursor="pointer"
+                borderRadius={"md"}
+                bg={
+                  seat === 1 
+                    ? colorMode === 'light' 
+                      ? "gray.400" 
+                      : "gray.500"
+                    : "invisible"
+                }
+                borderColor={
+                  seat === 0 
+                    ? colorMode === 'light' 
+                      ? "gray.400" 
+                      : "gray.500"
+                    : "invisible"
+                }
+                borderWidth={
+                  seat === 0 ? "1px" : "invisible"
+                }
+                onClick={() => {
+                  const updatedLayout = layout.map((r, rIdx) => 
+                    rIdx !== rowIdx 
+                      ? r 
+                      : r.map((s, cIdx) => cIdx !== colIdx ? s : (s === 0 ? 1 : 0))
+                  );
+                  setLayout(updatedLayout);
+                }}
+              />
+            ))}
+          </HStack>
+        ))}
+      </VStack>
+    </Flex>
   );
 }

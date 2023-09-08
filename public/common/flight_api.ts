@@ -14,16 +14,6 @@ export const getAllClassesFlight = main_url + "/api/admin/getFlightClassInfo";
 export const getUniqueFlightScheduleInfo = main_url + "/api/admin/getUniqueFlightScheduleInfo";
 export const getAllUniqueFlightCount = main_url + "/api/admin/getAllUniqueFlightCount";
 
-// export const postLogin = '/api/user/login'
-// export const getAllFlight = '/api/flight/get-all-flight'
-// export const getFlightLayout = '/api/flight/get-layout'
-
-/*
- *
- *  Flight
- *
- */
-
 // get all classes list
 const getAllClasses = main_url + "/api/admin/getAirClassInfo";
 import { class_interface } from "@public/common/flight_interfaces";
@@ -59,63 +49,19 @@ export const fetchClassList = async (): Promise<class_interface[]> => {
   }
 };
 
-// get all classBrand list
-const getAllClassBrand = main_url + "/api/admin/getBrandInfo";
-import { classBrands } from "@public/common/flight_interfaces";
-interface getAllClassBrandResponse {
-  classId: number;
-  className: string;
-  brandList: string[];
-}
-
-export const fetchClassBrandList = async (): Promise<classBrands[]> => {
-  try {
-    const response = await axios.post(getAllClassBrand, null, {
-      headers: {
-        token: sessionStorage.getItem("user-token"),
-        companyname: sessionStorage.getItem("company-name"),
-      },
-    });
-
-    if (response.status === 200) {
-      console.log("class brand list fetched");
-      const tempClassBrandList: classBrands[] = response.data.map(
-        (class_: getAllClassBrandResponse) => ({
-          classId: class_.classId,
-          className: class_.className,
-          brandList: class_.brandList,
-        }),
-      );
-      return tempClassBrandList;
-    } else {
-      console.log(response.data.message);
-      return [];
-    }
-  } catch (err) {
-    console.log(err);
-    return [];
-  }
-};
 
 // get layout of a class
 export const getFlightLayout = main_url + "/api/admin/getFlightLayout";
-import { brandData } from "@public/common/flight_interfaces";
-import exp from "constants";
-interface getFlightLayoutResponse {
-  layout: number[][];
-  existingNumFlight: number;
-}
+import { layoutData } from "@public/common/flight_interfaces";
 
 export const fetchFlightLayout = async (
   classId: number,
-  brandName: string,
-): Promise<brandData> => {
+): Promise<layoutData> => {
   try {
     const response = await axios.post(
       getFlightLayout,
       {
         classId: classId,
-        brandName: brandName,
       },
       {
         headers: {
@@ -127,23 +73,21 @@ export const fetchFlightLayout = async (
 
     if (response.status === 200) {
       console.log("layout fetched");
-      const tempLayout: brandData = {
-        layout: response.data.layout,
-        numFlight: response.data.number_of_flight,
+      const tempLayout: layoutData = {
+        layout: Array.isArray(response.data.layout) ? response.data.layout : [],
       };
+
       return tempLayout;
     } else {
       console.log(response.data.message);
       return {
         layout: [],
-        numFlight: 0,
       };
     }
   } catch (err) {
     console.log(err);
     return {
       layout: [],
-      numFlight: 0,
     };
   }
 };
@@ -154,15 +98,11 @@ interface getExistingFlightIdsResponse {
   unique_flight_id: string;
 }
 
-export const fetchExistingFlightIds = async (
-  classId: number,
-): Promise<string[]> => {
+export const fetchExistingFlightIds = async (): Promise<string[]> => {
   try {
     const response = await axios.post(
       getExistingFlightIds,
-      {
-        classId: classId,
-      },
+      null,
       {
         headers: {
           token: sessionStorage.getItem("user-token"),

@@ -16,11 +16,11 @@ import {
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import LayoutCreation from "@components/add_flight/layout_creation";
+import ShowLayout from "@components/add_flight/show_layout";
 import AmountList from "@components/add_flight/amount_list";
 import { addNewFlight } from "@public/common/flight_api";
 import { class_interface } from "@public/common/flight_interfaces";
-
-import { fetchClassList } from "@public/common/flight_api";
+import { fetchClassList, fetchFlightLayout } from "@public/common/flight_api";
 
 interface FlightCardProps {
   removalAction: {
@@ -37,6 +37,7 @@ export default function FlightCard({
 }: FlightCardProps) {
   const [selectedClasses, setSelectedClasses] = useState<class_interface[]>([]);
   const [classForms, setClassForms] = useState<number[]>([1]);
+  const [facilities, setFacilities] = useState<string[]>(['']);
 
   // Initialize states for each class form's properties
   const [rows, setRows] = useState<number[]>([2]);
@@ -47,6 +48,8 @@ export default function FlightCard({
 
   const [numFlight, setNumFlight] = useState<number>(0);
   const [uniqueFlightId, setUniqueFlightId] = useState<string[]>([]);
+
+  const [fetchedLayouts, setFetchedLayouts] = useState<(number[][] | null)[]>([null]);
 
 
   // Fetching class list within FlightCard
@@ -74,21 +77,23 @@ export default function FlightCard({
   //   }
   // }, [submit]);
 
-  const handleClassChange = (index: number, e: React.ChangeEvent<HTMLSelectElement>) => {
-    // console.log(e.target.value);
-    // const selected = classList.find((cls) => cls.classId.toString() === e.target.value);
-    // console.log(selected);
-    // selectedClasses[index] = selected;
-    // console.log(selectedClasses);
+  const handleClassChange = async (index: number, e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = classList.find((cls) => cls.classId.toString() === e.target.value);
+    if (selected) {
+        let updatedClasses = [...selectedClasses];
+        updatedClasses[index] = selected;
+        setSelectedClasses(updatedClasses);
 
-      const selected = classList.find((cls) => cls.classId.toString() === e.target.value);
-      let updatedClasses = [...selectedClasses];
-      console.log(updatedClasses);
-      updatedClasses[index] = selected!;
-      setSelectedClasses(updatedClasses);
-      console.log(selectedClasses);
+        // Fetch the layout for the selected class
+        const layoutData = await fetchFlightLayout(selected.classId);
 
+        // Update the fetchedLayouts state
+        let updatedFetchedLayouts = [...fetchedLayouts];
+        updatedFetchedLayouts[index] = layoutData.layout || null;
+        setFetchedLayouts(updatedFetchedLayouts);
+    }
   };
+
 
   const handleAddClass = () => {
     if (classForms.length < classList.length) {
@@ -133,6 +138,17 @@ export default function FlightCard({
     }
   };
 
+  const handleFacilityChange = (index: number, value: string) => {
+    const updatedFacilities = [...facilities];
+    updatedFacilities[index] = value;
+    setFacilities(updatedFacilities);
+  };
+
+  const addNewFacility = () => {
+    if (facilities[facilities.length - 1]) {
+      setFacilities([...facilities, '']);
+    }
+  };
 
   return (
     <>
@@ -162,72 +178,76 @@ export default function FlightCard({
         <Divider mb={10} />
 
         {classForms.map((_, index) => (
-          <React.Fragment key={index}>
-              {/* Class Card Content */}
-              <Flex
-                  align={"center"}
-                  w={"99%"}
-                  justifyContent={"space-between"}
-                  mb={10} 
-              >
-                  <Flex alignContent={"center"} w={"100%"} justifyContent="space-between">
-                      <Select
-                          placeholder="Select Class"
-                          value={selectedClasses[index]?.classId || ""}
-                          onChange={(e) => handleClassChange(index, e)}
-                          w={"70%"}
-                      >
-                          {classList.map((cls) => (
-                              <option 
-                                  key={cls.classId} 
-                                  value={cls.classId}
-                                  disabled={selectedClasses.map(selected => selected?.classId).includes(cls.classId)}
-                              >
-                                  {cls.className}
-                              </option>
-                          ))}
-                      </Select>
-                      {classForms.length > 1 && (
-                          <Button 
-                              onClick={() => handleRemoveClass(index)} 
-                              colorScheme="red" 
-                              marginLeft={2}
-                              width="14%"
-                          >
-                              Remove Class
-                          </Button>
-                      )}
-                  </Flex>
-              </Flex>
-              {/* <Divider mb={10} /> */}
-              <LayoutCreation
-                row={rows[index]}
-                setRow={(value) => {
-                  const updatedRows = [...rows];
-                  updatedRows[index] = value;
-                  setRows(updatedRows);
-                }}
-                col={cols[index]}
-                setCol={(value) => {
-                  const updatedCols = [...cols];
-                  updatedCols[index] = value;
-                  setCols(updatedCols);
-                }}
-                layout={layouts[index]}
-                setLayout={(value) => {
-                  const updatedLayouts = [...layouts];
-                  updatedLayouts[index] = value;
-                  setLayouts(updatedLayouts);
-                }}
-                numSeat={numSeats[index]}
-                setNumSeat={(value) => {
-                  const updatedNumSeats = [...numSeats];
-                  updatedNumSeats[index] = value;
-                  setNumSeats(updatedNumSeats);
-                }}
-              />
-              <Divider my={10} /> 
-          </React.Fragment>
+            <React.Fragment key={index}>
+                {/* Class Card Content */}
+                <Flex
+                    align={"center"}
+                    w={"99%"}
+                    justifyContent={"space-between"}
+                    mb={10} 
+                >
+                    <Flex alignContent={"center"} w={"100%"} justifyContent="space-between">
+                        <Select
+                            placeholder="Select Class"
+                            value={selectedClasses[index]?.classId || ""}
+                            onChange={(e) => handleClassChange(index, e)}
+                            w={"70%"}
+                        >
+                            {classList.map((cls) => (
+                                <option 
+                                    key={cls.classId} 
+                                    value={cls.classId}
+                                    disabled={selectedClasses.map(selected => selected?.classId).includes(cls.classId)}
+                                >
+                                    {cls.className}
+                                </option>
+                            ))}
+                        </Select>
+                        {classForms.length > 1 && (
+                            <Button 
+                                onClick={() => handleRemoveClass(index)} 
+                                colorScheme="red" 
+                                marginLeft={2}
+                                width="14%"
+                            >
+                                Remove Class
+                            </Button>
+                        )}
+                    </Flex>
+                </Flex>
+
+                {fetchedLayouts[index] && fetchedLayouts[index].length > 0 ? (
+                    <ShowLayout classId={selectedClasses[index]?.classId} />
+                ) : (
+                    <LayoutCreation
+                        row={rows[index]}
+                        setRow={(value) => {
+                            const updatedRows = [...rows];
+                            updatedRows[index] = value;
+                            setRows(updatedRows);
+                        }}
+                        col={cols[index]}
+                        setCol={(value) => {
+                            const updatedCols = [...cols];
+                            updatedCols[index] = value;
+                            setCols(updatedCols);
+                        }}
+                        layout={layouts[index]}
+                        setLayout={(value) => {
+                            const updatedLayouts = [...layouts];
+                            updatedLayouts[index] = value;
+                            setLayouts(updatedLayouts);
+                        }}
+                        numSeat={numSeats[index]}
+                        setNumSeat={(value) => {
+                            const updatedNumSeats = [...numSeats];
+                            updatedNumSeats[index] = value;
+                            setNumSeats(updatedNumSeats);
+                        }}
+                    />
+                )}
+                <Divider my={10} /> 
+            </React.Fragment>
         ))}
         
         {/* Add Class Button */}
@@ -249,10 +269,27 @@ export default function FlightCard({
           </Button>
         </Flex>
         <Divider my={10} />
+        
+        <VStack align={"left"} spacing={4} w="80%" m={"1rem"}>
+          <Text>Facilities</Text>
+          {facilities.map((facility, index) => (
+            <HStack key={index} spacing={4}>
+              <Input 
+                value={facility} 
+                onChange={(e) => handleFacilityChange(index, e.target.value)} 
+                placeholder="Enter a facility"
+              />
+              {index === facilities.length - 1 && (
+                <Button onClick={addNewFacility} isDisabled={!facility}>
+                  +
+                </Button>
+              )}
+            </HStack>
+          ))}
+        </VStack>
 
         <AmountList
-          className={selectedClasses[0]?.className}
-          classId={selectedClasses[0]?.classId}
+          classes={selectedClasses}
           numFlight={numFlight}
           setNumFlight={setNumFlight}
           uniqueFlightId={uniqueFlightId}
