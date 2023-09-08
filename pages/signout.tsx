@@ -8,10 +8,10 @@ const SourcePage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    sessionStorage.setItem("is-login", "false");
-    sessionStorage.setItem("user-token", "");
+    sessionStorage.setItem('is-login', 'false');
+    sessionStorage.clear();
     router.push(login_url);
-  }, []);
+  }, [router]);
 
   return (
     <Box textAlign="center" mt="20">

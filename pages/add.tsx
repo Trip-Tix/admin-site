@@ -1,15 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Heading, Spinner } from '@chakra-ui/react';
 
-import { add_bus_url } from '@public/common/pagelinks';
+import { add_bus_url, add_train_url, add_flight_url } from '@public/common/pagelinks';
 
 const SourcePage = () => {
   const router = useRouter();
 
-  useEffect(() => {
-    router.push(add_bus_url);
-  }, []);
+  const [addUrl, setAddUrl] = useState<string>('');
+
+  useEffect(() => { 
+    const adminRole = sessionStorage.getItem('user-role');
+    if (adminRole === 'ADMIN' || adminRole === 'BUS') {
+      setAddUrl(add_bus_url);
+    } else if (adminRole === 'TRAIN') {
+      setAddUrl(add_train_url);
+    } else if (adminRole === 'AIR') {
+      setAddUrl(add_flight_url);
+    }
+
+    router.push(addUrl);
+  }, [addUrl, router]);
 
   return (
     <Box textAlign="center" mt="20">
