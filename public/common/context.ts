@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { class_interface } from "./flight_interfaces";
 
 export interface BusInfoContextType {
   coachId: number;
@@ -30,20 +31,22 @@ export interface TrainInfoContextType {
 export const TrainInfoContext = createContext<TrainInfoContextType | null>(null);
 
 export interface FlightInfoContextType {
-  classId: number;
-  setClassId: (classId: number) => void;
-  className: string;
-  setClassName: (className: string) => void;
-  brandName: string;
-  setBrandName: (brandName: string) => void;
-  layout: number[][];
-  setLayout: (layout: number[][]) => void;
-  numSeat: number;
-  setNumSeat: (numSeat: number) => void;
-  flightLayoutId: number;
-  setFlightLayoutId: (flightLayoutId: number) => void;
-  numFlight: number;
-  setNumFlight: (numFlight: number) => void;
+  uniqueFlightId: string;
+  setUniqueFlightId: (uniqueFlightId: string) => void;
+  classNames: string[];
+  setClassNames: (classNames: string[]) => void;
+  classIds: number[];
+  setClassIds: (classIds: number[]) => void;
+  layout: number[][][];
+  setLayout: (layout: number[][][]) => void;
+  numSeat: number[];
+  setNumSeat: (numSeat: number[]) => void;
+  flightLayoutId: number[];
+  setFlightLayoutId: (flightLayoutId: number[]) => void;
+  numTotalSeats: number;
+  setNumTotalSeats: (numTotalSeats: number) => void;
+  facilities: string[];
+  setFacilities: (facilities: string[]) => void;
 }
 
 export const FlightInfoContext = createContext<FlightInfoContextType | null>(null);

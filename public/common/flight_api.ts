@@ -180,6 +180,54 @@ export const addNewFlight = async (flightInfo: flightInfo): Promise<string> => {
   }
 };
 
+// get all flight to list
+const getAllFlightToList = main_url + "/api/admin/getFlightInfo";
+interface getAllFlightToListResponse {
+  unique_air_id: string;
+  class_names: string[];
+  class_info: number[];
+  layouts: number[][][];
+  number_of_seats: number;
+  layoutIds: number[];
+  eachNumOfSeats: number[];
+  facilities: string[];
+}
+
+import { uniqueFlightEntry } from "@public/common/flight_interfaces";
+export const fetchAllFlightToList = async (): Promise<uniqueFlightEntry[]> => {
+  try {
+    const response = await axios.post(getAllFlightToList, null, {
+      headers: {
+        token: sessionStorage.getItem("user-token"),
+        companyname: sessionStorage.getItem("company-name"),
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("all flight to list fetched");
+      const tempFlightToList: uniqueFlightEntry[] = response.data.map(
+        (flight: getAllFlightToListResponse) => ({
+          uniqueFlightId: flight.unique_air_id,
+          classNames: flight.class_names,
+          classIds: flight.class_info,
+          layout: flight.layouts,
+          numSeat: flight.eachNumOfSeats,
+          flightLayoutId: flight.layoutIds,
+          numTotalSeats: flight.number_of_seats,
+          facilities: flight.facilities,
+        }),
+      );
+      console.log(tempFlightToList);
+      return tempFlightToList;
+    } else {
+      console.log(response.data.message);
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
 
 // checkpoint
 
@@ -316,53 +364,6 @@ export const postScheduleInfo = async ({
   }
 };
 
-// get all flight to list
-const getAllFlightToList = main_url + "/api/admin/getFlightInfo";
-interface getAllFlightToListResponse {
-  flight_class_id: number;
-  number_of_flight: number;
-  brand_name: string;
-  class_name: string;
-  class_id: number;
-  flight_layout_id: number;
-  number_of_seats: number;
-  row: number;
-  col: number;
-  layout: number[][];
-}
-import { classBrandEntry } from "@public/common/flight_interfaces";
-export const fetchAllFlightToList = async (): Promise<classBrandEntry[]> => {
-  try {
-    const response = await axios.post(getAllFlightToList, null, {
-      headers: {
-        token: sessionStorage.getItem("user-token"),
-        companyname: sessionStorage.getItem("company-name"),
-      },
-    });
-
-    if (response.status === 200) {
-      console.log("all flight to list fetched");
-      const tempFlightToList: classBrandEntry[] = response.data.map(
-        (flight: getAllFlightToListResponse) => ({
-          classId: flight.class_id,
-          className: flight.class_name,
-          brandName: flight.brand_name,
-          layout: flight.layout,
-          numSeat: flight.number_of_seats,
-          numFlight: flight.number_of_flight,
-          flightLayoutId: flight.flight_layout_id,
-        }),
-      );
-      return tempFlightToList;
-    } else {
-      console.log(response.data.message);
-      return [];
-    }
-  } catch (err) {
-    console.log(err);
-    return [];
-  }
-};
 
 // get all unique flight id list from class id and brand name
 const getAllUniqueFlightId = main_url + "/api/admin/getAllUniqueFlight";

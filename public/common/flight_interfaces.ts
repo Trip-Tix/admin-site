@@ -35,14 +35,15 @@ export interface ScheduleEntry {
   uniqueFlightId: string;
 }
 
-export interface classBrandEntry {
-  classId: number;
-  className: string;
-  brandName: string;
-  layout: number[][];
-  numSeat: number;
-  numFlight: number;
-  flightLayoutId: number;
+export interface uniqueFlightEntry {
+  uniqueFlightId: string;
+  classNames: string[];
+  classIds: number[];
+  layout: number[][][];
+  numSeat: number[];
+  flightLayoutId: number[];
+  numTotalSeats: number;
+  facilities: string[];
 }
 
 export interface UniqueFlightScheduleInfoResponse {

@@ -1,6 +1,8 @@
 import { HStack, VStack } from "@chakra-ui/react";
 import Layout from "@components/layout";
 import SidebarWithHeader from "@components/sidebar_with_header";
+import Stat from "@components/list_flight/stat";
+import MainData from "@components/list_flight/main_data";
 import TransportSelect from "@components/transport_select";
 import {
   NavigationOption,
@@ -16,6 +18,8 @@ export default function Main() {
             transport={TransportType.Flight}
             navigation={NavigationOption.List}
           />
+          <Stat />
+          <MainData />
         </VStack>
       </SidebarWithHeader>
     </Layout>
