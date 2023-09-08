@@ -1,52 +1,48 @@
-import { VStack, Heading } from "@chakra-ui/react";
+import { VStack, Heading, Button } from "@chakra-ui/react";
 import { useContext, useState } from "react";
-import { BusInfoContext } from "@public/common/context";
-import { fetchUniqueBusSchedule } from "@public/common/bus_api"; 
+import { FlightInfoContext } from "@public/common/context";
 
-import Layout from "@components/list_bus/layout";
-import InfoTag from "@components/list_bus/info_tag";
-import UniqueBusList from "@components/list_bus/unique_bus_list";
+import Layout from "@components/list_flight/layout";
+import InfoTag from "@components/list_flight/info_tag";
 
 export default function Details() {
-  const { coachId, coachName, brandName, layout, numSeat, busLayoutId, numBus } = useContext(BusInfoContext);
-  const [activeBusId, setActiveBusId] = useState<string | null>(null);
-  const [schedules, setSchedules] = useState<any[]>([]);
+  const {
+    uniqueFlightId,
+    classIds,
+    classNames,
+    layout,
+    numSeat,
+    flightLayoutId,
+    numTotalSeats,
+    facilities,
+  } = useContext(FlightInfoContext);
 
-  const handleToggleSchedules = async (uniqueBusId: string) => {
-    if (activeBusId !== uniqueBusId) {
-      const fetchedSchedules = await fetchUniqueBusSchedule(uniqueBusId);
-      setSchedules(fetchedSchedules);
-      setActiveBusId(uniqueBusId);
-    } else {
-      setSchedules([]);
-      setActiveBusId(null);
-    }
-  };
+  const [selectedClassIndex, setSelectedClassIndex] = useState<number | null>(null);
+  
+  const facilitiesString = facilities.join(", ");
 
   return (
-    <VStack
-      spacing={4}
-      align="stretch"
-      width={{ base: "0%", md: "30%" }}
-      visibility={{ base: "hidden", md: "visible" }}
-    >
+    <VStack spacing={4} align="stretch" width={{ base: "0%", md: "30%" }} visibility={{ base: "hidden", md: "visible" }}>
       <Heading as="h1" size="lg" color="primary.800">
         Details
       </Heading>
-      <InfoTag info={coachId.toString()} label="Coach ID" />
-      <InfoTag info={coachName} label="Coach Name" />
-      <InfoTag info={brandName} label="Brand Name" />
-      <InfoTag info={numBus.toString()} label="Number of Buses" />
-      <InfoTag info={numSeat.toString()} label="Number of Seats" />
-      <InfoTag info={busLayoutId.toString()} label="Layout ID" />
-      <Layout layout={layout} />
-      <UniqueBusList 
-        coachId={coachId} 
-        brandName={brandName} 
-        onBusClick={handleToggleSchedules} 
-        activeBusId={activeBusId} 
-        schedules={schedules}
-      />
+      <InfoTag info={uniqueFlightId} label="Unique Flight ID" />
+      <InfoTag info={numTotalSeats.toString()} label="Total Seats" />
+      <InfoTag info={facilitiesString} label="Facilities" />
+      {classNames.map((className, index) => (
+        <VStack key={index} align="stretch">
+          <Button onClick={() => setSelectedClassIndex(index)}>
+            {className}
+          </Button>
+          {selectedClassIndex === index && layout[index] && (
+            <>
+              <InfoTag info={flightLayoutId[index].toString()} label="Layout ID" />
+              <Layout layout={layout[index]} />
+              <InfoTag info={numSeat[index].toString()} label="Number of Seats" />
+            </>
+          )}
+        </VStack>
+      ))}
     </VStack>
   );
 }

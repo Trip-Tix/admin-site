@@ -1,7 +1,7 @@
 import List from "@components/list_flight/list";
 import { FlightInfoContext } from "@public/common/context";
 import { HStack } from "@chakra-ui/react";
-import { class_interface } from "@public/common/flight_interfaces";
+import Details from "@components/list_flight/details";
 import { useState } from "react";
 
 export default function MainData() {
@@ -13,7 +13,7 @@ export default function MainData() {
   const [flightLayoutId, setFlightLayoutId] = useState<number[]>([0]);
   const [numTotalSeats, setNumTotalSeats] = useState<number>(0);
   const [facilities, setFacilities] = useState<string[]>([""]);
-  
+
   
   return (
     <FlightInfoContext.Provider value={{ 
@@ -28,7 +28,7 @@ export default function MainData() {
     }}>
       <HStack spacing="4" align="stretch">
         <List />
-        {/* <Details /> */}
+        <Details />
       </HStack>
     </FlightInfoContext.Provider>
   );

@@ -6,12 +6,12 @@ import {
     Divider,
   } from "@chakra-ui/react";
   
-interface BusIdProps {
+interface FlightIdProps {
     info: string;
     label: string;
 }
   
-  export default function InfoTag({ info, label }: BusIdProps) {
+  export default function InfoTag({ info, label }: FlightIdProps) {
     return (
       <Flex
         direction="column"
