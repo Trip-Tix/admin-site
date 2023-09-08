@@ -1,4 +1,4 @@
-import { Flex, HStack, IconButton } from "@chakra-ui/react";
+import { Flex, IconButton, useToast } from "@chakra-ui/react";
 import {
   BsFillBusFrontFill,
   BsFillTrainFrontFill,
@@ -10,29 +10,25 @@ import {
   NavigationOption,
 } from "@public/common/navigation_option";
 import {
-  login_url,
-  logout_url,
-  home_url,
-  list_url,
   list_bus_url,
   list_train_url,
   list_flight_url,
-  add_url,
   add_bus_url,
   add_train_url,
   add_flight_url,
-  schedule_url,
   schedule_bus_url,
   schedule_train_url,
   schedule_flight_url,
 } from "@public/common/pagelinks";
 import { useRouter } from "next/router";
 import React from "react";
+import { useEffect, useState } from "react";
 
 interface TransportItem {
   name: string;
   icon: IconType;
   link: string;
+  permission: boolean;
 }
 
 const bus_map = new Map<NavigationOption, string>([
@@ -62,21 +58,57 @@ export default function TransportSelect({
   transport,
   navigation,
 }: TransportSelectProps) {
+  const router = useRouter();
+  const toast = useToast();
+
+  const [isBus, setIsBus] = useState<boolean>(false);
+  const [isTrain, setIsTrain] = useState<boolean>(false);
+  const [isFlight, setIsFlight] = useState<boolean>(false);
+
+  useEffect(() => {
+    const adminRole = sessionStorage.getItem("user-role");
+    if (adminRole === "ADMIN") {
+      setIsBus(true);
+      setIsTrain(true);
+      setIsFlight(true);
+    }
+    else if (adminRole === "BUS") {
+      setIsBus(true);
+    } else if (adminRole === "TRAIN") {
+      setIsTrain(true);
+    } else if (adminRole === "AIR") {
+      setIsFlight(true);
+    }
+  }, []);
+
   const TransportItems: Array<TransportItem> = [
-    { name: "Bus", icon: BsFillBusFrontFill, link: bus_map.get(navigation) },
+    { name: "BUS", icon: BsFillBusFrontFill, link: bus_map.get(navigation), permission: isBus },
     {
-      name: "Train",
+      name: "TRAIN",
       icon: BsFillTrainFrontFill,
       link: train_map.get(navigation),
+      permission: isTrain,
     },
     {
-      name: "Flight",
+      name: "FLIGHT",
       icon: BsFillAirplaneFill,
       link: flight_map.get(navigation),
+      permission: isFlight,
     },
   ];
-  const router = useRouter();
-  const handleClick = (link: string) => {
+
+
+  const handleClick = (link: string, permission: boolean) => {
+    if (!permission) {
+      toast({
+        title: "Permission Denied",
+        description: "You don't have permission to access this page",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
     router.push(link);
   };
   return (
@@ -95,7 +127,7 @@ export default function TransportSelect({
           fontSize="20px"
           icon={React.createElement(item.icon)}
           m={4}
-          onClick={() => handleClick(item.link)}
+          onClick={() => handleClick(item.link, item.permission)}
         />
       ))}
     </Flex>

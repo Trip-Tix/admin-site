@@ -77,7 +77,7 @@ const Layout: React.FC<LayoutProps> = ({ title, isProtected, children }) => {
     if (isProtected && sessionStorage.getItem("is-login") !== "true") {
       router.push(login_url);
     }
-  }, []);
+  }, [isProtected, router]);
 
   useEffect(() => {
     if (!isProtected) {
@@ -93,7 +93,7 @@ const Layout: React.FC<LayoutProps> = ({ title, isProtected, children }) => {
     if (!isProtected && sessionStorage.getItem("is-login") === "true") {
       router.push(home_url);
     }
-  }, []);
+  }, [isProtected, router]);
   
   return (
     <Box>

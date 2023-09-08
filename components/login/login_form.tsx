@@ -72,6 +72,9 @@ export default function Login_form() {
         sessionStorage.setItem("user-role", res.data.adminRole);
         sessionStorage.setItem("is-login", "true");
         sessionStorage.setItem("company-name", res.data.companyName);
+        sessionStorage.setItem("user-email", res.data.adminInfo.email);
+        sessionStorage.setItem("user-fullname", res.data.adminInfo.admin_name);
+        sessionStorage.setItem("company-id", res.data.companyId);
         router.push(home_url);
       })
       .catch((err) => {

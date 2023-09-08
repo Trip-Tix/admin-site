@@ -52,6 +52,7 @@ import {
   logout_url,
 } from "@public/common/pagelinks";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 interface LinkItemProps {
   name: string;
@@ -177,6 +178,16 @@ const NavItem = ({ icon, children, selected, link, ...rest }: NavItemProps) => {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const [adminName, setAdminName] = useState<string>("");
+  const [adminRole, setAdminRole] = useState<string>("");
+
+  useEffect(() => {
+    const adminInfo: any = sessionStorage.getItem("user-fullname");
+    setAdminName(adminInfo);
+    setAdminRole(sessionStorage.getItem("user-role"));
+  }
+  , []);
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -237,9 +248,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">{adminName}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {adminRole}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
