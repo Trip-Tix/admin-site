@@ -23,6 +23,8 @@ export default function Main() {
     isValid: boolean;
   }
 
+  const [classesLength, setClassesLength] = useState<number>(0);
+  const [facilitiesLength, setFacilitiesLength] = useState<number>(0);
   const [flightKeys, setFlightKeys] = useState<flightKeyItem[]>([]);
   const [newId, setNewId] = useState<number>(0);
 
@@ -68,6 +70,8 @@ export default function Main() {
                   validateFlight: validateFlight,
                 }}
                 submit={submit}
+                updateClassesLength={setClassesLength}
+                updateFacilities={setFacilitiesLength}
               />
             ))}
             <Button onClick={addNewFlight}> Add Flight </Button>
@@ -76,7 +80,9 @@ export default function Main() {
               onClick={() => setSubmit(true)}
               isDisabled={
                 flightKeys.length === 0 /* if no card */ ||
-                flightKeys.some((item) => !item.isValid) /* if some card has invalid values */
+                flightKeys.some((item) => !item.isValid) /* if some card has invalid values */ ||
+                classesLength === 0 /* if classes array is empty */ ||
+                facilitiesLength == 0 /* if facilities array is empty */
               }
             >
               {"Submit"}

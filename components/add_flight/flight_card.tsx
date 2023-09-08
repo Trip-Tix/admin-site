@@ -21,6 +21,7 @@ import AmountList from "@components/add_flight/amount_list";
 import { addNewFlight } from "@public/common/flight_api";
 import { class_interface } from "@public/common/flight_interfaces";
 import { fetchClassList, fetchFlightLayout } from "@public/common/flight_api";
+import { send } from "process";
 
 interface FlightCardProps {
   removalAction: {
@@ -29,11 +30,16 @@ interface FlightCardProps {
     validateFlight: (key: string, isValid: boolean) => void;
   };
   submit: boolean;
+  updateClassesLength: (length: number) => void;
+  updateFacilities: (length: number) => void;
+
 }
 
 export default function FlightCard({
   removalAction,
   submit,
+  updateClassesLength,
+  updateFacilities,
 }: FlightCardProps) {
   const [selectedClasses, setSelectedClasses] = useState<class_interface[]>([]);
   const [classForms, setClassForms] = useState<number[]>([1]);
@@ -50,7 +56,22 @@ export default function FlightCard({
   const [uniqueFlightId, setUniqueFlightId] = useState<string[]>([]);
 
   const [fetchedLayouts, setFetchedLayouts] = useState<(number[][] | null)[]>([null]);
+  const [fetchedNumSeats, setFetchedNumSeats] = useState<number[]>([0]);
 
+  useEffect(() => {
+    console.log(classForms.length);
+    console.log(selectedClasses.length);
+    updateClassesLength(selectedClasses.length == classForms.length ? selectedClasses.length : 0);
+  }, [selectedClasses, classForms]);
+  
+  useEffect(() => {
+    if (facilities.length > 0 && facilities[facilities.length - 1] !== '') {
+      updateFacilities(facilities.length);
+    } else {
+      updateFacilities(0);
+    }
+    
+  }, [facilities]);
 
   // Fetching class list within FlightCard
   const [classList, setClassList] = useState<class_interface[]>([]);
@@ -62,20 +83,49 @@ export default function FlightCard({
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   if (submit) {
-  //     // You can modify this to handle multiple class submissions
-  //     addNewFlight({
-  //       classId: selectedClasses[0]?.classId,
-  //       numFlight: numFlight,
-  //       uniqueFlightId: uniqueFlightId,
-  //       numSeat: numSeat,
-  //       layout: layout,
-  //       row: row,
-  //       col: col,
-  //     });
-  //   }
-  // }, [submit]);
+  useEffect(() => {
+    let sendingLayouts: number[][][] = [];
+    let sendingRows: number[] = [];
+    let sendingCols: number[] = [];
+    let sendingNumSeats: number[] = [];
+
+    for (let index = 0; index < fetchedLayouts.length; index++) {
+        if (fetchedLayouts[index] && fetchedLayouts[index].length > 0) {
+            sendingLayouts[index] = fetchedLayouts[index];
+            sendingRows[index] = -1;
+            sendingCols[index] = -1;
+            sendingNumSeats[index] = fetchedNumSeats[index];
+        } else {
+            sendingLayouts[index] = layouts[index];
+            sendingRows[index] = rows[index];
+            sendingCols[index] = cols[index];
+            sendingNumSeats[index] = numSeats[index];
+        }
+    }
+
+    if (submit) {
+      console.log({
+        classes: selectedClasses,
+        numFlight: numFlight,
+        uniqueFlightId: uniqueFlightId,
+        numSeats: sendingNumSeats,
+        layouts: sendingLayouts,
+        rows: sendingRows,
+        cols: sendingCols,
+        facilities: facilities,
+      })
+      addNewFlight({
+        classes: selectedClasses,
+        numFlight: numFlight,
+        uniqueFlightId: uniqueFlightId,
+        numSeats: sendingNumSeats,
+        layouts: sendingLayouts,
+        rows: sendingRows,
+        cols: sendingCols,
+        facilities: facilities,
+      });
+    }
+  }, [submit]);
 
   const handleClassChange = async (index: number, e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = classList.find((cls) => cls.classId.toString() === e.target.value);
@@ -91,6 +141,9 @@ export default function FlightCard({
         let updatedFetchedLayouts = [...fetchedLayouts];
         updatedFetchedLayouts[index] = layoutData.layout || null;
         setFetchedLayouts(updatedFetchedLayouts);
+        let updatedNumSeats = [...fetchedNumSeats];
+        updatedNumSeats[index] = layoutData.numSeat || 0;
+        setFetchedNumSeats(updatedNumSeats);
     }
   };
 
@@ -140,7 +193,18 @@ export default function FlightCard({
 
   const handleFacilityChange = (index: number, value: string) => {
     const updatedFacilities = [...facilities];
-    updatedFacilities[index] = value;
+    
+    if (value === "") {
+        updatedFacilities.splice(index, 1);
+    } else {
+        updatedFacilities[index] = value;
+    }
+
+    // Ensure at least one facility remains
+    if (updatedFacilities.length === 0) {
+        updatedFacilities.push('');
+    }
+    
     setFacilities(updatedFacilities);
   };
 

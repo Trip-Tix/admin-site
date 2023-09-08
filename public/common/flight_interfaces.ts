@@ -11,16 +11,20 @@ export interface classBrands {
 
 export interface layoutData {
   layout: number[][],
+  row: number,
+  col: number,
+  numSeat: number,
 }
 
 export interface flightInfo {
-  classId : number,
+  classes : class_interface[],
   numFlight: number,
   uniqueFlightId : string[],
-  numSeat: number,
-  layout: number[][],
-  row: number,
-  col: number
+  numSeats: number[],
+  layouts: number[][][],
+  rows: number[],
+  cols: number[],
+  facilities: string[],
 }
 
 export interface ScheduleEntry {

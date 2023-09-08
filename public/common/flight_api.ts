@@ -75,6 +75,9 @@ export const fetchFlightLayout = async (
       console.log("layout fetched");
       const tempLayout: layoutData = {
         layout: Array.isArray(response.data.layout) ? response.data.layout : [],
+        row: response.data.row,
+        col: response.data.col,
+        numSeat: response.data.number_of_seats,
       };
 
       return tempLayout;
@@ -82,12 +85,18 @@ export const fetchFlightLayout = async (
       console.log(response.data.message);
       return {
         layout: [],
+        row: 0,
+        col: 0,
+        numSeat: 0,
       };
     }
   } catch (err) {
     console.log(err);
     return {
       layout: [],
+      row: 0,
+      col: 0,
+      numSeat: 0,
     };
   }
 };
@@ -95,7 +104,7 @@ export const fetchFlightLayout = async (
 // get existing flight ids list given class id and brand name
 const getExistingFlightIds = main_url + "/api/admin/getUniqueFlightIdList";
 interface getExistingFlightIdsResponse {
-  unique_flight_id: string;
+  unique_air_id: string;
 }
 
 export const fetchExistingFlightIds = async (): Promise<string[]> => {
@@ -114,7 +123,7 @@ export const fetchExistingFlightIds = async (): Promise<string[]> => {
     if (response.status === 200) {
       console.log("existing flight ids fetched");
       const tempFlightIds: string[] = response.data.map(
-        (flight: getExistingFlightIdsResponse) => flight.unique_flight_id,
+        (flight: getExistingFlightIdsResponse) => flight.unique_air_id,
       );
       return tempFlightIds;
     } else {
@@ -141,13 +150,14 @@ export const addNewFlight = async (flightInfo: flightInfo): Promise<string> => {
     const response = await axios.post(
       addFlight,
       {
-        classId: flightInfo.classId,
+        classes: flightInfo.classes,
         numFlight: flightInfo.numFlight,
         uniqueFlightId: flightInfo.uniqueFlightId,
-        numSeat: flightInfo.numSeat,
-        layout: flightInfo.layout,
-        row: flightInfo.row,
-        col: flightInfo.col,
+        numSeats: flightInfo.numSeats,
+        layouts: flightInfo.layouts,
+        rows: flightInfo.rows,
+        cols: flightInfo.cols,
+        facilities: flightInfo.facilities,
       },
       {
         headers: {
@@ -169,6 +179,9 @@ export const addNewFlight = async (flightInfo: flightInfo): Promise<string> => {
     return err;
   }
 };
+
+
+// checkpoint
 
 // get available location
 const getLocations = main_url + "/api/admin/getLocation";
