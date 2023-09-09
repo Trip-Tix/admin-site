@@ -73,7 +73,6 @@ export interface locationInfo {
 
 export interface scheduleTrainReturnType {
   uniqueTrainId: string;
-  numberOfSeats: number;
   coachIds: number[];
   coachNames: string[];
 }

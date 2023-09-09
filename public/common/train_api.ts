@@ -191,9 +191,6 @@ export const addNewTrain = async (trainInfo: trainInfo): Promise<string> => {
 };
 
 
-// train checkpoint
-
-
 // get all train to list
 const getAllTrainToList = main_url + "/api/admin/getTrainInfo";
 interface getAllTrainToListResponse {
@@ -202,7 +199,7 @@ interface getAllTrainToListResponse {
   coach_ids: number[];
   layouts: number[][][];
   layoutIds: number[];
-  number_of_seats: number[];
+  eachNumOfSeats: number[];
   facilities: string[];
 }
 
@@ -224,7 +221,7 @@ export const fetchAllTrainToList = async (): Promise<uniqueTrainEntry[]> => {
           coachNames: train.coach_names,
           coachIds: train.coach_ids,
           layout: train.layouts,
-          numSeat: train.number_of_seats,
+          numSeat: train.eachNumOfSeats,
           trainLayoutId: train.layoutIds,
           facilities: train.facilities,
         }),
@@ -240,6 +237,10 @@ export const fetchAllTrainToList = async (): Promise<uniqueTrainEntry[]> => {
     return [];
   }
 };
+
+
+// train checkpoint
+
 
 
 // get available location
@@ -290,8 +291,7 @@ const getAllAvailableTrain = main_url + "/api/admin/getAvailableTrain";
 import { scheduleTrainReturnType } from "@public/common/train_interfaces";
 interface getAllUniqueTrainResponse {
   unique_train_id : string;
-  number_of_seats : number,
-  coach_info : number[],
+  coach_ids : number[],
   coach_names : string[],
 }
 export const fetchAllAvailableTrain = async (
@@ -318,8 +318,7 @@ export const fetchAllAvailableTrain = async (
       response.data.uniqueTrains.map((train: getAllUniqueTrainResponse) =>
         tempAvailableTrain.push( {
           uniqueTrainId: train.unique_train_id,
-          numberOfSeats: train.number_of_seats,
-          coachIds: train.coach_info,
+          coachIds: train.coach_ids,
           coachNames: train.coach_names,
         }),
       );
