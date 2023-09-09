@@ -12,10 +12,12 @@ import {
   Spacer,
   Select,
   Spinner,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { SchedulingContext, Day } from "@public/common/context";
 import { fetchLocations } from "@public/common/bus_api";
-import { AiOutlineArrowRight } from "react-icons/ai";
+import { AiFillFlag, AiOutlineArrowDown, AiOutlineArrowRight } from "react-icons/ai";
+import { FaMapMarkerAlt, FaRegCalendarAlt } from "react-icons/fa";
 
 interface InitialFormProps {
   isInitialForm: boolean;
@@ -51,6 +53,13 @@ export default function InitialForm({
     const updatedDestinations = destinations.filter((_, i) => i !== index);
     setDestinations(updatedDestinations);
   };
+
+
+  const bgColor = useColorModeValue("gray.300", "gray.800");
+  const borderColor = useColorModeValue("gray.400", "gray.700");
+  const hoverBorderColor = useColorModeValue("gray.500", "gray.600");
+  const optionColor = useColorModeValue("gray.800", "gray.200");
+
 
   const [date1, setDate1] = useState("");
   const [date2, setDate2] = useState("");
@@ -217,36 +226,57 @@ export default function InitialForm({
         </>
       ) : (
         <>
-          <Flex align="center" justify="space-between" direction="row" w="full">
-            <Flex wrap={"wrap"} pl={2} pr={2}>
-              <Text fontSize="xl" fontWeight="bold">
-                Starting Location:
-              </Text>
-              <Text fontSize="xl">{startingLocation}</Text>
-            </Flex>
-            <Flex wrap={"wrap"} pl={2} pr={2}>
-              <Text fontSize="xl" fontWeight="bold">
-                Destinations:
-              </Text>
+          <Flex direction="column" w="full" p={4} boxShadow="md" borderRadius="md" bg={bgColor}>
+            <Flex justify="space-between" mb={4}>
+              <Box flex="1" mr={4}>
+                <Text fontSize="md" fontWeight="bold" mb={1}>Starting Location:</Text>
+                <Flex alignItems="center">
+                  {/* <Box as={AiOutlineArrowRight} size="24px" color={optionColor} mr={2} /> */}
+                  <Box as={FaMapMarkerAlt} size="24px" color={optionColor} mr={2} />
+                  <Text fontSize="2xl" color={optionColor}>{startingLocation}</Text>
+                </Flex>
+              </Box>
 
-              <Text fontSize="xl">{destinations.join(", ")}</Text>
+              <Box flex="1" mr={4}>
+                <Text fontSize="md" fontWeight="bold" mb={1}>Destinations:</Text>
+                <VStack alignItems="start" spacing={2}>
+                  {destinations.map((destination, index) => (
+                    <Flex key={index} alignItems="center">
+                      {index === destinations.length - 1 && (
+                        <Box as={AiFillFlag} size="24px" color={optionColor} mr={2} />
+                      )}
+                      {index !== destinations.length - 1 && (
+                        <Box as={AiOutlineArrowDown} size="24px" color={optionColor} mr={2} />
+                      )}
+                      <Text fontSize="2xl" color={optionColor}>{destination}</Text>
+                    </Flex>
+                  ))}
+                </VStack>
+              </Box>
+
+              <Box flex="1" mr={4}>
+                <Text fontSize="md" fontWeight="bold" mb={1}>Starting Date:</Text>
+                <Flex alignItems="center">
+                  <Box as={FaRegCalendarAlt} size="24px" color={optionColor} mr={2} />
+                  <Text fontSize="3xl" color={optionColor}>{date1}</Text>
+                </Flex>
+              </Box>
+
+              <Box flex="1" mr={4}>
+                <Text fontSize="md" fontWeight="bold" mb={1}>Ending Date:</Text>
+                <Flex alignItems="center">
+                  <Box as={FaRegCalendarAlt} size="24px" color={optionColor} mr={2} />
+                  <Text fontSize="3xl" color={optionColor}>{date2}</Text>
+                </Flex>
+              </Box>
+
             </Flex>
-            <Flex wrap={"wrap"} pl={2} pr={2}>
-              <Text fontSize="xl" fontWeight="bold">
-                Starting Date:
-              </Text>
-              <Text fontSize="xl">{date1}</Text>
-            </Flex>
-            <Flex wrap={"wrap"} pl={2} pr={2}>
-              <Text fontSize="xl" fontWeight="bold">
-                Ending Date:
-              </Text>
-              <Text fontSize="xl">{date2}</Text>
-            </Flex>
+
+            <Button onClick={() => setIsInitialForm(true)} colorScheme="blue" size="lg" mt={4}>
+              Edit
+            </Button>
           </Flex>
-          <Button onClick={() => setIsInitialForm(true)} m={2}>
-            Edit
-          </Button>
+
         </>
       )}
     </>

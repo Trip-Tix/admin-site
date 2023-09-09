@@ -19,8 +19,9 @@ import {
 } from "@chakra-ui/react";
 import { AirSchedulingContext, Day } from "@public/common/context";
 import { fetchFlightLocations } from "@public/common/flight_api";
-import { AiOutlineArrowRight } from "react-icons/ai";
+import { AiFillFlag, AiOutlineArrowRight } from "react-icons/ai";
 import { locationInfo } from "@public/common/flight_interfaces";
+import { FaMapMarkerAlt, FaRegCalendarAlt } from "react-icons/fa";
 
 interface InitialFormProps {
   isInitialForm: boolean;
@@ -269,6 +270,7 @@ export default function InitialForm({
                 <Text fontSize="md" fontWeight="bold" mb={1}>Starting Location:</Text>
                 <Flex alignItems="center">
                   {/* <Box as={AiOutlineArrowRight} size="24px" color={optionColor} mr={2} /> */}
+                  <Box as={FaMapMarkerAlt} size="24px" color={optionColor} mr={2} />
                   <div>
                     <div style={{ fontSize: 'larger' }}>
                       {locations.find(loc => loc.location_id === startingLocation)?.location_name} 
@@ -286,6 +288,7 @@ export default function InitialForm({
                 <Text fontSize="md" fontWeight="bold" mb={1}>Destination Location:</Text>
                 <Flex alignItems="center">
                   {/* <Box as={AiOutlineArrowRight} size="24px" color={optionColor} mr={2} /> */}
+                  <Box as={AiFillFlag} size="24px" color={optionColor} mr={2} />
                   <div>
                     <div style={{ fontSize: 'larger' }}>
                       {locations.find(loc => loc.location_id === destinationLocation)?.location_name} 
@@ -301,12 +304,18 @@ export default function InitialForm({
 
               <Box flex="1" mr={4}>
                 <Text fontSize="md" fontWeight="bold" mb={1}>Starting Date:</Text>
-                <Text fontSize="3xl" color={optionColor}>{date1}</Text>
+                <Flex alignItems="center">
+                  <Box as={FaRegCalendarAlt} size="24px" color={optionColor} mr={2} />
+                  <Text fontSize="3xl" color={optionColor}>{date1}</Text>
+                </Flex>
               </Box>
 
               <Box flex="1" mr={4}>
                 <Text fontSize="md" fontWeight="bold" mb={1}>Ending Date:</Text>
-                <Text fontSize="3xl" color={optionColor}>{date2}</Text>
+                <Flex alignItems="center">
+                  <Box as={FaRegCalendarAlt} size="24px" color={optionColor} mr={2} />
+                  <Text fontSize="3xl" color={optionColor}>{date2}</Text>
+                </Flex>
               </Box>
 
             </Flex>
