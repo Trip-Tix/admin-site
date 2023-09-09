@@ -54,12 +54,12 @@ export default function LayoutCreation({
     );
 
     setLayout(tempLayout);
-  }, [row, col, setLayout]);
+  }, [row, col]);
 
   useEffect(() => {
     const tempNumSeat = layout.flat().filter(seat => seat === 1).length;
     setNumSeat(tempNumSeat);
-  }, [layout, setNumSeat]);
+  }, [layout]);
 
   return (
     <Flex direction="row" align="top" justify="space-between" mt={2} mb={2}>

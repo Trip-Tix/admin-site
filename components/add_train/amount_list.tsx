@@ -18,10 +18,10 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import { fetchExistingTrainIds } from "@public/common/train_api";
-import { coach } from "@public/common/train_interfaces";
+import { coach_interface } from "@public/common/train_interfaces";
 
 interface AmountListProps {
-  coaches: coach[];
+  coaches: coach_interface[];
   numTrain: number;
   setNumTrain: (numTrain: number) => void;
   uniqueTrainId: string[];
@@ -50,7 +50,7 @@ export default function AmountList({
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     setLoading(true);
-    fetchExistingTrainIds().then((res: React.SetStateAction<string[]>) => {
+    fetchExistingTrainIds().then((res) => {
       setExistingTrainId(res);
       setLoading(false);
     });
@@ -60,7 +60,7 @@ export default function AmountList({
     console.log(existingTrainId);
   }, [existingTrainId]);
 
-  // array generation for flight id
+  // array generation for train id
   const [wrongTrainId, setWrongTrainId] = useState<boolean[]>([]);
   useEffect(() => {
     const tempUniqueTrainId: string[] = [];
@@ -73,10 +73,10 @@ export default function AmountList({
       tempWrongTrainId.push(false);
     }
     setWrongTrainId(tempWrongTrainId);
-  }, [numTrain, setUniqueTrainId]);
+  }, [numTrain]);
 
 
-  const getAbbreviation = (coaches: coach[]): string => {
+  const getAbbreviation = (coaches: coach_interface[]): string => {
     return coaches.map(cls => cls.coachName.charAt(0).toUpperCase()).join('');
   };
   
@@ -112,7 +112,7 @@ export default function AmountList({
         removalAction.validateTrain(removalAction.key, true);
       }
     }
-  }, [numTrain, wrongTrainId, uniqueTrainId, removalAction]);
+  }, [numTrain, wrongTrainId, uniqueTrainId]);
 
   return (
     <>
