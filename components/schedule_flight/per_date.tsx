@@ -9,7 +9,7 @@ import {
   VStack,
   Divider,
 } from "@chakra-ui/react";
-import { ScheduleEntry } from "@public/common/flight_interfaces";
+import { ScheduleEntry, scheduleFlightReturnType } from "@public/common/flight_interfaces";
 import PerTime from "@components/schedule_flight/per_time";
 import { formatDate } from "@public/common/date_util";
 import { postScheduleInfo } from "@public/common/flight_api";
@@ -25,7 +25,7 @@ interface PerDateProps {
 export default function PerDate({ currentDate, submitted }: PerDateProps) {
   const [scheduleEntries, setScheduleEntries] = useState<ScheduleEntry[]>([]);
   const [id, setId] = useState(0);
-  const [canAdd, setCanAdd] = useState(true);
+  const [selectedFlights, setSelectedFlights] = useState<scheduleFlightReturnType[]>([]);
 
   const addScheduleEntry = () => {
     setId(id + 1);
@@ -39,20 +39,15 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
         uniqueFlightId: "",
       },
     ]);
-    setCanAdd(false);  // Disable further additions
-};
+  };
 
-const removeScheduleEntry = (index: number) => {
-  const updatedScheduleEntries = scheduleEntries.filter(
-    (entry) => entry.key !== index,
-  );
-  setScheduleEntries(updatedScheduleEntries);
+  const removeScheduleEntry = (index: number) => {
+    const updatedScheduleEntries = scheduleEntries.filter(
+      (entry) => entry.key !== index,
+    );
+    setScheduleEntries(updatedScheduleEntries);
+  };
 
-  // If no entries remain, enable the button again
-  if (updatedScheduleEntries.length === 0) {
-      setCanAdd(true);
-  }
-};
   useEffect(() => {
     console.log(scheduleEntries);
   }, [scheduleEntries]);
@@ -99,7 +94,7 @@ const removeScheduleEntry = (index: number) => {
             {formatDate(currentDate)}
           </Text>
         </Flex>
-        <Button onClick={() => addScheduleEntry()} isDisabled={!canAdd}>
+        <Button onClick={() => addScheduleEntry()}>
           <IoMdAddCircle />
         </Button>
       </Flex>
@@ -110,6 +105,8 @@ const removeScheduleEntry = (index: number) => {
           scheduleEntries={scheduleEntries}
           setScheduleEntries={setScheduleEntries}
           removeScheduleEntry={removeScheduleEntry}
+          selectedFlights={selectedFlights}
+          setSelectedFlights={setSelectedFlights}
         />
       ))}
 

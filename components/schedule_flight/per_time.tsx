@@ -1,7 +1,6 @@
-import { ScheduleEntry, class_interface, scheduleFlightReturnType } from "@public/common/flight_interfaces";
-import { ChangeEvent, use, useEffect, useState } from "react";
+import { ScheduleEntry, scheduleFlightReturnType } from "@public/common/flight_interfaces";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
-  Box,
   Text,
   Button,
   Flex,
@@ -21,6 +20,8 @@ interface PerTimeProps {
   scheduleEntries: ScheduleEntry[];
   setScheduleEntries: (value: ScheduleEntry[]) => void;
   removeScheduleEntry: (index: number) => void;
+  selectedFlights: scheduleFlightReturnType[];
+  setSelectedFlights: (value: scheduleFlightReturnType[]) => void;
 }
 
 export default function PerTime({
@@ -28,6 +29,8 @@ export default function PerTime({
   scheduleEntries,
   setScheduleEntries,
   removeScheduleEntry,
+  selectedFlights,
+  setSelectedFlights
 }: PerTimeProps) {
 
 
@@ -98,6 +101,7 @@ export default function PerTime({
     setScheduleEntries(updatedScheduleEntries);
   }, [fare, uniqueFlight.uniqueFlightId, time]);
 
+  
   return (
     <>
       <Divider />
@@ -133,24 +137,30 @@ export default function PerTime({
             <Text>Loading...</Text>
           ) : (
             <select
-              onChange={(event) => {
-                const selectedUniqueFlight = uniqueFlightList.find(
-                  (flight) => flight.uniqueFlightId === event.target.value
-                );
-                if (selectedUniqueFlight) {
-                  setUniqueFlight(selectedUniqueFlight);
-                }
-              }}
-              value={uniqueFlight.uniqueFlightId}
-            >
-              <option value="">Select Unique Flight</option>
-              {uniqueFlightList.map((flight) => (
-                <option key={flight.uniqueFlightId} value={flight.uniqueFlightId}>
-                  {flight.uniqueFlightId}
-                </option>
-              ))}
-            </select>
-          )}
+            onChange={(event) => {
+              const selectedUniqueFlight = uniqueFlightList.find(
+                (flight) => flight.uniqueFlightId === event.target.value
+              );
+              if (selectedUniqueFlight) {
+                setUniqueFlight(selectedUniqueFlight);
+                // Add the selected flight to the selectedFlights array
+                setSelectedFlights([...selectedFlights, selectedUniqueFlight]);
+              }
+            }}
+            value={uniqueFlight.uniqueFlightId}
+          >
+            <option value="">Select Unique Flight</option>
+            {uniqueFlightList.map((flight) => (
+              <option 
+                key={flight.uniqueFlightId} 
+                value={flight.uniqueFlightId}
+                disabled={selectedFlights.some(sf => sf.uniqueFlightId === flight.uniqueFlightId)}
+              >
+                {flight.uniqueFlightId}
+              </option>
+            ))}
+          </select>
+        )}
         </Flex>
       </Grid>
       <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"} mt={6} mb={6}>
