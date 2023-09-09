@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Day, AirSchedulingContext } from "@public/common/context";
 import InitialForm from "@components/schedule_flight/initial_form";
 import { locationInfo } from "@public/common/flight_interfaces";
+import DetailsForm from "@components/schedule_flight/details_form";
 
 export default function Main() {
   const [isInitialForm, setIsInitialForm] = useState(true);
@@ -52,7 +53,7 @@ export default function Main() {
                 setIsInitialForm={setIsInitialForm}
               />
               <Divider />
-              {/* <DetailsForm isInitialForm={isInitialForm} /> */}
+              <DetailsForm isInitialForm={isInitialForm} />
             </Flex>
           </AirSchedulingContext.Provider>
         </VStack>

@@ -273,28 +273,23 @@ export const fetchFlightLocations = async (): Promise<locationInfo[]> => {
 };
 
 
-// checkpoint
-
-
 //fetch all the unique flights
 const getAllAvailableFlight = main_url + "/api/admin/getAvailableFlight";
+import { scheduleFlightReturnType } from "@public/common/flight_interfaces";
 interface getAllUniqueFlightResponse {
-  unique_flight_id: string;
+  unique_air_id : string;
+  number_of_seats : number,
+  class_info : number[],
+  class_names : string[],
 }
 export const fetchAllAvailableFlight = async (
   date: string,
-  time: string,
-  classId: number,
-  brandName: string,
-): Promise<string[]> => {
+): Promise<scheduleFlightReturnType[]> => {
   try {
     const response = await axios.post(
       getAllAvailableFlight,
       {
         date: date,
-        time: time,
-        classId: classId,
-        brandName: brandName,
       },
       {
         headers: {
@@ -306,10 +301,17 @@ export const fetchAllAvailableFlight = async (
 
     if (response.status === 200) {
       console.log("all available flight fetched");
-      const tempAvailableFlight: string[] = [];
-      response.data.uniqueFlightId.map((flight: getAllUniqueFlightResponse) =>
-        tempAvailableFlight.push(flight.unique_flight_id),
+      const tempAvailableFlight: scheduleFlightReturnType[] = [];
+      console.log(response);
+      response.data.uniqueAirs.map((flight: getAllUniqueFlightResponse) =>
+        tempAvailableFlight.push( {
+          uniqueFlightId: flight.unique_air_id,
+          numberOfSeats: flight.number_of_seats,
+          classIds: flight.class_info,
+          classNames: flight.class_names,
+        }),
       );
+      console.log(tempAvailableFlight);
       return tempAvailableFlight;
     } else {
       console.log(response.data.message);
@@ -321,11 +323,12 @@ export const fetchAllAvailableFlight = async (
   }
 };
 
+
 // send all the schedule info to the backend
 const postSchedule = main_url + "/api/admin/addFlightScheduleInfo";
 interface postRequest {
-  src: string;
-  dest: string[];
+  src: number;
+  dest: number;
   date: string;
   schedule: {
     time: string;
@@ -343,8 +346,7 @@ export const postScheduleInfo = async ({
     console.log("post schedule info");
     console.log({
       src: src,
-      dest: dest[dest.length - 1],
-      destPoints: dest,
+      dest: dest,
       date: date,
       schedule: schedule,
     });
@@ -352,8 +354,7 @@ export const postScheduleInfo = async ({
       postSchedule,
       {
         src: src,
-        dest: dest[dest.length - 1],
-        destPoints: dest,
+        dest: dest,
         date: date,
         schedule: schedule,
       },
@@ -377,6 +378,10 @@ export const postScheduleInfo = async ({
     return err;
   }
 };
+
+
+// checkpoint
+
 
 
 // get all unique flight id list from class id and brand name

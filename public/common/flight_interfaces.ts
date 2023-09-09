@@ -3,12 +3,6 @@ export interface class_interface {
   className: string;
 }
 
-export interface classBrands {
-  classId: number;
-  className: string;
-  brandList: string[];
-}
-
 export interface layoutData {
   layout: number[][],
   row: number,
@@ -64,4 +58,11 @@ export interface locationInfo {
   country_name: string;
   location_code: string;
   airport_name: string;
+}
+
+export interface scheduleFlightReturnType {
+  uniqueFlightId: string;
+  numberOfSeats: number;
+  classIds: number[];
+  classNames: string[];
 }
