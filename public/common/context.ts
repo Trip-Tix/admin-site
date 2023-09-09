@@ -21,12 +21,21 @@ export interface BusInfoContextType {
 export const BusInfoContext = createContext<BusInfoContextType | null>(null);
 
 export interface TrainInfoContextType {
-  trainId: string;
-  setTrainId: (trainId: string) => void;
-  coachId: string;
-  setCoachId: (coachId: string) => void;
+  uniqueTrainId: string;
+  setUniqueTrainId: (uniqueTrainId: string) => void;
+  coachNames: string[];
+  setCoachNames: (coachNames: string[]) => void;
+  coachIds: number[];
+  setCoachIds: (coachIds: number[]) => void;
+  layout: number[][][];
+  setLayout: (layout: number[][][]) => void;
+  numSeat: number[];
+  setNumSeat: (numSeat: number[]) => void;
+  trainLayoutId: number[];
+  setTrainLayoutId: (trainLayoutId: number[]) => void;
+  facilities: string[];
+  setFacilities: (facilities: string[]) => void;
 }
-
 
 export const TrainInfoContext = createContext<TrainInfoContextType | null>(null);
 

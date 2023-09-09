@@ -2,36 +2,26 @@ import axios from "axios";
 
 export const main_url = process.env.NEXT_PUBLIC_MAIN_URL;
 
-// for train
+// for admin user
+export const postLogin = main_url + "/api/admin/login";
 
+// for train
+export const getAllTrain = main_url + "/api/admin/getAllTrain";
+export const postAddTrain = main_url + "/api/admin/addTrainInfo";
+export const getTrainNames = main_url + "/api/admin/getTrainNames";
 export const getAllCoachesTrain = main_url + "/api/admin/getTrainCoachInfo";
 
-export const getAllBus = main_url + "/api/admin/getAllBus";
-export const postAddBus = main_url + "/api/admin/addBusInfo";
-export const getBusNames = main_url + "/api/admin/getBusNames";
-
-
-export const getUniqueBusScheduleInfo = main_url + "/api/admin/getUniqueBusScheduleInfo";
-export const getAllUniqueBusCount = main_url + "/api/admin/getAllUniqueBusCount";
-
-// export const postLogin = '/api/user/login'
-// export const getAllBus = '/api/bus/get-all-bus'
-// export const getBusLayout = '/api/bus/get-layout'
-
-/*
- *
- *  Bus
- *
- */
+export const getUniqueTrainScheduleInfo = main_url + "/api/admin/getUniqueTrainScheduleInfo";
+export const getAllUniqueTrainCount = main_url + "/api/admin/getAllUniqueTrainCount";
 
 // get all coaches list
 const getAllCoaches = main_url + "/api/admin/getTrainCoachInfo";
-import { coach } from "@public/common/train_interfaces";
+import { coach_interface } from "@public/common/train_interfaces";
 interface getAllCoachesResponse {
   coach_id: number;
   coach_name: string;
 }
-export const fetchCoachList = async (): Promise<coach[]> => {
+export const fetchCoachList = async (): Promise<coach_interface[]> => {
   try {
     const response = await axios.post(getAllCoaches, null, {
       headers: {
@@ -42,10 +32,10 @@ export const fetchCoachList = async (): Promise<coach[]> => {
 
     if (response.status === 200) {
       console.log("coach list fetched");
-      const tempCoachList: coach[] = response.data.map(
-        (coach: getAllCoachesResponse) => ({
-          coachId: coach.coach_id,
-          coachName: coach.coach_name,
+      const tempCoachList: coach_interface[] = response.data.map(
+        (coach_: getAllCoachesResponse) => ({
+          coachId: coach_.coach_id,
+          coachName: coach_.coach_name,
         }),
       );
       return tempCoachList;
@@ -62,10 +52,6 @@ export const fetchCoachList = async (): Promise<coach[]> => {
 // get layout of a coach
 export const getTrainLayout = main_url + "/api/admin/getTrainLayout";
 import { layoutData } from "@public/common/train_interfaces";
-interface getTrainLayoutResponse {
-  layout: number[][];
-  existingNumBus: number;
-}
 
 export const fetchTrainLayout = async (
   coachId: number,
@@ -87,40 +73,41 @@ export const fetchTrainLayout = async (
     if (response.status === 200) {
       console.log("layout fetched");
       const tempLayout: layoutData = {
-        layout: response.data.layout,
-        numSeat: response.data.number_of_seats,
+        layout: Array.isArray(response.data.layout) ? response.data.layout : [],
         row: response.data.row,
         col: response.data.col,
+        numSeat: response.data.number_of_seats,
       };
+
       return tempLayout;
     } else {
       console.log(response.data.message);
       return {
         layout: [],
-        numSeat: 0,
         row: 0,
         col: 0,
+        numSeat: 0,
       };
     }
   } catch (err) {
     console.log(err);
     return {
       layout: [],
-      numSeat: 0,
       row: 0,
       col: 0,
+      numSeat: 0,
     };
   }
 };
 
-// get existing bus ids list given coach id and brand name
-const getExistingTrainIds = main_url + "/api/admin/getUniqueBusIdList";
+
+// get existing train ids list given coach id and brand name
+const getExistingTrainIds = main_url + "/api/admin/getUniqueTrainIdList";
 interface getExistingTrainIdsResponse {
   unique_train_id: string;
 }
 
-export const fetchExistingTrainIds = async (
-): Promise<string[]> => {
+export const fetchExistingTrainIds = async (): Promise<string[]> => {
   try {
     const response = await axios.post(
       getExistingTrainIds,
@@ -135,10 +122,10 @@ export const fetchExistingTrainIds = async (
 
     if (response.status === 200) {
       console.log("existing train ids fetched");
-      const tempBusIds: string[] = response.data.map(
+      const tempTrainIds: string[] = response.data.map(
         (train: getExistingTrainIdsResponse) => train.unique_train_id,
       );
-      return tempBusIds;
+      return tempTrainIds;
     } else {
       console.log(response.data.message);
       return [];
@@ -149,27 +136,38 @@ export const fetchExistingTrainIds = async (
   }
 };
 
+
 // add new train
-const addBus = main_url + "/api/admin/addBusInfo";
+const addTrain = main_url + "/api/admin/addTrainInfofam";
 import { trainInfo } from "@public/common/train_interfaces";
-interface addBusResponse {
+interface addTrainResponse {
   message: string;
 }
 
 export const addNewTrain = async (trainInfo: trainInfo): Promise<string> => {
   console.log("add new train");
-  console.log(trainInfo);
+  console.log({
+    coaches: trainInfo.coaches.map((coach) => coach.coachId),
+    numTrain: trainInfo.numTrain,
+    uniqueTrainId: trainInfo.uniqueTrainId,
+    numSeats: trainInfo.numSeats,
+    layouts: trainInfo.layouts,
+    rows: trainInfo.rows,
+    cols: trainInfo.cols,
+    facilities: trainInfo.facilities,
+  });
   try {
     const response = await axios.post(
-      addBus,
+      addTrain,
       {
-        coaches: trainInfo.coaches,
+        coaches: trainInfo.coaches.map((coach) => coach.coachId),
         numTrain: trainInfo.numTrain,
         uniqueTrainId: trainInfo.uniqueTrainId,
         numSeats: trainInfo.numSeats,
         layouts: trainInfo.layouts,
         rows: trainInfo.rows,
         cols: trainInfo.cols,
+        facilities: trainInfo.facilities,
       },
       {
         headers: {
@@ -192,15 +190,26 @@ export const addNewTrain = async (trainInfo: trainInfo): Promise<string> => {
   }
 };
 
-// get available location
-const getLocations = main_url + "/api/admin/getLocation";
-interface getLocationsResponse {
-  location_id: number;
-  location_name: string;
+
+// train checkpoint
+
+
+// get all train to list
+const getAllTrainToList = main_url + "/api/admin/getTrainInfo";
+interface getAllTrainToListResponse {
+  unique_train_id: string;
+  coach_names: string[];
+  coach_ids: number[];
+  layouts: number[][][];
+  layoutIds: number[];
+  number_of_seats: number[];
+  facilities: string[];
 }
-export const fetchLocations = async (): Promise<string[]> => {
+
+import { uniqueTrainEntry } from "@public/common/train_interfaces";
+export const fetchAllTrainToList = async (): Promise<uniqueTrainEntry[]> => {
   try {
-    const response = await axios.post(getLocations, null, {
+    const response = await axios.post(getAllTrainToList, null, {
       headers: {
         token: sessionStorage.getItem("user-token"),
         companyname: sessionStorage.getItem("company-name"),
@@ -208,9 +217,61 @@ export const fetchLocations = async (): Promise<string[]> => {
     });
 
     if (response.status === 200) {
-      console.log("locations fetched");
-      const tempLocations: string[] = response.data.map(
-        (location: getLocationsResponse) => location.location_name,
+      console.log("all train to list fetched");
+      const tempTrainToList: uniqueTrainEntry[] = response.data.map(
+        (train: getAllTrainToListResponse) => ({
+          uniqueTrainId: train.unique_train_id,
+          coachNames: train.coach_names,
+          coachIds: train.coach_ids,
+          layout: train.layouts,
+          numSeat: train.number_of_seats,
+          trainLayoutId: train.layoutIds,
+          facilities: train.facilities,
+        }),
+      );
+      console.log(tempTrainToList);
+      return tempTrainToList;
+    } else {
+      console.log(response.data.message);
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+
+
+// get available location
+const getTrainLocations = main_url + "/api/admin/getTrainLocations";
+import { locationInfo } from "@public/common/train_interfaces";
+
+interface getTrainLocationsResponse {
+  location_id: number;
+  location_name: string;
+  country_name: string;
+  location_code: string;
+  trainport_name: string;
+}
+export const fetchTrainLocations = async (): Promise<locationInfo[]> => {
+  try {
+    const response = await axios.post(getTrainLocations, null, {
+      headers: {
+        token: sessionStorage.getItem("user-token"),
+        companyname: sessionStorage.getItem("company-name"),
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("Train locations fetched");
+      const tempLocations: locationInfo[] = response.data.map(
+        (location: getTrainLocationsResponse) => ({
+          location_id: location.location_id,
+          location_name: location.location_name,
+          country_name: location.country_name,
+          location_code: location.location_code,
+          trainport_name: location.trainport_name,
+        }),
       );
       return tempLocations;
     } else {
@@ -223,25 +284,24 @@ export const fetchLocations = async (): Promise<string[]> => {
   }
 };
 
-//fetch all the unique buses
-const getAllAvailableBus = main_url + "/api/admin/getAvailableBus";
-interface getAllUniqueBusResponse {
-  unique_bus_id: string;
+
+//fetch all the unique trains
+const getAllAvailableTrain = main_url + "/api/admin/getAvailableTrain";
+import { scheduleTrainReturnType } from "@public/common/train_interfaces";
+interface getAllUniqueTrainResponse {
+  unique_train_id : string;
+  number_of_seats : number,
+  coach_info : number[],
+  coach_names : string[],
 }
-export const fetchAllAvailableBus = async (
+export const fetchAllAvailableTrain = async (
   date: string,
-  time: string,
-  coachId: number,
-  brandName: string,
-): Promise<string[]> => {
+): Promise<scheduleTrainReturnType[]> => {
   try {
     const response = await axios.post(
-      getAllAvailableBus,
+      getAllAvailableTrain,
       {
         date: date,
-        time: time,
-        coachId: coachId,
-        brandName: brandName,
       },
       {
         headers: {
@@ -252,12 +312,19 @@ export const fetchAllAvailableBus = async (
     );
 
     if (response.status === 200) {
-      console.log("all available bus fetched");
-      const tempAvailableBus: string[] = [];
-      response.data.uniqueBusId.map((bus: getAllUniqueBusResponse) =>
-        tempAvailableBus.push(bus.unique_bus_id),
+      console.log("all available train fetched");
+      const tempAvailableTrain: scheduleTrainReturnType[] = [];
+      console.log(response);
+      response.data.uniqueTrains.map((train: getAllUniqueTrainResponse) =>
+        tempAvailableTrain.push( {
+          uniqueTrainId: train.unique_train_id,
+          numberOfSeats: train.number_of_seats,
+          coachIds: train.coach_info,
+          coachNames: train.coach_names,
+        }),
       );
-      return tempAvailableBus;
+      console.log(tempAvailableTrain);
+      return tempAvailableTrain;
     } else {
       console.log(response.data.message);
       return [];
@@ -268,16 +335,17 @@ export const fetchAllAvailableBus = async (
   }
 };
 
+
 // send all the schedule info to the backend
-const postSchedule = main_url + "/api/admin/addBusScheduleInfo";
+const postSchedule = main_url + "/api/admin/addTrainScheduleInfo";
 interface postRequest {
-  src: string;
-  dest: string[];
+  src: number;
+  dest: number;
   date: string;
   schedule: {
     time: string;
     fare: number[];
-    uniqueBusId: string;
+    uniqueTrainId: string;
   }[];
 }
 export const postScheduleInfo = async ({
@@ -290,8 +358,7 @@ export const postScheduleInfo = async ({
     console.log("post schedule info");
     console.log({
       src: src,
-      dest: dest[dest.length - 1],
-      destPoints: dest,
+      dest: dest,
       date: date,
       schedule: schedule,
     });
@@ -299,8 +366,7 @@ export const postScheduleInfo = async ({
       postSchedule,
       {
         src: src,
-        dest: dest[dest.length - 1],
-        destPoints: dest,
+        dest: dest,
         date: date,
         schedule: schedule,
       },
@@ -325,60 +391,17 @@ export const postScheduleInfo = async ({
   }
 };
 
-// get all bus to list
-const getAllBusToList = main_url + "/api/admin/getBusInfo";
-interface getAllBusToListResponse {
-  bus_coach_id: number;
-  number_of_bus: number;
-  brand_name: string;
-  coach_name: string;
-  coach_id: number;
-  bus_layout_id: number;
-  number_of_seats: number;
-  row: number;
-  col: number;
-  layout: number[][];
-}
-import { coachBrandEntry } from "@public/common/bus_interfaces";
-export const fetchAllBusToList = async (): Promise<coachBrandEntry[]> => {
-  try {
-    const response = await axios.post(getAllBusToList, null, {
-      headers: {
-        token: sessionStorage.getItem("user-token"),
-        companyname: sessionStorage.getItem("company-name"),
-      },
-    });
 
-    if (response.status === 200) {
-      console.log("all bus to list fetched");
-      const tempBusToList: coachBrandEntry[] = response.data.map(
-        (bus: getAllBusToListResponse) => ({
-          coachId: bus.coach_id,
-          coachName: bus.coach_name,
-          brandName: bus.brand_name,
-          layout: bus.layout,
-          numSeat: bus.number_of_seats,
-          numBus: bus.number_of_bus,
-          busLayoutId: bus.bus_layout_id,
-        }),
-      );
-      return tempBusToList;
-    } else {
-      console.log(response.data.message);
-      return [];
-    }
-  } catch (err) {
-    console.log(err);
-    return [];
-  }
-};
+// checkpoint
 
-// get all unique bus id list from coach id and brand name
-const getAllUniqueBusId = main_url + "/api/admin/getAllUniqueBus";
-interface getAllUniqueBusIdResponse {
-  unique_bus_id: string;
+
+
+// get all unique train id list from coach id and brand name
+const getAllUniqueTrainId = main_url + "/api/admin/getAllUniqueTrain";
+interface getAllUniqueTrainIdResponse {
+  unique_train_id: string;
 }
-export const fetchAllUniqueBusId = async ({
+export const fetchAllUniqueTrainId = async ({
   coachId,
   brandName,
 }: {
@@ -387,7 +410,7 @@ export const fetchAllUniqueBusId = async ({
 }): Promise<string[]> => {
   try {
     const response = await axios.post(
-      getAllUniqueBusId,
+      getAllUniqueTrainId,
       {
         coachId: coachId,
         brandName: brandName,
@@ -401,11 +424,11 @@ export const fetchAllUniqueBusId = async ({
     );
 
     if (response.status === 200) {
-      console.log("unique bus id list fetched");
-      const tempUniqueBusIdList: string[] = response.data.map(
-        (bus: getAllUniqueBusIdResponse) => bus.unique_bus_id,
+      console.log("unique train id list fetched");
+      const tempUniqueTrainIdList: string[] = response.data.map(
+        (train: getAllUniqueTrainIdResponse) => train.unique_train_id,
       );
-      return tempUniqueBusIdList;
+      return tempUniqueTrainIdList;
     } else {
       console.log(response.data.message);
       return [];
@@ -416,13 +439,13 @@ export const fetchAllUniqueBusId = async ({
   }
 };
 
-import { UniqueBusScheduleInfoResponse } from "@public/common/bus_interfaces";
-export const fetchUniqueBusSchedule = async (uniqueBusId: string): Promise<UniqueBusScheduleInfoResponse[]> => {
+import { UniqueTrainScheduleInfoResponse } from "@public/common/train_interfaces";
+export const fetchUniqueTrainSchedule = async (uniqueTrainId: string): Promise<UniqueTrainScheduleInfoResponse[]> => {
   try {
     const response = await axios.post(
-      getUniqueBusScheduleInfo,
+      getUniqueTrainScheduleInfo,
       {
-        uniqueBusId: uniqueBusId
+        uniqueTrainId: uniqueTrainId
       },
       {
         headers: {
@@ -433,7 +456,7 @@ export const fetchUniqueBusSchedule = async (uniqueBusId: string): Promise<Uniqu
     );
 
     if (response.status === 200) {
-      console.log("Unique bus schedules fetched");
+      console.log("Unique train schedules fetched");
       return response.data;
     } else {
       console.log(response.data.message);
@@ -446,11 +469,11 @@ export const fetchUniqueBusSchedule = async (uniqueBusId: string): Promise<Uniqu
 };
 
 
-// Function to fetch the count of all unique buses
-export const fetchAllUniqueBusCount = async (): Promise<number> => {
+// Function to fetch the count of all unique trains
+export const fetchAllUniqueTrainCount = async (): Promise<number> => {
   try {
     const response = await axios.post(
-      getAllUniqueBusCount, null,
+      getAllUniqueTrainCount, null,
       {
         headers: {
           token: sessionStorage.getItem("user-token"),
@@ -460,8 +483,8 @@ export const fetchAllUniqueBusCount = async (): Promise<number> => {
     );
 
     if (response.status === 200) {
-      console.log("Unique bus count fetched:", response.data.count);
-      return response.data.totalUniqueBuses;
+      console.log("Unique train count fetched:", response.data.count);
+      return response.data.totalUniqueTraines;
     
     } else {
       console.log(response.data.message);

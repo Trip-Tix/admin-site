@@ -1,4 +1,4 @@
-export interface coach {
+export interface coach_interface {
     coachId: number;
     coachName: string;
   }
@@ -11,7 +11,7 @@ export interface coach {
   }
   
   export interface trainInfo {
-    coaches : coach[],
+    coaches : coach_interface[],
     numTrain: number,
     uniqueTrainId : string[],
     numSeats: number[],
@@ -36,18 +36,44 @@ export interface coach {
     layout: number[][];
     numSeat: number;
     numTrain: number;
-    flightLayoutId: number;
+    trainLayoutId: number;
   }
   
   export interface UniqueTrainScheduleInfoResponse {
-    flight_schedule_id: string;
+    train_schedule_id: string;
     starting_point: string;
     ending_point: string;
     destination_points: string[];
     departure_time: string;
-    flight_fare: number[];
+    train_fare: number[];
     schedule_date: string;
     bookedCount: string;
     totalCount: string;
   }
   
+  export interface uniqueTrainEntry {
+    uniqueTrainId: string;
+    coachNames: string[];
+    coachIds: number[];
+    layout: number[][][];
+    numSeat: number[];
+    trainLayoutId: number[];
+    numTotalSeats: number;
+    facilities: string[];
+  }
+  
+  
+export interface locationInfo {
+  location_id: number;
+  location_name: string;
+  country_name: string;
+  location_code: string;
+  airport_name: string;
+}
+
+export interface scheduleTrainReturnType {
+  uniqueTrainId: string;
+  numberOfSeats: number;
+  coachIds: number[];
+  coachNames: string[];
+}
