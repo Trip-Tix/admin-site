@@ -43,6 +43,7 @@ export interface coachBrandEntry {
   numSeat: number;
   numBus: number;
   busLayoutId: number;
+  facilities: string[];
 }
 
 export interface UniqueBusScheduleInfoResponse {

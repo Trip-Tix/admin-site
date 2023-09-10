@@ -24,6 +24,7 @@ import ShowLayout from "@components/add_bus/show_layout";
 import LayoutCreation from "@components/add_bus/layout_creation";
 import AmountList from "@components/add_bus/amount_list";
 import { addNewBus } from "@public/common/bus_api";
+import ShowFacilities from "./showFacilities";
 
 interface CoachCardProps {
   removalAction: {
@@ -120,80 +121,62 @@ export default function CoachCard({
 
 
   return (
-    <>
-      <Flex
-        direction={"column"}
-        borderRadius={"md"}
-        overflow="hidden"
-        w={"100%"}
-        bg={useColorModeValue("gray.300", "gray.800")}
-        boxShadow={"md"}
-      >
-        {/* Remove Coach Button */}
-        <Flex
-          w={"100%"}
-          p={5}
-          direction={"row-reverse"}
-          justifyContent={"space-between"}
-        >
-          <Button
-            onClick={() => removalAction.removeCoach(removalAction.key)}
-            colorScheme="red"
-          >
-            <AiOutlineClose />
+    <Flex
+      direction="column"
+      borderRadius="md"
+      overflow="hidden"
+      w="100%"
+      bg={useColorModeValue("gray.300", "gray.800")}
+      boxShadow="md"
+    >
+      <Flex w="100%" p={5} direction="row-reverse" justifyContent="space-between">
+        <Button onClick={() => removalAction.removeCoach(removalAction.key)} colorScheme="red">
+          <AiOutlineClose />
+        </Button>
+        {isSelectingBrand && (
+          <Button onClick={() => setIsSelectingBrand(false)}>
+            <AiOutlineArrowLeft />
           </Button>
-          {isSelectingBrand && (
-            <Button onClick={() => setIsSelectingBrand(false)}>
-              <AiOutlineArrowLeft />
-            </Button>
-          )}
-        </Flex>
-        {/* Coach Card Content */}
-        {!isSelectingBrand ? (
-          <>
-            <SelectCoachBrand
-              coachList={coachList}
-              coachBrandsList={coachBrandsList}
-              selectedCoach={selectedCoach}
-              setSelectedCoach={setSelectedCoach}
-              selectedBrand={selectedBrand}
-              setSelectedBrand={setSelectedBrand}
-              isBrandNew={isBrandNew}
-              setIsBrandNew={setIsBrandNew}
-              setIsSelectingBrand={setIsSelectingBrand}
-            />
-            <Button
-              colorScheme="green"
-              onClick={() => setIsSelectingBrand(true)}
-              isDisabled={!selectedCoach || !selectedBrand}
-              w={"100%"}
-              rightIcon={<AiOutlineArrowRight />}
-              borderRadius={0}
-            />
-          </>
-        ) : (
-          <>
-            <Flex
-              align={"right"}
-              w={"100%"}
-              justifyContent={"space-between"}
-              p={2}
-            >
-              <Flex alignContent={"center"}>
-                <Text fontWeight={"bold"} mr={2}>
-                  Coach:
-                </Text>
-                <Text fontStyle={"italic"}>{selectedCoach.coachName}</Text>
-              </Flex>
-              <Flex alignContent={"center"}>
-                <Text fontWeight={"bold"} mr={2}>
-                  Brand:{" "}
-                </Text>
-                <Text fontStyle={"italic"}>{selectedBrand}</Text>
-              </Flex>
+        )}
+      </Flex>
+
+      {!isSelectingBrand ? (
+        <>
+          <SelectCoachBrand
+            coachList={coachList}
+            coachBrandsList={coachBrandsList}
+            selectedCoach={selectedCoach}
+            setSelectedCoach={setSelectedCoach}
+            selectedBrand={selectedBrand}
+            setSelectedBrand={setSelectedBrand}
+            isBrandNew={isBrandNew}
+            setIsBrandNew={setIsBrandNew}
+            setIsSelectingBrand={setIsSelectingBrand}
+          />
+          <Button
+            colorScheme="green"
+            onClick={() => setIsSelectingBrand(true)}
+            isDisabled={!selectedCoach || !selectedBrand}
+            w="100%"
+            rightIcon={<AiOutlineArrowRight />}
+            borderRadius={0}
+          />
+        </>
+      ) : (
+        <>
+          <Flex align="right" w="100%" justifyContent="space-between" p={2}>
+            <Flex alignContent="center">
+              <Text fontWeight="bold" mr={2}>Coach:</Text>
+              <Text fontStyle="italic">{selectedCoach.coachName}</Text>
             </Flex>
-            <Divider />
-            {isBrandNew ? (
+            <Flex alignContent="center">
+              <Text fontWeight="bold" mr={2}>Brand:</Text>
+              <Text fontStyle="italic">{selectedBrand}</Text>
+            </Flex>
+          </Flex>
+          <Divider />
+          {isBrandNew ? (
+            <>
               <LayoutCreation
                 row={row}
                 setRow={setRow}
@@ -204,45 +187,47 @@ export default function CoachCard({
                 numSeat={numSeat}
                 setNumSeat={setNumSeat}
               />
-            ) : (
-              <ShowLayout
-                coachId={selectedCoach?.coachId}
-                brandName={selectedBrand}
-              />
-            )}
-          </>
-        )}
-        <VStack align={"left"} spacing={4} w="80%" m={"1rem"}>
-          <Text>Facilities</Text>
-          {facilities.map((facility, index) => (
-            <HStack key={index} spacing={4}>
-              <Input 
-                value={facility} 
-                onChange={(e) => handleFacilityChange(index, e.target.value)} 
-                placeholder="Enter a facility"
-              />
-              {index === facilities.length - 1 && (
-                <Button onClick={addNewFacility} isDisabled={!facility}>
-                  +
-                </Button>
-              )}
-            </HStack>
-          ))}
-        </VStack>
-        <Divider />
-        {isSelectingBrand && (
-          <AmountList
-            coachName={selectedCoach?.coachName}
-            coachId={selectedCoach?.coachId}
-            brandName={selectedBrand}
-            numBus={numBus}
-            setNumBus={setNumBus}
-            uniqueBusId={uniqueBusId}
-            setUniqueBusId={setUniqueBusId}
-            removalAction={removalAction}
-          />
-        )}
-      </Flex>
-    </>
+              <VStack align="left" spacing={4} w="80%" m="1rem">
+                <Text>Facilities</Text>
+                {facilities.map((facility, index) => (
+                  <HStack key={index} spacing={4}>
+                    <Input 
+                      value={facility} 
+                      onChange={(e) => handleFacilityChange(index, e.target.value)} 
+                      placeholder="Enter a facility"
+                    />
+                    {index === facilities.length - 1 && (
+                      <Button onClick={addNewFacility} isDisabled={!facility}>+</Button>
+                    )}
+                  </HStack>
+                ))}
+              </VStack>
+            </>
+          ) : (
+            <>
+              <ShowLayout coachId={selectedCoach?.coachId} brandName={selectedBrand} />
+              <ShowFacilities 
+                facilities={facilities}
+                setFacilities={setFacilities} 
+                coachId={selectedCoach?.coachId} 
+                brandName={selectedBrand} />
+            </>
+          )}
+          <Divider />
+          {isSelectingBrand && (
+            <AmountList
+              coachName={selectedCoach?.coachName}
+              coachId={selectedCoach?.coachId}
+              brandName={selectedBrand}
+              numBus={numBus}
+              setNumBus={setNumBus}
+              uniqueBusId={uniqueBusId}
+              setUniqueBusId={setUniqueBusId}
+              removalAction={removalAction}
+            />
+          )}
+        </>
+      )}
+    </Flex>
   );
 }

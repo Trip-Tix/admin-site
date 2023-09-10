@@ -381,6 +381,7 @@ interface getAllBusToListResponse {
   row: number;
   col: number;
   layout: number[][];
+  facilities: string[];
 }
 import { coachBrandEntry } from "@public/common/bus_interfaces";
 export const fetchAllBusToList = async (): Promise<coachBrandEntry[]> => {
@@ -403,6 +404,7 @@ export const fetchAllBusToList = async (): Promise<coachBrandEntry[]> => {
           numSeat: bus.number_of_seats,
           numBus: bus.number_of_bus,
           busLayoutId: bus.bus_layout_id,
+          facilities: bus.facilities,
         }),
       );
       return tempBusToList;
@@ -561,3 +563,45 @@ export const setBusStatus = async ({
     return err;
   }
 };
+
+
+
+// get facilities
+export const getBusFacilities = main_url + "/api/admin/getBusFacilities";
+interface getBusLayoutResponse {
+  facilities: string[];
+}
+
+export const fetchBusFacilities = async (
+  coachId: number,
+  brandName: string,
+): Promise<string[]> => {
+  try {
+    const response = await axios.post(
+      getBusFacilities,
+      {
+        coachId: coachId,
+        brandName: brandName,
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      console.log("facilities fetched");
+      const tempLayout: string[] = response.data.facilities;
+      return tempLayout;
+    } else {
+      console.log(response.data.message);
+      return [];
+    }
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+

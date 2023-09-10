@@ -18,6 +18,8 @@ export interface BusInfoContextType {
   setBusLayoutId: (busLayoutId: number) => void;
   numBus: number;
   setNumBus: (numBus: number) => void;
+  facilities: string[];
+  setFacilities: (facilities: string[]) => void;
 }
 
 export const BusInfoContext = createContext<BusInfoContextType | null>(null);

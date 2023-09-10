@@ -10,6 +10,7 @@ import {
   TableContainer,
   Spinner,
   useColorModeValue,
+  Tag,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { BusInfoContext } from "@public/common/context";
@@ -27,6 +28,7 @@ export default function List() {
     setNumBus,
     setNumSeat,
     setBusLayoutId,
+    setFacilities,
   } = useContext(BusInfoContext);
 
   useEffect(() => {
@@ -45,6 +47,7 @@ export default function List() {
     setNumBus(bus.numBus);
     setNumSeat(bus.numSeat);
     setBusLayoutId(bus.busLayoutId);
+    setFacilities(bus.facilities);
   };
   const hoverBackgroundColor = useColorModeValue("gray.200", "gray.600");
 
@@ -73,6 +76,7 @@ export default function List() {
               <Tr>
                 <Th>Coach Name</Th>
                 <Th>Brand Name</Th>
+                <Th>Facilities</Th>
                 <Th isNumeric>Number of Buses</Th>
               </Tr>
             </Thead>
@@ -88,6 +92,13 @@ export default function List() {
                 >
                   <Td>{bus.coachName}</Td>
                   <Td>{bus.brandName}</Td>
+                  <Td style={{ whiteSpace: 'normal', maxWidth: '200px', paddingTop: '10px', paddingBottom: '10px' }}>
+                    {bus.facilities.map((facility, idx) => (
+                      <Tag key={idx} size="md" borderRadius="md" variant="solid" colorScheme="green" mr={4} mt={2} mb={2}>
+                        {facility}
+                      </Tag>
+                    ))}
+                  </Td>
                   <Td isNumeric>{bus.numBus}</Td>
                 </Tr>
               ))}

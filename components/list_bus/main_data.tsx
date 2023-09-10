@@ -13,7 +13,7 @@ export default function MainData() {
   const [busLayoutId, setBusLayoutId] = useState<number>(0);
   const [numSeat, setNumSeat] = useState<number>(0);
   const [numBus, setNumBus] = useState<number>(0);
-
+  const [facilities, setFacilities] = useState<string[]>([""]);
 
   return (
     <BusInfoContext.Provider value={{ 
@@ -24,6 +24,7 @@ export default function MainData() {
       busLayoutId, setBusLayoutId,
       numSeat, setNumSeat,
       numBus, setNumBus,
+      facilities, setFacilities,
     }}>
       <HStack spacing="4" align="stretch">
         <List />
