@@ -144,7 +144,8 @@ export default function PerTime({
               if (selectedUniqueFlight) {
                 setUniqueFlight(selectedUniqueFlight);
                 // Add the selected flight to the selectedFlights array
-                setSelectedFlights([...selectedFlights, selectedUniqueFlight]);
+                selectedFlights[currentKey] = selectedUniqueFlight;
+                setSelectedFlights(selectedFlights);
               }
             }}
             value={uniqueFlight.uniqueFlightId}
