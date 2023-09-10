@@ -12,6 +12,7 @@ export default function MainData() {
   const [numSeat, setNumSeat] = useState<number[]>([0]);
   const [trainLayoutId, setTrainLayoutId] = useState<number[]>([0]);
   const [facilities, setFacilities] = useState<string[]>([""]);
+  const [status, setStatus] = useState<number>(0);
 
   
   return (
@@ -23,6 +24,7 @@ export default function MainData() {
       numSeat, setNumSeat,
       trainLayoutId, setTrainLayoutId,
       facilities, setFacilities,
+      status, setStatus,
     }}>
       <HStack spacing="4" align="stretch">
         <List />

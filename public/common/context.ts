@@ -37,6 +37,8 @@ export interface TrainInfoContextType {
   setTrainLayoutId: (trainLayoutId: number[]) => void;
   facilities: string[];
   setFacilities: (facilities: string[]) => void;
+  status: number;
+  setStatus: (status: number) => void;
 }
 
 export const TrainInfoContext = createContext<TrainInfoContextType | null>(null);

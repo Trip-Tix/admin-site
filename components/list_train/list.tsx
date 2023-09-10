@@ -28,6 +28,7 @@ export default function List() {
     setNumSeat,
     setTrainLayoutId,
     setFacilities,
+    setStatus,
   } = useContext(TrainInfoContext);
 
   useEffect(() => {
