@@ -169,7 +169,8 @@ export default function PerTime({
               );
               if (selectedUniqueTrain) {
                 setUniqueTrain(selectedUniqueTrain);
-                setSelectedTrains([...selectedTrains, selectedUniqueTrain]);
+                selectedTrains[currentKey] = selectedUniqueTrain;
+                setSelectedTrains(selectedTrains);
               }
             }}
             value={uniqueTrain.unique_train_id}
