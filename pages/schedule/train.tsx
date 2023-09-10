@@ -10,11 +10,21 @@ import { useState } from "react";
 import { Day, TrainSchedulingContext } from "@public/common/context";
 import InitialForm from "@components/schedule_train/initial_form";
 import DetailsForm from "@components/schedule_train/details_form";
+import { locationInfo } from "@public/common/train_interfaces";
 
 export default function Main() {
   const [isInitialForm, setIsInitialForm] = useState(true);
-  const [startingLocation, setStartingLocation] = useState<number>(0);
-  const [destinations, setDestinations] = useState<number[]>([0]);
+  const [startingLocation, setStartingLocation] = useState<locationInfo>({
+    location_id: 0,
+    location_name: "",
+    station_name: "",
+  });
+  const [destinations, setDestinations] = useState<locationInfo[]>([{
+    location_id: 0,
+    location_name: "",
+    station_name: "",
+  }]);
+  
   const [startingDate, setStartingDate] = useState<Day>({
     day: 0,
     month: 0,
