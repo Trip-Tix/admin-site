@@ -16,7 +16,7 @@ export const getAllUniqueTrainCount = main_url + "/api/admin/getAllUniqueTrainCo
 
 // get all coaches list
 const getAllCoaches = main_url + "/api/admin/getTrainCoachInfo";
-import { coach_interface } from "@public/common/train_interfaces";
+import { coach_interface, scheduleCoach } from "@public/common/train_interfaces";
 interface getAllCoachesResponse {
   coach_id: number;
   coach_name: string;
@@ -238,11 +238,6 @@ export const fetchAllTrainToList = async (): Promise<uniqueTrainEntry[]> => {
   }
 };
 
-
-// train checkpoint
-
-
-
 // get available location
 const getTrainLocations = main_url + "/api/admin/getTrainLocations";
 import { locationInfo } from "@public/common/train_interfaces";
@@ -250,9 +245,7 @@ import { locationInfo } from "@public/common/train_interfaces";
 interface getTrainLocationsResponse {
   location_id: number;
   location_name: string;
-  country_name: string;
-  location_code: string;
-  trainport_name: string;
+  station_name: string;
 }
 export const fetchTrainLocations = async (): Promise<locationInfo[]> => {
   try {
@@ -269,9 +262,7 @@ export const fetchTrainLocations = async (): Promise<locationInfo[]> => {
         (location: getTrainLocationsResponse) => ({
           location_id: location.location_id,
           location_name: location.location_name,
-          country_name: location.country_name,
-          location_code: location.location_code,
-          trainport_name: location.trainport_name,
+          station_name: location.station_name,
         }),
       );
       return tempLocations;
@@ -286,13 +277,15 @@ export const fetchTrainLocations = async (): Promise<locationInfo[]> => {
 };
 
 
+
 //fetch all the unique trains
 const getAllAvailableTrain = main_url + "/api/admin/getAvailableTrain";
 import { scheduleTrainReturnType } from "@public/common/train_interfaces";
 interface getAllUniqueTrainResponse {
   unique_train_id : string;
-  coach_ids : number[],
-  coach_names : string[],
+  coach_info: number[],
+  coach_names: string[],
+  number_of_seats: number[],
 }
 export const fetchAllAvailableTrain = async (
   date: string,
@@ -315,11 +308,12 @@ export const fetchAllAvailableTrain = async (
       console.log("all available train fetched");
       const tempAvailableTrain: scheduleTrainReturnType[] = [];
       console.log(response);
-      response.data.uniqueTrains.map((train: getAllUniqueTrainResponse) =>
+      response.data.map((train: getAllUniqueTrainResponse) =>
         tempAvailableTrain.push( {
-          uniqueTrainId: train.unique_train_id,
-          coachIds: train.coach_ids,
-          coachNames: train.coach_names,
+          unique_train_id: train.unique_train_id,
+          coach_info: train.coach_info,
+          coach_names: train.coach_names,
+          number_of_seats: train.number_of_seats,
         }),
       );
       console.log(tempAvailableTrain);
@@ -335,21 +329,20 @@ export const fetchAllAvailableTrain = async (
 };
 
 
+
 // send all the schedule info to the backend
 const postSchedule = main_url + "/api/admin/addTrainScheduleInfo";
 interface postRequest {
   src: number;
   dest: number;
+  destPoints: number[];
   date: string;
-  schedule: {
-    time: string;
-    fare: number[];
-    uniqueTrainId: string;
-  }[];
+  schedule: scheduleCoach[];
 }
 export const postScheduleInfo = async ({
   src,
   dest,
+  destPoints,
   date,
   schedule,
 }: postRequest): Promise<string> => {
@@ -358,6 +351,7 @@ export const postScheduleInfo = async ({
     console.log({
       src: src,
       dest: dest,
+      destPoints: destPoints,
       date: date,
       schedule: schedule,
     });
@@ -366,6 +360,7 @@ export const postScheduleInfo = async ({
       {
         src: src,
         dest: dest,
+        destPoints: destPoints,
         date: date,
         schedule: schedule,
       },
@@ -390,6 +385,9 @@ export const postScheduleInfo = async ({
   }
 };
 
+
+
+// train checkpoint
 
 // checkpoint
 
