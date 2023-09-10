@@ -102,7 +102,7 @@ export const fetchTrainLayout = async (
 
 
 // get existing train ids list given coach id and brand name
-const getExistingTrainIds = main_url + "/api/admin/getUniqueTrainIdList";
+const getExistingTrainIds = main_url + "/api/admin/getUniqueTrainId";
 interface getExistingTrainIdsResponse {
   unique_train_id: string;
 }
@@ -138,7 +138,7 @@ export const fetchExistingTrainIds = async (): Promise<string[]> => {
 
 
 // add new train
-const addTrain = main_url + "/api/admin/addTrainInfofam";
+const addTrain = main_url + "/api/admin/addTrainInfo";
 import { trainInfo } from "@public/common/train_interfaces";
 interface addTrainResponse {
   message: string;
