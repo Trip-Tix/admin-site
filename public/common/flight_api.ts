@@ -383,6 +383,47 @@ export const postScheduleInfo = async ({
 };
 
 
+// Update Flight Status
+const updateFlightStatus = main_url + "/api/admin/updateFlightStatus";
+
+interface UpdateFlightStatusRequest {
+  unique_flight_id: string;
+  status: number;
+}
+
+export const setFlightStatus = async ({
+  unique_flight_id,
+  status,
+}: UpdateFlightStatusRequest): Promise<string> => {
+  try {
+    const response = await axios.post(
+      updateFlightStatus,
+      {
+        unique_flight_id,
+        status,
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Flight status updated");
+      return response.data.message;
+    } else {
+      console.log(response.data.message);
+      return response.data.message;
+    }
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
+
 // checkpoint
 
 

@@ -78,6 +78,7 @@ export default function List() {
                 <Th>Train Name</Th>
                 <Th>Coaches</Th>
                 <Th>Facilities</Th>
+                <Th>Status</Th>
               </Tr>
             </Thead>
             <Tbody>

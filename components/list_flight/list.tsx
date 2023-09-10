@@ -11,15 +11,20 @@ import {
   Spinner,
   useColorModeValue,
   Tag,
+  Button,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { FlightInfoContext } from "@public/common/context";
 import { uniqueFlightEntry } from "@public/common/flight_interfaces";
-import { fetchAllFlightToList } from "@public/common/flight_api";
+import { fetchAllFlightToList, setFlightStatus } from "@public/common/flight_api";
+import { stat } from "fs";
 
 export default function List() {
   const [flightInfoLoading, setFlightInfoLoading] = useState<boolean>(true);
   const [flightInfo, setFlightInfo] = useState<uniqueFlightEntry[]>([]);
+
+  const [handleStatusChangeToggler, setHandleStatusChangeToggler] = useState<boolean>(false);
+
   const {
     setUniqueFlightId,
     setClassNames,
@@ -54,6 +59,32 @@ export default function List() {
 
   const hoverBackgroundColor = useColorModeValue("gray.200", "gray.600");
 
+
+  async function handleStatusChange(uniqueFlightId: string, status: number) {
+    try {
+        setFlightInfoLoading(true);
+        const message = await setFlightStatus({
+            unique_flight_id: uniqueFlightId,
+            status: status
+        });
+
+        setFlightInfo(prevFlights => {
+          return prevFlights.map(flight => {
+              if (flight.uniqueFlightId === uniqueFlightId) {
+                  return { ...flight, status: status };
+              }
+              return flight;
+          });
+        });
+        setFlightInfoLoading(false);
+
+        console.log(message);
+
+    } catch (error) {
+        console.error("Error updating flight status:", error);
+    }
+  }
+
   return (
     <VStack spacing={4} align="stretch" flex={1} ml={10} mr={10}>
       <Heading as="h1" size="lg" color="primary.800">
@@ -82,6 +113,7 @@ export default function List() {
                 <Th>Facilities</Th>
                 <Th isNumeric>Number of Seats</Th>
                 <Th>Status</Th>
+                <Th>Action</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -112,13 +144,26 @@ export default function List() {
                   <Td isNumeric style={{ paddingTop: '10px', paddingBottom: '10px' }}>{flight.numTotalSeats}</Td>
                   <Td style={{ paddingTop: '10px', paddingBottom: '10px' }}>
                     {flight.status === 1 ? (
-                      <Tag size="md" borderRadius="md" variant="solid" colorScheme="green">
+                      <Tag size="lg" width="100%" borderRadius="md" variant="solid" colorScheme="green">
                         Active
                       </Tag>
                     ) : (
-                      <Tag size="md" borderRadius="md" variant="solid" colorScheme="red">
+                      <Tag size="lg" width="100%" borderRadius="md" variant="solid" colorScheme="red">
                         Inactive
                       </Tag>
+                    )}
+                  </Td>
+                  <Td style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+                    {flight.status === 1 ? (
+                      <Button style={{ height: '35px', width: '100%' }} 
+                      colorScheme="red" onClick={() => handleStatusChange(flight.uniqueFlightId, 0)}>
+                        Set Inactive
+                      </Button>
+                    ) : (
+                      <Button style={{ height: '35px', width: '100%' }} 
+                      colorScheme="green" onClick={() => handleStatusChange(flight.uniqueFlightId, 1)}>
+                        Set Active
+                      </Button>
                     )}
                   </Td>
                 </Tr>
