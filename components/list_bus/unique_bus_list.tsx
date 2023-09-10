@@ -230,7 +230,7 @@ export default function UniqueBusList({ coachId, brandName, onBusClick, activeBu
                       <Box mt={4}>
                       <Text fontWeight="bold" mb={1}>Destinations</Text>
                       {schedule.destination_points.map((destination, index) => (
-                      <Flex direction="column" alignItems="start" mb={2}>
+                      <Flex key={index} direction="column" alignItems="start" mb={2}>
                         <Flex alignItems="center">
                             {index === schedule.destination_points.length - 1 && (
                               <Box as={AiFillFlag} size="14px" color={optionColor} mr={2} />
