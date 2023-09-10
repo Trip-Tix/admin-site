@@ -23,8 +23,6 @@ export default function List() {
   const [flightInfoLoading, setFlightInfoLoading] = useState<boolean>(true);
   const [flightInfo, setFlightInfo] = useState<uniqueFlightEntry[]>([]);
 
-  const [handleStatusChangeToggler, setHandleStatusChangeToggler] = useState<boolean>(false);
-
   const {
     setUniqueFlightId,
     setClassNames,
@@ -142,16 +140,16 @@ export default function List() {
                     ))}
                   </Td>
                   <Td isNumeric style={{ paddingTop: '10px', paddingBottom: '10px' }}>{flight.numTotalSeats}</Td>
-                  <Td style={{ paddingTop: '10px', paddingBottom: '10px' }}>
-                    {flight.status === 1 ? (
-                      <Tag size="lg" width="100%" borderRadius="md" variant="solid" colorScheme="green">
-                        Active
-                      </Tag>
-                    ) : (
-                      <Tag size="lg" width="100%" borderRadius="md" variant="solid" colorScheme="red">
-                        Inactive
-                      </Tag>
-                    )}
+                  <Td style={{ paddingTop: '10px', paddingBottom: '10px', textAlign: 'center' }}>
+                      {flight.status === 1 ? (
+                          <Tag size="lg" width="100%" borderRadius="md" variant="solid" colorScheme="green" display="flex" justifyContent="center" alignItems="center">
+                              Active
+                          </Tag>
+                      ) : (
+                          <Tag size="lg" width="100%" borderRadius="md" variant="solid" colorScheme="red" display="flex" justifyContent="center" alignItems="center">
+                              Inactive
+                          </Tag>
+                      )}
                   </Td>
                   <Td style={{ paddingTop: '10px', paddingBottom: '10px' }}>
                     {flight.status === 1 ? (

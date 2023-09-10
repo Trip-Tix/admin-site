@@ -387,6 +387,45 @@ export const postScheduleInfo = async ({
   }
 };
 
+// Update Train Status
+const updateTrainStatus = main_url + "/api/admin/updateTrainStatus";
+
+interface UpdateTrainStatusRequest {
+  unique_train_id: string;
+  status: number;
+}
+
+export const setTrainStatus = async ({
+  unique_train_id,
+  status,
+}: UpdateTrainStatusRequest): Promise<string> => {
+  try {
+    const response = await axios.post(
+      updateTrainStatus,
+      {
+        unique_train_id,
+        status,
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Train status updated");
+      return response.data.message;
+    } else {
+      console.log(response.data.message);
+      return response.data.message;
+    }
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
 
 
 // train checkpoint

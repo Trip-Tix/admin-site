@@ -11,11 +11,12 @@ import {
   Spinner,
   useColorModeValue,
   Tag,
+  Button,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { TrainInfoContext } from "@public/common/context";
 import { uniqueTrainEntry } from "@public/common/train_interfaces";
-import { fetchAllTrainToList } from "@public/common/train_api";
+import { fetchAllTrainToList, setTrainStatus } from "@public/common/train_api";
 
 export default function List() {
   const [trainInfoLoading, setTrainInfoLoading] = useState<boolean>(true);
@@ -52,6 +53,31 @@ export default function List() {
 
   const hoverBackgroundColor = useColorModeValue("gray.200", "gray.600");
 
+  async function handleStatusChange(uniqueTrainId: string, status: number) {
+    try {
+        setTrainInfoLoading(true);
+        const message = await setTrainStatus({
+            unique_train_id: uniqueTrainId,
+            status: status
+        });
+
+        setTrainInfo(prevTrains => {
+          return prevTrains.map(train => {
+              if (train.uniqueTrainId === uniqueTrainId) {
+                  return { ...train, status: status };
+              }
+              return train;
+          });
+        });
+        setTrainInfoLoading(false);
+
+        console.log(message);
+
+    } catch (error) {
+        console.error("Error updating train status:", error);
+    }
+  }
+
   return (
     <VStack spacing={4} align="stretch" flex={1} ml={10} mr={10}>
       <Heading as="h1" size="lg" color="primary.800">
@@ -79,6 +105,7 @@ export default function List() {
                 <Th>Coaches</Th>
                 <Th>Facilities</Th>
                 <Th>Status</Th>
+                <Th>Action</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -106,15 +133,28 @@ export default function List() {
                       </Tag>
                     ))}
                   </Td>
+                  <Td style={{ paddingTop: '10px', paddingBottom: '10px', textAlign: 'center' }}>
+                      {train.status === 1 ? (
+                          <Tag size="lg" width="100%" borderRadius="md" variant="solid" colorScheme="green" display="flex" justifyContent="center" alignItems="center">
+                              Active
+                          </Tag>
+                      ) : (
+                          <Tag size="lg" width="100%" borderRadius="md" variant="solid" colorScheme="red" display="flex" justifyContent="center" alignItems="center">
+                              Inactive
+                          </Tag>
+                      )}
+                  </Td>
                   <Td style={{ paddingTop: '10px', paddingBottom: '10px' }}>
                     {train.status === 1 ? (
-                      <Tag size="md" borderRadius="md" variant="solid" colorScheme="green">
-                        Active
-                      </Tag>
+                      <Button style={{ height: '35px', width: '100%' }} 
+                      colorScheme="red" onClick={() => handleStatusChange(train.uniqueTrainId, 0)}>
+                        Set Inactive
+                      </Button>
                     ) : (
-                      <Tag size="md" borderRadius="md" variant="solid" colorScheme="red">
-                        Inactive
-                      </Tag>
+                      <Button style={{ height: '35px', width: '100%' }} 
+                      colorScheme="green" onClick={() => handleStatusChange(train.uniqueTrainId, 1)}>
+                        Set Active
+                      </Button>
                     )}
                   </Td>
                 </Tr>
