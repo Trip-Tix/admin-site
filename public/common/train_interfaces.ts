@@ -25,18 +25,10 @@ export interface coach_interface {
     key: number;
     date: string;
     time: string;
-    fare: number[];
+    coachIds: number[];
+    fare: number[][];
+    numOfCoaches: number[];
     uniqueTrainId: string;
-  }
-  
-  export interface coachBrandEntry {
-    coachId: number;
-    coachName: string;
-    brandName: string;
-    layout: number[][];
-    numSeat: number;
-    numTrain: number;
-    trainLayoutId: number;
   }
   
   export interface UniqueTrainScheduleInfoResponse {
@@ -66,13 +58,19 @@ export interface coach_interface {
 export interface locationInfo {
   location_id: number;
   location_name: string;
-  country_name: string;
-  location_code: string;
-  airport_name: string;
+  station_name: string;
 }
 
 export interface scheduleTrainReturnType {
-  uniqueTrainId: string;
-  coachIds: number[];
-  coachNames: string[];
+  unique_train_id: string;
+  coach_info: number[];
+  coach_names: string[];
+  number_of_seats: number[];
+}
+
+export interface scheduleCoach {
+  [coachId: string]: {
+    fare: number[];
+    numberOfCoach: number;
+  };
 }

@@ -1,5 +1,7 @@
 import { createContext } from "react";
-import { class_interface, locationInfo } from "./flight_interfaces";
+import { class_interface } from "./flight_interfaces";
+import { locationInfo as TrainLocationInfo } from "./train_interfaces";
+import { locationInfo as FlightLocationInfo } from "./flight_interfaces";
 
 export interface BusInfoContextType {
   coachId: number;
@@ -202,4 +204,15 @@ export interface AirSchedulingContextType {
 
 export const AirSchedulingContext = createContext<AirSchedulingContextType | null>(null);
 
+export interface TrainSchedulingContextType {
+  startingLocation: TrainLocationInfo;
+  setStartingLocation: (startingLocation: TrainLocationInfo) => void;
+  destinations: TrainLocationInfo[];
+  setDestinations: (destinations: TrainLocationInfo[]) => void;
+  startingDate: Day;
+  setStartingDate: (startingDate: Day) => void;
+  endingDate: Day;
+  setEndingDate: (endingDate: Day) => void;
+}
 
+export const TrainSchedulingContext = createContext<TrainSchedulingContextType | null>(null);
