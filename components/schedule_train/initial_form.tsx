@@ -50,7 +50,7 @@ export default function InitialForm({
   const optionColor = useColorModeValue("gray.800", "gray.200");
 
 
-  const handleDestinationChange = (index: number, value: number) => {
+  const handleDestinationChange = (index: number, value: locationInfo) => {
     const updatedDestinations = [...destinations];
     updatedDestinations[index] = value;
     setDestinations(updatedDestinations);
@@ -58,7 +58,11 @@ export default function InitialForm({
   
 
   const addDestination = () => {
-    setDestinations([...destinations, 0]);
+    setDestinations([...destinations, {
+      location_id: 0,
+      location_name: "",
+      station_name: "",
+    }]);
   };
 
   const removeDestination = (index: number) => {
@@ -173,8 +177,8 @@ export default function InitialForm({
     </div>
   );
   
-  const currentStartingLocation = locations.find(loc => loc.location_id === startingLocation);
-  const currentDestinations = locations.filter(loc => destinations.includes(loc.location_id));
+  const currentStartingLocation = locations.find(loc => loc.location_id === startingLocation.location_id);
+  const currentDestinations = locations.filter(loc => destinations.includes(loc));
 
   return (
     <>
@@ -216,7 +220,7 @@ export default function InitialForm({
                 <ReactSelect
                   styles={customStyles(true)}
                   options={locations.map((location) => ({
-                    value: location.location_id,
+                    value: location,
                     label: location.location_name + " " + location.station_name,
                     data: location,
                   }))}
@@ -242,7 +246,7 @@ export default function InitialForm({
                     <ReactSelect
                       styles={customStyles(false)}
                       options={locations.map((location) => ({
-                        value: location.location_id,
+                        value: location,
                         label: location.location_name + " " + location.station_name,
                         data: location,
                       }))}
@@ -250,11 +254,11 @@ export default function InitialForm({
                       placeholder="Select Location"
                       formatOptionLabel={formatOptionLabel}
                       value={
-                        locations.find(loc => loc.location_id === destination) 
+                        locations.find(loc => loc === destination) 
                         ? {
                           value: destination,
-                          label: locations.find(loc => loc.location_id === destination).location_name + " " + locations.find(loc => loc.location_id === destination).station_name,
-                          data: locations.find(loc => loc.location_id === destination)
+                          label: locations.find(loc => loc.location_id === destination.location_id).location_name + " " + locations.find(loc => loc.location_id === destination.location_id).station_name,
+                          data: locations.find(loc => loc.location_id === destination.location_id)
                         } 
                         : null
                       }
@@ -315,9 +319,9 @@ export default function InitialForm({
             rightIcon={<AiOutlineArrowRight />}
             borderRadius={0}
             isDisabled={
-              startingLocation === 0 ||
+              startingLocation.location_id === 0 ||
               destinations.length === 0 ||
-              destinations.some((destination) => destination === 0) ||
+              destinations.some((destination) => destination.location_id === 0) ||
               date1 === "" ||
               date2 === ""
             }
@@ -334,10 +338,10 @@ export default function InitialForm({
                   <Box as={FaMapMarkerAlt} size="24px" color={optionColor} mr={2} />
                   <div>
                     <div style={{ fontSize: 'larger' }}>
-                      {locations.find(loc => loc.location_id === startingLocation)?.location_name}
+                      {locations.find(loc => loc.location_id === startingLocation.location_id)?.location_name}
                     </div>
                     <div>
-                      {locations.find(loc => loc.location_id === startingLocation)?.station_name}
+                      {locations.find(loc => loc.location_id === startingLocation.location_id)?.station_name}
                     </div>
                   </div>
                 </Flex>
@@ -356,10 +360,10 @@ export default function InitialForm({
                       )}
                       <div>
                         <div style={{ fontSize: 'larger' }}>
-                          {locations.find(loc => loc.location_id === destination)?.location_name}
+                          {locations.find(loc => loc.location_id === destination.location_id)?.location_name}
                         </div>
                         <div>
-                          {locations.find(loc => loc.location_id === destination)?.station_name}
+                          {locations.find(loc => loc.location_id === destination.location_id)?.station_name}
                         </div>
                       </div>
                     </Flex>
