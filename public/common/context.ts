@@ -58,6 +58,8 @@ export interface FlightInfoContextType {
   setNumTotalSeats: (numTotalSeats: number) => void;
   facilities: string[];
   setFacilities: (facilities: string[]) => void;
+  status: number;
+  setStatus: (status: number) => void;
 }
 
 export const FlightInfoContext = createContext<FlightInfoContextType | null>(null);

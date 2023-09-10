@@ -191,6 +191,7 @@ interface getAllFlightToListResponse {
   layoutIds: number[];
   eachNumOfSeats: number[];
   facilities: string[];
+  status: number;
 }
 
 import { uniqueFlightEntry } from "@public/common/flight_interfaces";
@@ -205,6 +206,7 @@ export const fetchAllFlightToList = async (): Promise<uniqueFlightEntry[]> => {
 
     if (response.status === 200) {
       console.log("all flight to list fetched");
+      console.log(response);
       const tempFlightToList: uniqueFlightEntry[] = response.data.map(
         (flight: getAllFlightToListResponse) => ({
           uniqueFlightId: flight.unique_air_id,
@@ -215,6 +217,7 @@ export const fetchAllFlightToList = async (): Promise<uniqueFlightEntry[]> => {
           flightLayoutId: flight.layoutIds,
           numTotalSeats: flight.number_of_seats,
           facilities: flight.facilities,
+          status: flight.status,
         }),
       );
       console.log(tempFlightToList);

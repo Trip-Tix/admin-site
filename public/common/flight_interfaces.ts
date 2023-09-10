@@ -38,6 +38,7 @@ export interface uniqueFlightEntry {
   flightLayoutId: number[];
   numTotalSeats: number;
   facilities: string[];
+  status: number;
 }
 
 export interface UniqueFlightScheduleInfoResponse {

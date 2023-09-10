@@ -29,6 +29,7 @@ export default function List() {
     setFlightLayoutId,
     setNumTotalSeats,
     setFacilities,
+    setStatus,
   } = useContext(FlightInfoContext);
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function List() {
     setFlightLayoutId(flight.flightLayoutId);
     setNumTotalSeats(flight.numTotalSeats);
     setFacilities(flight.facilities);
+    setStatus(flight.status);
   };
 
   const hoverBackgroundColor = useColorModeValue("gray.200", "gray.600");
@@ -79,6 +81,7 @@ export default function List() {
                 <Th>Classes</Th>
                 <Th>Facilities</Th>
                 <Th isNumeric>Number of Seats</Th>
+                <Th>Status</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -107,6 +110,17 @@ export default function List() {
                     ))}
                   </Td>
                   <Td isNumeric style={{ paddingTop: '10px', paddingBottom: '10px' }}>{flight.numTotalSeats}</Td>
+                  <Td style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+                    {flight.status === 1 ? (
+                      <Tag size="md" borderRadius="md" variant="solid" colorScheme="green">
+                        Active
+                      </Tag>
+                    ) : (
+                      <Tag size="md" borderRadius="md" variant="solid" colorScheme="red">
+                        Inactive
+                      </Tag>
+                    )}
+                  </Td>
                 </Tr>
               ))}
             </Tbody>
