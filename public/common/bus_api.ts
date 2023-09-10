@@ -212,6 +212,7 @@ export const addNewBus = async (busInfo: busInfo): Promise<string> => {
         layout: busInfo.layout,
         row: busInfo.row,
         col: busInfo.col,
+        facilities: busInfo.facilities,
       },
       {
         headers: {

@@ -34,6 +34,7 @@ interface CoachCardProps {
   coachList: coach[];
   coachBrandsList: coachBrands[];
   submit: boolean;
+  updateFacilities: (length: number) => void;
 }
 
 export default function CoachCard({
@@ -41,6 +42,7 @@ export default function CoachCard({
   coachList,
   coachBrandsList,
   submit,
+  updateFacilities,
 }: CoachCardProps) {
   const [selectedCoach, setSelectedCoach] = useState<coach>();
   const [selectedBrand, setSelectedBrand] = useState<string>();
@@ -55,6 +57,17 @@ export default function CoachCard({
   const [numSeat, setNumSeat] = useState<number>(2);
   const [numBus, setNumBus] = useState<number>(0);
   const [uniqueBusId, setUniqueBusId] = useState<string[]>([]);
+  const [facilities, setFacilities] = useState<string[]>(['']);
+
+  useEffect(() => {
+    if (facilities.length > 0 && facilities[facilities.length - 1] !== '') {
+      updateFacilities(facilities.length);
+    } else {
+      updateFacilities(0);
+    }
+    
+  }, [facilities]);
+
 
   useEffect(() => {
     if (submit) {
@@ -68,6 +81,8 @@ export default function CoachCard({
         layout: layout,
         row: row,
         col: col,
+        facilities: facilities,
+
       });
     }
   }, [submit]);
@@ -79,6 +94,30 @@ export default function CoachCard({
       removalAction.validateCoach(removalAction.key, false);
     }
   }, [selectedCoach, selectedBrand]);
+
+  const handleFacilityChange = (index: number, value: string) => {
+    const updatedFacilities = [...facilities];
+    
+    if (value === "") {
+        updatedFacilities.splice(index, 1);
+    } else {
+        updatedFacilities[index] = value;
+    }
+
+    // Ensure at least one facility remains
+    if (updatedFacilities.length === 0) {
+        updatedFacilities.push('');
+    }
+    
+    setFacilities(updatedFacilities);
+  };
+
+  const addNewFacility = () => {
+    if (facilities[facilities.length - 1]) {
+      setFacilities([...facilities, '']);
+    }
+  };
+
 
   return (
     <>
@@ -173,6 +212,23 @@ export default function CoachCard({
             )}
           </>
         )}
+        <VStack align={"left"} spacing={4} w="80%" m={"1rem"}>
+          <Text>Facilities</Text>
+          {facilities.map((facility, index) => (
+            <HStack key={index} spacing={4}>
+              <Input 
+                value={facility} 
+                onChange={(e) => handleFacilityChange(index, e.target.value)} 
+                placeholder="Enter a facility"
+              />
+              {index === facilities.length - 1 && (
+                <Button onClick={addNewFacility} isDisabled={!facility}>
+                  +
+                </Button>
+              )}
+            </HStack>
+          ))}
+        </VStack>
         <Divider />
         {isSelectingBrand && (
           <AmountList

@@ -23,7 +23,8 @@ export interface busInfo {
   numSeat: number,
   layout: number[][],
   row: number,
-  col: number
+  col: number,
+  facilities: string[],
 }
 
 export interface ScheduleEntry {

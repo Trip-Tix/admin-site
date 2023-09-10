@@ -203,7 +203,8 @@ export default function UniqueBusList({ coachId, brandName, onBusClick, activeBu
             {loadingSchedules ? (
               <Spinner />
             ) : (
-              activeBusId &&
+              <>
+              {activeBusId && schedules.length > 0 ? (
               schedules.map((schedule) => (
                 
               <Box key={schedule.bus_schedule_id} ml={4} mt={4} p={4} borderWidth="1px" borderRadius="md">
@@ -273,7 +274,13 @@ export default function UniqueBusList({ coachId, brandName, onBusClick, activeBu
                   </Box>
                 </Grid>
               </Box>
-              ))
+                ))
+              ) : (
+                <Box ml={4} mt={4} p={4} borderWidth="1px" borderRadius="md" textAlign="center">
+                  No Schedule Yet
+                </Box>
+              )}
+            </>
             )}
             <Box>
               <br />
