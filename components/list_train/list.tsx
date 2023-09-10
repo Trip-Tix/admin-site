@@ -46,6 +46,7 @@ export default function List() {
     setNumSeat(train.numSeat);
     setTrainLayoutId(train.trainLayoutId);
     setFacilities(train.facilities);
+    setStatus(train.status)
   };
 
   const hoverBackgroundColor = useColorModeValue("gray.200", "gray.600");
@@ -102,6 +103,17 @@ export default function List() {
                         {facility}
                       </Tag>
                     ))}
+                  </Td>
+                  <Td style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+                    {train.status === 1 ? (
+                      <Tag size="md" borderRadius="md" variant="solid" colorScheme="green">
+                        Active
+                      </Tag>
+                    ) : (
+                      <Tag size="md" borderRadius="md" variant="solid" colorScheme="red">
+                        Inactive
+                      </Tag>
+                    )}
                   </Td>
                 </Tr>
               ))}

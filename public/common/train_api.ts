@@ -201,6 +201,7 @@ interface getAllTrainToListResponse {
   layoutIds: number[];
   eachNumOfSeats: number[];
   facilities: string[];
+  status: number;
 }
 
 import { uniqueTrainEntry } from "@public/common/train_interfaces";
@@ -224,6 +225,7 @@ export const fetchAllTrainToList = async (): Promise<uniqueTrainEntry[]> => {
           numSeat: train.eachNumOfSeats,
           trainLayoutId: train.layoutIds,
           facilities: train.facilities,
+          status: train.status,
         }),
       );
       console.log(tempTrainToList);

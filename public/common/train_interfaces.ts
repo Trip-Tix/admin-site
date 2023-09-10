@@ -52,6 +52,7 @@ export interface coach_interface {
     trainLayoutId: number[];
     numTotalSeats: number;
     facilities: string[];
+    status: number;
   }
   
   
