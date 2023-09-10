@@ -417,8 +417,10 @@ export const fetchAllBusToList = async (): Promise<coachBrandEntry[]> => {
 
 // get all unique bus id list from coach id and brand name
 const getAllUniqueBusId = main_url + "/api/admin/getAllUniqueBus";
+import { uniqueBusEntryInfo } from "@public/common/bus_interfaces";
 interface getAllUniqueBusIdResponse {
   unique_bus_id: string;
+  status: number;
 }
 export const fetchAllUniqueBusId = async ({
   coachId,
@@ -426,7 +428,7 @@ export const fetchAllUniqueBusId = async ({
 }: {
   coachId: number;
   brandName: string;
-}): Promise<string[]> => {
+}): Promise<uniqueBusEntryInfo[]> => {
   try {
     const response = await axios.post(
       getAllUniqueBusId,
@@ -444,8 +446,11 @@ export const fetchAllUniqueBusId = async ({
 
     if (response.status === 200) {
       console.log("unique bus id list fetched");
-      const tempUniqueBusIdList: string[] = response.data.map(
-        (bus: getAllUniqueBusIdResponse) => bus.unique_bus_id,
+      const tempUniqueBusIdList: uniqueBusEntryInfo[] = response.data.map(
+        (bus: getAllUniqueBusIdResponse) => ({
+          uniqueBusId: bus.unique_bus_id,
+          status: bus.status,
+        }),
       );
       return tempUniqueBusIdList;
     } else {
@@ -512,5 +517,46 @@ export const fetchAllUniqueBusCount = async (): Promise<number> => {
   } catch (err) {
     console.log(err);
     return 0;
+  }
+};
+
+// Update Bus Status
+const updateBusStatus = main_url + "/api/admin/updateBusStatus";
+
+interface UpdateBusStatusRequest {
+  unique_bus_id: string;
+  status: number;
+}
+
+
+export const setBusStatus = async ({
+  unique_bus_id,
+  status,
+}: UpdateBusStatusRequest): Promise<string> => {
+  try {
+    const response = await axios.post(
+      updateBusStatus,
+      {
+        unique_bus_id,
+        status,
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("Bus status updated");
+      return response.data.message;
+    } else {
+      console.log(response.data.message);
+      return response.data.message;
+    }
+  } catch (err) {
+    console.log(err);
+    return err;
   }
 };

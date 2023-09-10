@@ -12,17 +12,27 @@ export default function Details() {
   const [activeBusId, setActiveBusId] = useState<string | null>(null);
   const [schedules, setSchedules] = useState<any[]>([]);
 
+  const [loadingSchedules, setLoadingSchedules] = useState<boolean>(false);
+
   const handleToggleSchedules = async (uniqueBusId: string) => {
+    setLoadingSchedules(true); // Start loading
+  
     if (activeBusId !== uniqueBusId) {
-      const fetchedSchedules = await fetchUniqueBusSchedule(uniqueBusId);
-      setSchedules(fetchedSchedules);
-      setActiveBusId(uniqueBusId);
+      try {
+        const fetchedSchedules = await fetchUniqueBusSchedule(uniqueBusId);
+        setSchedules(fetchedSchedules);
+        setActiveBusId(uniqueBusId);
+      } catch (error) {
+        console.error("Error fetching schedules:", error);
+      }
     } else {
       setSchedules([]);
       setActiveBusId(null);
     }
+  
+    setLoadingSchedules(false); // End loading
   };
-
+  
   return (
     <VStack
       spacing={4}
@@ -46,6 +56,7 @@ export default function Details() {
         onBusClick={handleToggleSchedules} 
         activeBusId={activeBusId} 
         schedules={schedules}
+        loadingSchedules={loadingSchedules}
       />
     </VStack>
   );

@@ -55,3 +55,8 @@ export interface UniqueBusScheduleInfoResponse {
   bookedCount: string;
   totalCount: string;
 }
+
+export interface uniqueBusEntryInfo {
+  uniqueBusId: string;
+  status: number;
+}
