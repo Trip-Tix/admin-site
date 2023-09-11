@@ -12,6 +12,7 @@ import {
   Flex,
   Divider,
   Spacer,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -22,7 +23,8 @@ import { addNewFlight } from "@public/common/flight_api";
 import { class_interface } from "@public/common/flight_interfaces";
 import { fetchClassList, fetchFlightLayout } from "@public/common/flight_api";
 import { send } from "process";
-
+import { useRouter } from "next/router";
+import { list_flight_url } from "@public/common/pagelinks";
 interface FlightCardProps {
   removalAction: {
     key: string;
@@ -57,6 +59,9 @@ export default function FlightCard({
 
   const [fetchedLayouts, setFetchedLayouts] = useState<(number[][] | null)[]>([null]);
   const [fetchedNumSeats, setFetchedNumSeats] = useState<number[]>([0]);
+
+  const toast = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     console.log(classForms.length);
@@ -123,9 +128,27 @@ export default function FlightCard({
         rows: sendingRows,
         cols: sendingCols,
         facilities: facilities,
+      })
+      .then(() => {
+        // Show the toast on successful addition
+        toast({
+          title: "Flight Information Successfully Added",
+          description: "Your submission is successful.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+          onCloseComplete: () => {
+            router.push(list_flight_url); 
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error adding flight:", error);
       });
     }
   }, [submit]);
+
 
   const handleClassChange = async (index: number, e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = classList.find((cls) => cls.classId.toString() === e.target.value);

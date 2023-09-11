@@ -83,8 +83,32 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Schedule", icon: FiCalendar, link: schedule_url },
 ];
 
+
+
+const getLinkItems = (adminRole: string): Array<LinkItemProps> => {
+  let links = [
+    { name: "List", icon: FiList, link: list_url },
+    { name: "Add", icon: FiPlus, link: add_url },
+    { name: "Schedule", icon: FiCalendar, link: schedule_url },
+  ];
+
+  if (adminRole === "ADMIN") {
+    links = [{ name: "Home", icon: FiHome, link: home_url }, ...links];
+  }
+
+  return links;
+};
+
 const SidebarContent = ({ onClose, selected, ...rest }: SidebarProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const [adminRole, setAdminRole] = useState<string>("");
+
+  useEffect(() => {
+    const role: any = sessionStorage.getItem("user-role");
+    setAdminRole(role);
+  }, []);
+
+  const linkItems = getLinkItems(adminRole);
   return (
     <Box
       transition="3s ease"
@@ -112,7 +136,7 @@ const SidebarContent = ({ onClose, selected, ...rest }: SidebarProps) => {
 
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
+      {linkItems.map((link) => (
         <NavItem
           key={link.name}
           icon={link.icon}

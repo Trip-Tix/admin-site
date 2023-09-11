@@ -122,6 +122,7 @@ export default function Signup_form() {
                 status: "success",
                 duration: 4000,
                 isClosable: true,
+                position: "top-right",
                 onCloseComplete: () => {
                     router.push(login_url);
                 }

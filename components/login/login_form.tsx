@@ -23,7 +23,7 @@ import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { postLogin } from "@public/common/bus_api";
 import axios from "axios";
-import { home_url } from "@public/common/pagelinks";
+import { home_url, list_bus_url, list_flight_url, list_train_url } from "@public/common/pagelinks";
 
 export default function Login_form() {
   const router = useRouter();
@@ -75,7 +75,15 @@ export default function Login_form() {
         sessionStorage.setItem("user-email", res.data.adminInfo.email);
         sessionStorage.setItem("user-fullname", res.data.adminInfo.admin_name);
         sessionStorage.setItem("company-id", res.data.companyId);
-        router.push(home_url);
+        if (res.data.adminRole === "ADMIN") {
+          router.push(home_url);
+        } else if (res.data.adminRole === "TRAIN") {
+          router.push(list_train_url);
+        } else if (res.data.adminRole === "BUS") {
+          router.push(list_bus_url);
+        } else if (res.data.adminRole === "AIR") {
+          router.push(list_flight_url);
+        }
       })
       .catch((err) => {
         setLoading(false);
