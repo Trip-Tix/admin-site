@@ -18,7 +18,7 @@ export default function Main() {
             transport={TransportType.Bus}
             navigation={NavigationOption.List}
           />
-          <Stat />
+          {/* <Stat /> */}
           <MainData />
         </VStack>
       </SidebarWithHeader>

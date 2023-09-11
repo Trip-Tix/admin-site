@@ -30,7 +30,7 @@ import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { postSignup } from "@public/common/user_api";
 import axios from "axios";
-import { login_url } from "@public/common/pagelinks";
+import { login_url, logout_url } from "@public/common/pagelinks";
 import { MdArrowDropDown } from "react-icons/md";
 
 export default function Signup_form() {
@@ -122,8 +122,9 @@ export default function Signup_form() {
                 status: "success",
                 duration: 4000,
                 isClosable: true,
+                position: "top-right",
                 onCloseComplete: () => {
-                    router.push(login_url);
+                    router.push(logout_url);
                 }
             });
         })

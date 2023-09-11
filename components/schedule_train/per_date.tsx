@@ -8,6 +8,7 @@ import {
   HStack,
   VStack,
   Divider,
+  useToast,
 } from "@chakra-ui/react";
 import { ScheduleEntry, scheduleCoach, scheduleTrainReturnType } from "@public/common/train_interfaces";
 import PerTime from "@components/schedule_train/per_time";
@@ -15,7 +16,7 @@ import { formatDate } from "@public/common/date_util";
 import { postScheduleInfo } from "@public/common/train_api";
 import { IoMdAddCircle } from "react-icons/io";
 import { useRouter } from "next/router";
-import { home_url } from "@public/common/pagelinks";
+import { home_url, list_train_url } from "@public/common/pagelinks";
 
 interface PerDateProps {
   currentDate: Day;
@@ -54,6 +55,8 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
     console.log(scheduleEntries);
   }, [scheduleEntries]);
 
+  const toast = useToast();
+
   //finally submitting results
   const router = useRouter();
   const { startingLocation, destinations } = useContext(TrainSchedulingContext);
@@ -85,7 +88,17 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
         date: formatDate(currentDate),
         schedule: tempSchedule,
       }).then((response) => {
-        router.push(home_url);
+        toast({
+          title: "Schedule Successfully Added",
+          description: "Your submission is successful.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+          onCloseComplete: () => {
+            router.push(list_train_url);
+          }
+        });
       });
     }
   }, [submitted, router]);

@@ -8,6 +8,7 @@ import {
   HStack,
   VStack,
   Divider,
+  useToast,
 } from "@chakra-ui/react";
 import { ScheduleEntry, scheduleFlightReturnType } from "@public/common/flight_interfaces";
 import PerTime from "@components/schedule_flight/per_time";
@@ -15,7 +16,7 @@ import { formatDate } from "@public/common/date_util";
 import { postScheduleInfo } from "@public/common/flight_api";
 import { IoMdAddCircle } from "react-icons/io";
 import { useRouter } from "next/router";
-import { home_url } from "@public/common/pagelinks";
+import { home_url, list_flight_url } from "@public/common/pagelinks";
 
 interface PerDateProps {
   currentDate: Day;
@@ -48,6 +49,8 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
     setScheduleEntries(updatedScheduleEntries);
   };
 
+  const toast = useToast();
+  
   useEffect(() => {
     console.log(scheduleEntries);
   }, [scheduleEntries]);
@@ -72,7 +75,17 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
         date: formatDate(currentDate),
         schedule: tempSchedule,
       }).then((response) => {
-        router.push(home_url);
+        toast({
+          title: "Schedule Successfully Added",
+          description: "Your submission is successful.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+          onCloseComplete: () => {
+            router.push(list_flight_url);
+          }
+        });
       });
     }
   }, [submitted, router]);

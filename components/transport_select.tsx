@@ -104,8 +104,9 @@ export default function TransportSelect({
         title: "Permission Denied",
         description: "You don't have permission to access this page",
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
+        position: "top-right"
       });
       return;
     }

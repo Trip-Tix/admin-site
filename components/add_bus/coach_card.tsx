@@ -11,6 +11,7 @@ import {
   Heading,
   Flex,
   Divider,
+  useToast,
 } from "@chakra-ui/react";
 import {
   AiOutlineClose,
@@ -25,6 +26,8 @@ import LayoutCreation from "@components/add_bus/layout_creation";
 import AmountList from "@components/add_bus/amount_list";
 import { addNewBus } from "@public/common/bus_api";
 import ShowFacilities from "./showFacilities";
+import { list_bus_url } from "@public/common/pagelinks";
+import { useRouter } from "next/router";
 
 interface CoachCardProps {
   removalAction: {
@@ -59,7 +62,10 @@ export default function CoachCard({
   const [numBus, setNumBus] = useState<number>(0);
   const [uniqueBusId, setUniqueBusId] = useState<string[]>([]);
   const [facilities, setFacilities] = useState<string[]>(['']);
-
+  
+  const toast = useToast();
+  const router = useRouter();
+  
   useEffect(() => {
     if (facilities.length > 0 && facilities[facilities.length - 1] !== '') {
       updateFacilities(facilities.length);
@@ -83,10 +89,27 @@ export default function CoachCard({
         row: row,
         col: col,
         facilities: facilities,
-
+      })
+      .then(() => {
+        // Show the toast on successful addition
+        toast({
+          title: "Bus Information Successfully Added",
+          description: "Your submission is successful.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+          onCloseComplete: () => {
+            router.push(list_bus_url);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error adding bus:", error);
       });
     }
   }, [submit]);
+  
 
   useEffect(() => {
     if (selectedCoach && selectedBrand) {

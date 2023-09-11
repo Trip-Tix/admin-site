@@ -12,6 +12,7 @@ import {
   Flex,
   Divider,
   Spacer,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
@@ -22,6 +23,8 @@ import { addNewTrain } from "@public/common/train_api";
 import { coach_interface } from "@public/common/train_interfaces";
 import { fetchCoachList, fetchTrainLayout } from "@public/common/train_api";
 import { send } from "process";
+import { useRouter } from "next/router";
+import { list_train_url } from "@public/common/pagelinks";
 
 interface TrainCardProps {
   removalAction: {
@@ -57,7 +60,9 @@ export default function TrainCard({
 
   const [fetchedLayouts, setFetchedLayouts] = useState<(number[][] | null)[]>([null]);
   const [fetchedNumSeats, setFetchedNumSeats] = useState<number[]>([0]);
-
+  const toast = useToast();
+  const router = useRouter();
+  
   useEffect(() => {
     console.log(coachForms.length);
     console.log(selectedCoaches.length);
@@ -123,9 +128,28 @@ export default function TrainCard({
         rows: sendingRows,
         cols: sendingCols,
         facilities: facilities,
+      })
+      .then(() => {
+        // Show the toast on successful addition
+        toast({
+          title: "Train Information Successfully Added",
+          description: "Your submission is successful.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+          onCloseComplete: () => {
+            router.push(list_train_url);
+          }
+        });
+      })
+      .catch((error) => {
+        // Handle any errors here, if necessary
+        console.error("Error adding train:", error);
       });
     }
   }, [submit]);
+
 
   const handleCoachChange = async (index: number, e: React.ChangeEvent<HTMLSelectElement>) => {
     const selected = coachList.find((cls) => cls.coachId.toString() === e.target.value);
