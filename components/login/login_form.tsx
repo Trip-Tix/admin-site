@@ -75,6 +75,8 @@ export default function Login_form() {
         sessionStorage.setItem("user-email", res.data.adminInfo.email);
         sessionStorage.setItem("user-fullname", res.data.adminInfo.admin_name);
         sessionStorage.setItem("company-id", res.data.companyId);
+        console.log(res.data.adminRole);
+
         if (res.data.adminRole === "ADMIN") {
           router.push(home_url);
         } else if (res.data.adminRole === "TRAIN") {
