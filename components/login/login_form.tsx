@@ -162,9 +162,15 @@ export default function Login_form() {
         </InputGroup>
       </FormControl>
       <Link href="#" color={accent1}>
-        {" "}
-        Forgot Password ?
+        Forgot Password?
       </Link>
+      <Text mt={1}>
+        New to TripTix? 
+        <Link color={accent1} ml={4} onClick={() => router.push("/signup")}>
+          Signup
+        </Link>
+      </Text>
+      
       <Button background={accent1} color={background} variant={"solid"} onClick={handleLogin} isLoading={loading}>
         Sign in
       </Button>
