@@ -13,6 +13,7 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  Select,
 } from "@chakra-ui/react";
 import {
   fetchAllAvailableTrain,
@@ -127,136 +128,133 @@ export default function PerTime({
   }, [coachFares, uniqueTrain.unique_train_id, time, numberOfCoaches]);
   
 
-
   return (
     <>
-      <Divider />
-      <Flex
-        direction="row-reverse"
-        w="100%"
-        m={2}
-        justifyContent={"space-between"}
-        alignContent={"center"}
-      >
-        <Button
-          onClick={() => removeScheduleEntry(currentKey)}
-          colorScheme="red"
+        <Divider />
+        <Flex
+            direction="row-reverse"
+            w="100%"
+            m={2}
+            justifyContent={"space-between"}
+            alignContent={"center"}
         >
-          <AiOutlineClose />
-        </Button>
-        <Text>{`Time Entry ${currentKey}`}</Text>
-      </Flex>
-      <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"}>
-        <Flex direction="row" w="full" alignItems={"center"}>
-          <Text mr={6}>Time: </Text>
-          <Input
-            type="time"
-            value={time24}
-            onChange={handleTimeChange}
-            w="full"
-            maxW="sm"
-          />
-        </Flex>
-        <Flex direction="row" w="full" alignItems={"center"}>
-          <Text mr={6}>Unique Train: </Text>
-          {isUniqueTrainListLoading ? (
-            <Text>Loading...</Text>
-          ) : (
-            <select
-            onChange={(event) => {
-              const selectedUniqueTrain = uniqueTrainList.find(
-                (train) => train.unique_train_id === event.target.value
-              );
-              if (selectedUniqueTrain) {
-                setUniqueTrain(selectedUniqueTrain);
-                selectedTrains[currentKey] = selectedUniqueTrain;
-                setSelectedTrains(selectedTrains);
-              }
-            }}
-            value={uniqueTrain.unique_train_id}
-          >
-            <option value="">Select Unique Train</option>
-            {uniqueTrainList.map((train) => (
-              <option 
-                key={train.unique_train_id} 
-                value={train.unique_train_id}
-                disabled={selectedTrains.some(sf => sf.unique_train_id === train.unique_train_id)}
-              >
-                {train.unique_train_id}
-              </option>
-            ))}
-          </select>
-        )}
-        </Flex>
-      </Grid>
-      <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"} mt={6} mb={6}>
-        {uniqueTrain.coach_names.map((coachName, coachIndex) => (
-          <Box key={coachName} mb={4} p={4} boxShadow="md" borderRadius="md">
-            <Divider mb={4} />
-            <Text mt={4} fontSize="xl" fontWeight="bold">
-              {coachName}
-            </Text>
-            <Flex mt={8} alignItems="center">
-              <Text mb={2} fontSize="md" fontWeight="medium">Number of Coaches:</Text>
-              <Input 
-                ml={4}
-                value={numberOfCoaches[coachIndex] || 1} 
-                isReadOnly 
-                w="40%" 
-                maxW="sm" 
-                textAlign="center"
-              />
-            </Flex>
-            <Slider
-              mt={5}
-              width="80%"
-              aria-label="slider-ex-1"
-              defaultValue={numberOfCoaches[coachIndex] || 1}
-              onChange={(value) => {
-                const updatedNumberOfCoaches = [...numberOfCoaches];
-                updatedNumberOfCoaches[coachIndex] = value;
-                setNumberOfCoaches(updatedNumberOfCoaches);
-              }}
-              min={1}
-              max={25} 
-              step={1}
+            <Button
+                onClick={() => removeScheduleEntry(currentKey)}
+                colorScheme="red"
             >
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb boxSize={8}>
-                <Box color="tomato" as="span">
-                  {numberOfCoaches[coachIndex] || 1}
-                </Box>
-              </SliderThumb>
-            </Slider>
-            {/* <Divider mt={4} mb={4} /> */}
-
-            {destinations.map((destination, destinationIndex) => (
-              <Flex key={destination.location_id} align="center" mt={4}>
-                <Text mr={4} fontSize="md" fontWeight="medium">{destination.station_name}:</Text>
+                <AiOutlineClose />
+            </Button>
+            <Text>{`Time Entry ${currentKey}`}</Text>
+        </Flex>
+        <Grid templateColumns="40% 58%" gap={6} w={"100%"} alignItems="start">
+            <Flex direction="row" w="full" alignItems={"center"}>
+                <Text mr={6}>Time: </Text>
                 <Input
-                  type="number"
-                  value={coachFares[coachName] ? coachFares[coachName][destinationIndex] || "" : ""}
-                  onChange={(event) => {
-                    const updatedFares = { ...coachFares };
-                    if (!updatedFares[coachName]) {
-                      updatedFares[coachName] = [];
-                    }
-                    updatedFares[coachName][destinationIndex] = parseInt(event.target.value);
-                    setCoachFares(updatedFares);
-                  }}
-                  placeholder="Enter fare"
-                  w="40%"
-                  maxW="sm"
+                    type="time"
+                    value={time24}
+                    onChange={handleTimeChange}
+                    w="full"
+                    maxW="sm"
                 />
-                <Text ml={4} fontSize="md">Tk</Text>
-              </Flex>
-            ))}
+            </Flex>
+            <Flex direction="row" w="full" alignItems={"center"}>
+                <Text w={"15%"} mr={6}>Unique Train: </Text>
+                {isUniqueTrainListLoading ? (
+                    <Text>Loading...</Text>
+                ) : (
+                    <Select
+                        onChange={(event) => {
+                            const selectedUniqueTrain = uniqueTrainList.find(
+                                (train) => train.unique_train_id === event.target.value
+                            );
+                            if (selectedUniqueTrain) {
+                                setUniqueTrain(selectedUniqueTrain);
+                                selectedTrains[currentKey] = selectedUniqueTrain;
+                                setSelectedTrains(selectedTrains);
+                            }
+                        }}
+                        value={uniqueTrain.unique_train_id}
+                    >
+                        <option value="">Select Unique Train</option>
+                        {uniqueTrainList.map((train) => (
+                            <option 
+                                key={train.unique_train_id} 
+                                value={train.unique_train_id}
+                                disabled={selectedTrains.some(st => st.unique_train_id === train.unique_train_id)}
+                            >
+                                {train.unique_train_id}
+                            </option>
+                        ))}
+                    </Select>
+                )}
+            </Flex>
+        </Grid>
+        <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"} mt={6} mb={6}>
+            {uniqueTrain.coach_names.map((coachName, coachIndex) => (
+                <Box key={coachName} mb={4} p={4} boxShadow="md" borderRadius="md">
+                    <Divider mb={4} />
+                    <Text mt={4} fontSize="xl" fontWeight="bold">
+                        {coachName}
+                    </Text>
+                    <Flex mt={8} alignItems="center">
+                        <Text mb={2} fontSize="md" fontWeight="medium">Number of Coaches:</Text>
+                        <Input 
+                            ml={4}
+                            value={numberOfCoaches[coachIndex] || 1} 
+                            isReadOnly 
+                            w="40%" 
+                            maxW="sm" 
+                            textAlign="center"
+                        />
+                    </Flex>
+                    <Slider
+                        mt={5}
+                        width="80%"
+                        aria-label="slider-ex-1"
+                        defaultValue={numberOfCoaches[coachIndex] || 1}
+                        onChange={(value) => {
+                            const updatedNumberOfCoaches = [...numberOfCoaches];
+                            updatedNumberOfCoaches[coachIndex] = value;
+                            setNumberOfCoaches(updatedNumberOfCoaches);
+                        }}
+                        min={1}
+                        max={25} 
+                        step={1}
+                    >
+                        <SliderTrack>
+                            <SliderFilledTrack />
+                        </SliderTrack>
+                        <SliderThumb boxSize={8}>
+                            <Box color="tomato" as="span">
+                                {numberOfCoaches[coachIndex] || 1}
+                            </Box>
+                        </SliderThumb>
+                    </Slider>
 
-          </Box>
-        ))}
-      </Grid>
+                    {destinations.map((destination, destinationIndex) => (
+                        <Flex key={destination.location_id} align="center" mt={4}>
+                            <Text mr={4} fontSize="md" fontWeight="medium">{destination.station_name}:</Text>
+                            <Input
+                                type="number"
+                                value={coachFares[coachName] ? coachFares[coachName][destinationIndex] || "" : ""}
+                                onChange={(event) => {
+                                    const updatedFares = { ...coachFares };
+                                    if (!updatedFares[coachName]) {
+                                        updatedFares[coachName] = [];
+                                    }
+                                    updatedFares[coachName][destinationIndex] = parseInt(event.target.value);
+                                    setCoachFares(updatedFares);
+                                }}
+                                placeholder="Enter fare"
+                                w="40%"
+                                maxW="sm"
+                            />
+                            <Text ml={4} fontSize="md">Tk</Text>
+                        </Flex>
+                    ))}
+                </Box>
+            ))}
+        </Grid>
     </>
   );
 }

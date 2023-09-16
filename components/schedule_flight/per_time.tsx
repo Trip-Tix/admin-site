@@ -9,6 +9,7 @@ import {
   Divider,
   Grid,
   GridItem,
+  Select, 
 } from "@chakra-ui/react";
 import {
   fetchAllAvailableFlight,
@@ -102,7 +103,6 @@ export default function PerTime({
     setScheduleEntries(updatedScheduleEntries);
   }, [fare, uniqueFlight.uniqueFlightId, time]);
 
-  
   return (
     <>
       <Divider />
@@ -121,7 +121,7 @@ export default function PerTime({
         </Button>
         <Text>{`Time Entry ${currentKey}`}</Text>
       </Flex>
-      <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"}>
+      <Grid templateColumns="40% 58%" gap={6} w={"100%"} alignItems="start">
         <Flex direction="row" w="full" alignItems={"center"}>
           <Text mr={6}>Time: </Text>
           <Input
@@ -133,36 +133,35 @@ export default function PerTime({
           />
         </Flex>
         <Flex direction="row" w="full" alignItems={"center"}>
-          <Text mr={6}>Unique Flight: </Text>
+          <Text w={"15%"} mr={6}>Unique Flight: </Text>
           {isUniqueFlightListLoading ? (
             <Text>Loading...</Text>
           ) : (
-            <select
-            onChange={(event) => {
-              const selectedUniqueFlight = uniqueFlightList.find(
-                (flight) => flight.uniqueFlightId === event.target.value
-              );
-              if (selectedUniqueFlight) {
-                setUniqueFlight(selectedUniqueFlight);
-                // Add the selected flight to the selectedFlights array
-                selectedFlights[currentKey] = selectedUniqueFlight;
-                setSelectedFlights(selectedFlights);
-              }
-            }}
-            value={uniqueFlight.uniqueFlightId}
-          >
-            <option value="">Select Unique Flight</option>
-            {uniqueFlightList.map((flight) => (
-              <option 
-                key={flight.uniqueFlightId} 
-                value={flight.uniqueFlightId}
-                disabled={selectedFlights.some(sf => sf.uniqueFlightId === flight.uniqueFlightId)}
-              >
-                {flight.uniqueFlightId}
-              </option>
-            ))}
-          </select>
-        )}
+            <Select
+              onChange={(event) => {
+                const selectedUniqueFlight = uniqueFlightList.find(
+                  (flight) => flight.uniqueFlightId === event.target.value
+                );
+                if (selectedUniqueFlight) {
+                  setUniqueFlight(selectedUniqueFlight);
+                  selectedFlights[currentKey] = selectedUniqueFlight;
+                  setSelectedFlights(selectedFlights);
+                }
+              }}
+              value={uniqueFlight.uniqueFlightId}
+            >
+              <option value="">Select Unique Flight</option>
+              {uniqueFlightList.map((flight) => (
+                <option 
+                  key={flight.uniqueFlightId} 
+                  value={flight.uniqueFlightId}
+                  disabled={selectedFlights.some(sf => sf.uniqueFlightId === flight.uniqueFlightId)}
+                >
+                  {flight.uniqueFlightId}
+                </option>
+              ))}
+            </Select>
+          )}
         </Flex>
       </Grid>
       <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"} mt={6} mb={6}>

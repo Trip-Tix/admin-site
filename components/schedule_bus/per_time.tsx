@@ -264,12 +264,7 @@ export default function PerTime({
 
           </Flex>
         </Flex>
-
-
-
       </Grid>
-
-
       <Flex direction="row" justifyContent="space-between" w="100%" mt={4}>
         <Box w="32%">
           <Text mb={2}>Coach:</Text>
