@@ -605,3 +605,47 @@ export const fetchBusFacilities = async (
   }
 };
 
+// get boarding points
+export const getBoardingPoints = main_url + "/api/admin/getBoardingPoints";
+interface getBoardingPointsResponse {
+  boarding_point_name: string;
+}
+
+export const fetchBoardingPoints = async (
+  startingLocation: string,
+): Promise<string[]> => { 
+  try {
+    const response = await axios.post(
+      getBoardingPoints,
+      {
+        location_name: startingLocation,
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+          companyname: sessionStorage.getItem("company-name"),
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      console.log("boarding points fetched");
+      const tempBoardingPoints: string[] = response.data.map(
+        (point: getBoardingPointsResponse) => point.boarding_point_name,
+      );
+      return tempBoardingPoints;
+    } else {
+      console.log(response.data.message);
+      return [];
+    }
+  }
+  catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+
+
+
+
+
