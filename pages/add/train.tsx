@@ -64,6 +64,8 @@ export default function Main() {
     setIsSubmitDisabled(disabled);
   }, [trainKeys, coachesLength, facilitiesLength]);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   return (
     <Layout title="Add Train" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.Add}>
@@ -84,13 +86,19 @@ export default function Main() {
                 submit={submit}
                 updateCoachesLength={setCoachesLength}
                 updateFacilities={setFacilitiesLength}
+                isLoading={isLoading}
+                setLoading={setIsLoading}
               />
             ))}
             <Button onClick={addNewTrain}> Add Train </Button>
             <Button
               colorScheme="blue"
-              onClick={() => setSubmit(true)}
+              onClick={() => {
+                setIsLoading(true); 
+                setSubmit(true);
+              }}
               isDisabled={isSubmitDisabled}
+              isLoading={isLoading}
             >
               {"Submit"}
             </Button>

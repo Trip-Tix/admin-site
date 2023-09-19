@@ -35,7 +35,8 @@ interface TrainCardProps {
   submit: boolean;
   updateCoachesLength: (length: number) => void;
   updateFacilities: (length: number) => void;
-
+  isLoading: boolean;
+  setLoading: (isLoading: boolean) => void;
 }
 
 export default function TrainCard({
@@ -43,6 +44,8 @@ export default function TrainCard({
   submit,
   updateCoachesLength,
   updateFacilities,
+  isLoading,
+  setLoading,
 }: TrainCardProps) {
   const [selectedCoaches, setSelectedCoaches] = useState<coach_interface[]>([]);
   const [coachForms, setCoachForms] = useState<number[]>([1]);
@@ -130,6 +133,7 @@ export default function TrainCard({
         facilities: facilities,
       })
       .then(() => {
+        setLoading(true);
         // Show the toast on successful addition
         toast({
           title: "Train Information Successfully Added",
@@ -139,6 +143,7 @@ export default function TrainCard({
           isClosable: true,
           position: "top-right",
           onCloseComplete: () => {
+            setLoading(false);
             router.push(list_train_url);
           }
         });

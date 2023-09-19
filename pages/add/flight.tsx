@@ -80,13 +80,17 @@ export default function Main() {
             <Button onClick={addNewFlight}> Add Flight </Button>
             <Button
               colorScheme="blue"
-              onClick={() => setSubmit(true)}
+              onClick={() => {
+                setIsLoading(true); 
+                setSubmit(true);
+              }}
               isDisabled={
                 flightKeys.length === 0 /* if no card */ ||
                 flightKeys.some((item) => !item.isValid) /* if some card has invalid values */ ||
                 classesLength === 0 /* if classes array is empty */ ||
                 facilitiesLength == 0 /* if facilities array is empty */
               }
+              isLoading={isLoading}
             >
               {"Submit"}
             </Button>
