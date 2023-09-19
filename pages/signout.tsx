@@ -8,12 +8,14 @@ const SourcePage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    sessionStorage.setItem('is-login', 'false');
+    sessionStorage.clear();
     router.push(login_url);
-  }, []);
+  }, [router]);
 
   return (
     <Box textAlign="center" mt="20">
-      <Heading size="lg">Redirecting to Login Page</Heading>
+      <Heading size="lg">Signing out</Heading>
       <Spinner size="xl" mt="4" />
     </Box>
   );
