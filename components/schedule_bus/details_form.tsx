@@ -20,6 +20,7 @@ export default function DetailsForm({ isInitialForm }: DetailsFormProps) {
   }, [isInitialForm]);
 
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
     <>
@@ -28,7 +29,16 @@ export default function DetailsForm({ isInitialForm }: DetailsFormProps) {
           {daysInRange.map((day) => (
             <PerDate key={day.day.toString()+day.month.toString()+day.year.toString()} currentDate={day} submitted={submitted}/>
           ))}
-          <Button onClick={() => setSubmitted(true)} m={2}>Fix Schedule</Button>
+          <Button 
+            onClick={() => {
+              setIsLoading(true); 
+              setSubmitted(true);
+            }}
+            m={2}
+            isLoading={isLoading}
+          >
+            Fix Schedule
+          </Button>
         </>
       )}
     </>
