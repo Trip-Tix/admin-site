@@ -88,6 +88,8 @@ export default function Main() {
 
   const [facilitiesLength, setFacilitiesLength] = useState<number>(0);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   return (
     <Layout title="Add Bus" isProtected={true}>
       <SidebarWithHeader navItem={NavigationOption.Add}>
@@ -115,17 +117,23 @@ export default function Main() {
                   coachBrandsList={coachBrandsList}
                   submit={submit}
                   updateFacilities={setFacilitiesLength}
+                  isLoading={isLoading}
+                  setLoading={setIsLoading}
                 />
               ))}
               <Button onClick={addNewCoach}> Add Coach </Button>
               <Button
                 colorScheme="blue"
-                onClick={() => setSubmit(true)}
+                onClick={() => {
+                  setIsLoading(true); 
+                  setSubmit(true);
+                }}
                 isDisabled={
-                  coachKeys.length === 0 /* if no card */ ||
-                  coachKeys.some((item) => !item.isValid) /* if some card has invalid values */ ||
-                  facilitiesLength == 0 /* if facilities array is empty */
+                  coachKeys.length === 0  ||
+                  coachKeys.some((item) => !item.isValid)  ||
+                  facilitiesLength == 0 
                 }
+                isLoading={isLoading}
               >
                 {"Submit"}
               </Button>
