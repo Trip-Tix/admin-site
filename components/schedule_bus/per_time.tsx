@@ -9,30 +9,39 @@ import {
   Divider,
   Grid,
   GridItem,
+  HStack,
+  VStack,
+  Select,
+  Wrap,
 } from "@chakra-ui/react";
 import {
   fetchCoachBrandList,
   fetchAllAvailableBus,
 } from "@public/common/bus_api";
 import { coachBrands } from "@public/common/bus_interfaces";
-import { formatDate, convertTo12HourFormat } from "@public/common/date_util";
+import { formatDate, convertTo12HourFormat, convertTo24HourFormat } from "@public/common/date_util";
 import { AiOutlineClose } from "react-icons/ai";
 
 interface PerTimeProps {
+  startingLocation: string;
   destinations: string[];
   currentKey: number;
   scheduleEntries: ScheduleEntry[];
   setScheduleEntries: (value: ScheduleEntry[]) => void;
   removeScheduleEntry: (index: number) => void;
+  availableBoardingPoints: string[];
 }
 
 export default function PerTime({
+  startingLocation,
   destinations,
   currentKey,
   scheduleEntries,
   setScheduleEntries,
   removeScheduleEntry,
+  availableBoardingPoints,
 }: PerTimeProps) {
+
   //first fetch all available coaches and brands
   const [coachBrandList, setCoachBrandList] = useState<coachBrands[]>([]);
   useEffect(() => {
@@ -136,6 +145,54 @@ export default function PerTime({
     setScheduleEntries(updatedScheduleEntries);
   }, [fare, uniqueBusId, time]);
 
+  const [selectedBoardingPoints, setSelectedBoardingPoints] = useState<string[]>(['']); 
+
+  const handleAddBoardingPoint = () => {
+    setSelectedBoardingPoints(prevPoints => [...prevPoints, '']);
+  };
+
+  
+  const [disabledBoardingPoints, setDisabledBoardingPoints] = useState<string[]>([]);
+  
+  
+  const handleDropdownChange = (index: number, value: string) => {
+    const updatedPoints = [...selectedBoardingPoints];
+    const previousValue = updatedPoints[index];
+    updatedPoints[index] = value;
+    setSelectedBoardingPoints(updatedPoints);
+
+    // Update the disabled boarding points
+    const newDisabledPoints = [...disabledBoardingPoints];
+    if (value) {
+      newDisabledPoints.push(value);
+    }
+    // If there was a previous value and it's not being used by any other dropdown, remove it from disabled points
+    if (previousValue && !updatedPoints.includes(previousValue)) {
+      const removeIndex = newDisabledPoints.indexOf(previousValue);
+      if (removeIndex !== -1) {
+        newDisabledPoints.splice(removeIndex, 1);
+      }
+    }
+    setDisabledBoardingPoints(newDisabledPoints);
+  };
+
+  // const [formattedArrivalTime, setFormattedArrivalTime] = useState("");
+  
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //       const result = await fetchArrivalTime(
+  //           startingLocation,
+  //           destinations[destinations.length - 1],
+  //           time,
+  //       );
+  //       console.log(result);
+  //       console.log(convertTo24HourFormat(result));
+  //       setFormattedArrivalTime(convertTo24HourFormat(result));
+  //   };
+
+  //   fetchData();
+  // }, [time]);
+
   return (
     <>
       <Divider />
@@ -154,9 +211,10 @@ export default function PerTime({
         </Button>
         <Text>{`Time Entry ${currentKey}`}</Text>
       </Flex>
-      <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"}>
-        <Flex direction="row" w="full" alignItems={"center"}>
-          <Text mr={6}>Time: </Text>
+      <Grid templateColumns="33% 66%" gap={6} w={"100%"} alignItems="start">
+      <Flex direction="column" w="100%">
+      <Flex direction="row" w="100%" alignItems={"center"} mt={12}>
+          <Text mr={6}>Departure Time: </Text>
           <Input
             type="time"
             value={time24}
@@ -165,34 +223,97 @@ export default function PerTime({
             maxW="sm"
           />
         </Flex>
-        <Flex direction="row" w="full" alignItems={"center"}>
-          <Text mr={6}>Coach: </Text>
-          <select onChange={handleCoachChange} value={coach}>
+
+    </Flex>
+        <Flex direction="column" w="100%" m={2}>
+          <Text mb={4}>Boarding Points:</Text>
+          <Wrap spacing={4}>
+              {selectedBoardingPoints.map((point, index) => (
+                  <Box key={index} w={selectedBoardingPoints.length === 1 ? "98%" : "48%"}>
+                      <Flex
+                          align="center"
+                          justify="space-between"
+                          direction="row"
+                          w="full"
+                      >
+                          <Select
+                            placeholder="Select Boarding Point"
+                            width={selectedBoardingPoints.length === 1 ? "95%" : "85%"}
+                            value={point}
+                            onChange={(e) => handleDropdownChange(index, e.target.value)}
+                          >
+                            {availableBoardingPoints.map(bp => (
+                              <option key={bp} value={bp} disabled={disabledBoardingPoints.includes(bp)}>
+                                {bp}
+                              </option>
+                            ))}
+                          </Select>                      
+                          <Button
+                              onClick={() => {
+                                  const updatedPoints = [...selectedBoardingPoints];
+                                  const removedValue = updatedPoints[index];
+                                  updatedPoints.splice(index, 1);
+                                  setSelectedBoardingPoints(updatedPoints);
+
+                                  // If the removed value is not being used by any other dropdown, remove it from disabled points
+                                  if (!updatedPoints.includes(removedValue)) {
+                                      const removeIndex = disabledBoardingPoints.indexOf(removedValue);
+                                      if (removeIndex !== -1) {
+                                          const newDisabledPoints = [...disabledBoardingPoints];
+                                          newDisabledPoints.splice(removeIndex, 1);
+                                          setDisabledBoardingPoints(newDisabledPoints);
+                                      }
+                                  }
+                              }}
+                              isDisabled={index === 0}
+                          >
+                              <AiOutlineClose />
+                          </Button>
+                      </Flex>
+                  </Box>
+              ))}
+          </Wrap>
+          <Flex direction="column" w="96%" m={2}>
+          <Button 
+              mt={4} 
+              onClick={handleAddBoardingPoint} 
+              isDisabled={selectedBoardingPoints.length >= availableBoardingPoints.length}
+          >
+              Add Boarding Point
+          </Button>
+
+          </Flex>
+        </Flex>
+      </Grid>
+      <Flex direction="row" justifyContent="space-between" w="100%" mt={4}>
+        <Box w="32%">
+          <Text mb={2}>Coach:</Text>
+          <Select onChange={handleCoachChange} value={coach}>
             <option value="">Select Coach</option>
             {coachList.map((coach) => (
               <option key={coach} value={coach}>
                 {coach}
               </option>
             ))}
-          </select>
-        </Flex>
-        <Flex direction="row" w="full" alignItems={"center"}>
-          <Text mr={6}>Brand: </Text>
-          <select onChange={handleBrandChange} value={brand}>
+          </Select>
+        </Box>
+        <Box w="32%">
+          <Text mb={2}>Brand:</Text>
+          <Select onChange={handleBrandChange} value={brand}>
             <option value="">Select Brand</option>
             {brandList.map((brand) => (
               <option key={brand} value={brand}>
                 {brand}
               </option>
             ))}
-          </select>
-        </Flex>
-        <Flex direction="row" w="full" alignItems={"center"}>
-          <Text mr={6}>Unique Bus: </Text>
+          </Select>
+        </Box>
+        <Box w="32%">
+          <Text mb={2}>Unique Bus:</Text>
           {isUniqueBusListLoading ? (
             <Text>Loading...</Text>
           ) : (
-            <select
+            <Select
               onChange={(event) => setUniqueBusId(event.target.value)}
               value={uniqueBusId}
             >
@@ -202,10 +323,10 @@ export default function PerTime({
                   {uniqueBus}
                 </option>
               ))}
-            </select>
+            </Select>
           )}
-        </Flex>
-      </Grid>
+        </Box>
+      </Flex>
       <Grid templateColumns="repeat(2, 1fr)" gap={6} w={"100%"} mt={6} mb={6}>
         <GridItem colSpan={2}>
           <Text>Fare: </Text>

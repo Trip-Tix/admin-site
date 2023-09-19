@@ -34,6 +34,8 @@ interface FlightCardProps {
   submit: boolean;
   updateClassesLength: (length: number) => void;
   updateFacilities: (length: number) => void;
+  isLoading: boolean;
+  setLoading: (isLoading: boolean) => void;
 
 }
 
@@ -42,6 +44,8 @@ export default function FlightCard({
   submit,
   updateClassesLength,
   updateFacilities,
+  isLoading,
+  setLoading,
 }: FlightCardProps) {
   const [selectedClasses, setSelectedClasses] = useState<class_interface[]>([]);
   const [classForms, setClassForms] = useState<number[]>([1]);
@@ -130,6 +134,7 @@ export default function FlightCard({
         facilities: facilities,
       })
       .then(() => {
+        setLoading(true);
         // Show the toast on successful addition
         toast({
           title: "Flight Information Successfully Added",
@@ -139,6 +144,7 @@ export default function FlightCard({
           isClosable: true,
           position: "top-right",
           onCloseComplete: () => {
+            setLoading(false);
             router.push(list_flight_url); 
           }
         });

@@ -51,6 +51,7 @@ export default function Main() {
 
   // Button for submitting
   const [submit, setSubmit] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
     <Layout title="Add Flight" isProtected={true}>
@@ -72,6 +73,8 @@ export default function Main() {
                 submit={submit}
                 updateClassesLength={setClassesLength}
                 updateFacilities={setFacilitiesLength}
+                isLoading={isLoading}
+                setLoading={setIsLoading}
               />
             ))}
             <Button onClick={addNewFlight}> Add Flight </Button>

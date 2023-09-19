@@ -104,7 +104,7 @@ export default function Signup_form() {
             companyName: companyName,
             services: services,
             email: email,
-            adminRole: "pending",
+            adminRole: services,
         })
         .then((res) => {
             console.log(res.data);
@@ -162,7 +162,7 @@ export default function Signup_form() {
         />
         </InputGroup>
         <Text color={"red.500"}>{fullNameError}</Text>
-      <InputGroup>
+      <InputGroup mt={4}>
         <InputLeftElement>
           <AiOutlineUser color={foreground} />
         </InputLeftElement>
@@ -223,9 +223,9 @@ export default function Signup_form() {
             _hover={{ borderColor: accent1 }}
             _focus={{ borderColor: accent1 }}
         >
-            <option value="Bus Services">Bus Services</option>
-            <option value="Train Services">Train Services</option>
-            <option value="Air Services">Air Services</option>
+            <option value="BUS">Bus Services</option>
+            <option value="TRAIN">Train Services</option>
+            <option value="AIR">Air Services</option>
         </Select>
         </InputGroup>
         <Text color={"red.500"}>{serviceError}</Text>

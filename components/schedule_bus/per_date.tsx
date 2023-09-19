@@ -13,10 +13,11 @@ import {
 import { ScheduleEntry } from "@public/common/bus_interfaces";
 import PerTime from "@components/schedule_bus/per_time";
 import { formatDate } from "@public/common/date_util";
-import { postScheduleInfo } from "@public/common/bus_api";
+import { fetchBoardingPoints, postScheduleInfo } from "@public/common/bus_api";
 import { IoMdAddCircle } from "react-icons/io";
 import { useRouter } from "next/router";
 import { home_url, list_bus_url } from "@public/common/pagelinks";
+import { start } from "repl";
 
 interface PerDateProps {
   currentDate: Day;
@@ -86,6 +87,17 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
     }
   }, [submitted, router]);
 
+  const [boardingPoints, setBoardingPoints] = useState<string[]>([]);
+
+  // Get boarding points from starting location
+  useEffect(() => {
+    if (startingLocation !== "") {
+      fetchBoardingPoints(startingLocation).then((response) => {
+        setBoardingPoints(response);
+      });
+    }
+  }, [startingLocation]);
+
   return (
     <>
       <Flex
@@ -115,6 +127,8 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
           scheduleEntries={scheduleEntries}
           setScheduleEntries={setScheduleEntries}
           removeScheduleEntry={removeScheduleEntry}
+          availableBoardingPoints={boardingPoints}
+          startingLocation={startingLocation}
         />
       ))}
 

@@ -39,6 +39,8 @@ interface CoachCardProps {
   coachBrandsList: coachBrands[];
   submit: boolean;
   updateFacilities: (length: number) => void;
+  isLoading: boolean;
+  setLoading: (isLoading: boolean) => void;
 }
 
 export default function CoachCard({
@@ -47,6 +49,8 @@ export default function CoachCard({
   coachBrandsList,
   submit,
   updateFacilities,
+  isLoading,
+  setLoading,
 }: CoachCardProps) {
   const [selectedCoach, setSelectedCoach] = useState<coach>();
   const [selectedBrand, setSelectedBrand] = useState<string>();
@@ -91,6 +95,7 @@ export default function CoachCard({
         facilities: facilities,
       })
       .then(() => {
+        setLoading(true);
         // Show the toast on successful addition
         toast({
           title: "Bus Information Successfully Added",
@@ -100,6 +105,7 @@ export default function CoachCard({
           isClosable: true,
           position: "top-right",
           onCloseComplete: () => {
+            setLoading(false);
             router.push(list_bus_url);
           }
         });
