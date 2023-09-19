@@ -647,5 +647,49 @@ export const fetchBoardingPoints = async (
 
 
 
+// get arrival time
+const getArrivalTime = main_url + "/api/getArrivalTime";
+
+interface getBoardingPointsResponse {
+  arrivalTime: string;
+}
+
+export const fetchArrivalTime = async (
+  source: string,
+  destination: String,
+  journeyTime: string
+): Promise<string> => { 
+  try {
+    const response = await axios.post(
+      getArrivalTime,
+      {
+        source: source,
+        destination: destination,
+        journeyTime: journeyTime
+      },
+      {
+        headers: {
+          token: sessionStorage.getItem("user-token"),
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      console.log("arrival time fetched");
+      const tempArrivalTime: string = response.data.arrivalTime;
+      return tempArrivalTime;
+    } else {
+      console.log(response.data.message);
+      return "";
+    }
+  }
+  catch (err) {
+    console.log(err);
+    return "";
+  }
+};
+
+
+
 
 

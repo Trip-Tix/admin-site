@@ -99,3 +99,20 @@ export const convertTo12HourFormat = (time24: string): string => {
 
   return formattedTime;
 };
+
+export const convertTo24HourFormat = (time12: string): string => {
+  const [time, modifier] = time12.split(" ");
+  let [hours, minutes] = time.split(":");
+  if (hours === "12") {
+    hours = "00";
+  }
+
+  if (modifier === "PM") {
+    let hourNum = parseInt(hours, 10) + 12;
+    hours = hourNum.toString();
+  } else {
+    hours = hours.padStart(2, "0");
+  }
+
+  return `${hours}:${minutes}`;
+};

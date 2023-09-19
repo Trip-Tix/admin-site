@@ -17,12 +17,14 @@ import {
 import {
   fetchCoachBrandList,
   fetchAllAvailableBus,
+  fetchArrivalTime,
 } from "@public/common/bus_api";
 import { coachBrands } from "@public/common/bus_interfaces";
-import { formatDate, convertTo12HourFormat } from "@public/common/date_util";
+import { formatDate, convertTo12HourFormat, convertTo24HourFormat } from "@public/common/date_util";
 import { AiOutlineClose } from "react-icons/ai";
 
 interface PerTimeProps {
+  startingLocation: string;
   destinations: string[];
   currentKey: number;
   scheduleEntries: ScheduleEntry[];
@@ -32,6 +34,7 @@ interface PerTimeProps {
 }
 
 export default function PerTime({
+  startingLocation,
   destinations,
   currentKey,
   scheduleEntries,
@@ -172,8 +175,24 @@ export default function PerTime({
       }
     }
     setDisabledBoardingPoints(newDisabledPoints);
-};
+  };
 
+  const [formattedArrivalTime, setFormattedArrivalTime] = useState("");
+  
+  useEffect(() => {
+    const fetchData = async () => {
+        const result = await fetchArrivalTime(
+            startingLocation,
+            destinations[destinations.length - 1],
+            time,
+        );
+        console.log(result);
+        console.log(convertTo24HourFormat(result));
+        setFormattedArrivalTime(convertTo24HourFormat(result));
+    };
+
+    fetchData();
+  }, [time]);
 
   return (
     <>
@@ -194,22 +213,35 @@ export default function PerTime({
         <Text>{`Time Entry ${currentKey}`}</Text>
       </Flex>
       <Grid templateColumns="33% 66%" gap={6} w={"100%"} alignItems="start">
+      <Flex direction="column" w="100%">
         <Flex direction="row" w="100%" alignItems={"center"} mt={12}>
-          <Text mr={6}>Time: </Text>
-          <Input
-            type="time"
-            value={time24}
-            onChange={handleTimeChange}
-            w="full"
-            maxW="sm"
-          />
+            <Text mr={6}>Departure Time: </Text>
+            <Input
+                type="time"
+                value={time24}
+                onChange={handleTimeChange}
+                w="full"
+                maxW="sm"
+            />
         </Flex>
 
+        <Flex direction="row" w="100%" alignItems={"center"} mt={6}>
+          <Text mr={6}>Arrival Time: &nbsp; &nbsp; &nbsp; </Text>
+          <Input
+              type="time"
+              value={formattedArrivalTime}
+              isReadOnly
+              w="full"
+              maxW="sm"
+          />
+      </Flex>
+
+    </Flex>
         <Flex direction="column" w="100%" m={2}>
           <Text mb={4}>Boarding Points:</Text>
           <Wrap spacing={4}>
               {selectedBoardingPoints.map((point, index) => (
-                  <Box key={index} w={selectedBoardingPoints.length === 1 ? "96%" : "48%"}>
+                  <Box key={index} w={selectedBoardingPoints.length === 1 ? "98%" : "48%"}>
                       <Flex
                           align="center"
                           justify="space-between"

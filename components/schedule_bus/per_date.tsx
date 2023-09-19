@@ -17,6 +17,7 @@ import { fetchBoardingPoints, postScheduleInfo } from "@public/common/bus_api";
 import { IoMdAddCircle } from "react-icons/io";
 import { useRouter } from "next/router";
 import { home_url, list_bus_url } from "@public/common/pagelinks";
+import { start } from "repl";
 
 interface PerDateProps {
   currentDate: Day;
@@ -127,6 +128,7 @@ export default function PerDate({ currentDate, submitted }: PerDateProps) {
           setScheduleEntries={setScheduleEntries}
           removeScheduleEntry={removeScheduleEntry}
           availableBoardingPoints={boardingPoints}
+          startingLocation={startingLocation}
         />
       ))}
 
