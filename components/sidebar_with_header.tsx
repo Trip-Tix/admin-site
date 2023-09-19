@@ -86,14 +86,16 @@ const LinkItems: Array<LinkItemProps> = [
 
 
 const getLinkItems = (adminRole: string): Array<LinkItemProps> => {
-  let links = [
-    { name: "List", icon: FiList, link: list_url },
-    { name: "Add", icon: FiPlus, link: add_url },
-    { name: "Schedule", icon: FiCalendar, link: schedule_url },
-  ];
+  let links = [];
 
   if (adminRole === "ADMIN") {
     links = [{ name: "Home", icon: FiHome, link: home_url }, ...links];
+  } else {
+    links = [
+      { name: "List", icon: FiList, link: list_url },
+      { name: "Add", icon: FiPlus, link: add_url },
+      { name: "Schedule", icon: FiCalendar, link: schedule_url },
+    ];
   }
 
   return links;
