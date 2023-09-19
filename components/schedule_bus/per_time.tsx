@@ -17,7 +17,6 @@ import {
 import {
   fetchCoachBrandList,
   fetchAllAvailableBus,
-  fetchArrivalTime,
 } from "@public/common/bus_api";
 import { coachBrands } from "@public/common/bus_interfaces";
 import { formatDate, convertTo12HourFormat, convertTo24HourFormat } from "@public/common/date_util";
@@ -177,22 +176,22 @@ export default function PerTime({
     setDisabledBoardingPoints(newDisabledPoints);
   };
 
-  const [formattedArrivalTime, setFormattedArrivalTime] = useState("");
+  // const [formattedArrivalTime, setFormattedArrivalTime] = useState("");
   
-  useEffect(() => {
-    const fetchData = async () => {
-        const result = await fetchArrivalTime(
-            startingLocation,
-            destinations[destinations.length - 1],
-            time,
-        );
-        console.log(result);
-        console.log(convertTo24HourFormat(result));
-        setFormattedArrivalTime(convertTo24HourFormat(result));
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //       const result = await fetchArrivalTime(
+  //           startingLocation,
+  //           destinations[destinations.length - 1],
+  //           time,
+  //       );
+  //       console.log(result);
+  //       console.log(convertTo24HourFormat(result));
+  //       setFormattedArrivalTime(convertTo24HourFormat(result));
+  //   };
 
-    fetchData();
-  }, [time]);
+  //   fetchData();
+  // }, [time]);
 
   return (
     <>
@@ -214,27 +213,16 @@ export default function PerTime({
       </Flex>
       <Grid templateColumns="33% 66%" gap={6} w={"100%"} alignItems="start">
       <Flex direction="column" w="100%">
-        <Flex direction="row" w="100%" alignItems={"center"} mt={12}>
-            <Text mr={6}>Departure Time: </Text>
-            <Input
-                type="time"
-                value={time24}
-                onChange={handleTimeChange}
-                w="full"
-                maxW="sm"
-            />
-        </Flex>
-
-        <Flex direction="row" w="100%" alignItems={"center"} mt={6}>
-          <Text mr={6}>Arrival Time: &nbsp; &nbsp; &nbsp; </Text>
+      <Flex direction="row" w="100%" alignItems={"center"} mt={12}>
+          <Text mr={6}>Departure Time: </Text>
           <Input
-              type="time"
-              value={formattedArrivalTime}
-              isReadOnly
-              w="full"
-              maxW="sm"
+            type="time"
+            value={time24}
+            onChange={handleTimeChange}
+            w="full"
+            maxW="sm"
           />
-      </Flex>
+        </Flex>
 
     </Flex>
         <Flex direction="column" w="100%" m={2}>
